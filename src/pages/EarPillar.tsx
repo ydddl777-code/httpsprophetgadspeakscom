@@ -8,6 +8,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { UserProfile, MusicCheckResult } from '@/lib/types';
 import { RED_FLAG_ARTISTS } from '@/lib/data';
 import { cn } from '@/lib/utils';
+import templeBackground from '@/assets/temple-background.jpg';
 
 interface EarPillarProps {
   profile: UserProfile;
@@ -73,7 +74,12 @@ export const EarPillar = ({ profile, onLogout }: EarPillarProps) => {
       : XCircle;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div 
+      className="min-h-screen bg-cover bg-center bg-fixed"
+      style={{ 
+        backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${templeBackground})` 
+      }}
+    >
       <AppHeader userName={profile.name} onLogout={onLogout} showLogout />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
@@ -91,12 +97,12 @@ export const EarPillar = ({ profile, onLogout }: EarPillarProps) => {
           <div className="inline-flex bg-pillar-ear/10 p-4 rounded-2xl mb-4">
             <Music className="w-12 h-12 text-pillar-ear" />
           </div>
-          <h1 className="font-display text-3xl text-primary mb-2">EAR PILLAR</h1>
+          <h1 className="text-3xl text-primary font-bold mb-2">EAR PILLAR</h1>
           <p className="text-muted-foreground">Music Checker</p>
         </div>
 
         {/* Input Form */}
-        <div className="bg-card rounded-3xl shadow-lg border border-border p-8 mb-6">
+        <div className="bg-card rounded-3xl shadow-lg border border-border p-8 mb-6 gold-border-frame">
           <div className="space-y-4">
             <div>
               <Label htmlFor="song" className="text-foreground">Song Name</Label>
@@ -144,7 +150,7 @@ export const EarPillar = ({ profile, onLogout }: EarPillarProps) => {
         {result && (
           <div
             className={cn(
-              'rounded-2xl p-6 border animate-slide-up',
+              'rounded-2xl p-6 border',
               result.status === 'safe' && 'bg-success/10 border-success/20',
               result.status === 'caution' && 'bg-warning/10 border-warning/20',
               result.status === 'danger' && 'bg-danger/10 border-danger/20'
@@ -162,15 +168,15 @@ export const EarPillar = ({ profile, onLogout }: EarPillarProps) => {
               <div className="flex-1">
                 <h3
                   className={cn(
-                    'font-display text-xl mb-1',
+                    'text-xl font-bold mb-1',
                     result.status === 'safe' && 'text-success',
                     result.status === 'caution' && 'text-warning',
                     result.status === 'danger' && 'text-danger'
                   )}
                 >
-                  {result.status === 'safe' && '🟢 SAFE'}
-                  {result.status === 'caution' && '🟡 CAUTION'}
-                  {result.status === 'danger' && '🔴 DANGER'}
+                  {result.status === 'safe' && 'SAFE'}
+                  {result.status === 'caution' && 'CAUTION'}
+                  {result.status === 'danger' && 'DANGER'}
                 </h3>
                 <p className="text-foreground font-medium mb-2">
                   "{result.song}" by {result.artist}
@@ -190,9 +196,9 @@ export const EarPillar = ({ profile, onLogout }: EarPillarProps) => {
         <div className="mt-8 bg-muted rounded-2xl p-6">
           <h4 className="font-semibold text-foreground mb-2">How It Works</h4>
           <ul className="text-sm text-muted-foreground space-y-2">
-            <li>🟢 <strong>Safe:</strong> BPM under 110, not on red-flag list</li>
-            <li>🟡 <strong>Caution:</strong> BPM between 110-130</li>
-            <li>🔴 <strong>Danger:</strong> BPM over 130 OR artist associated with false doctrine</li>
+            <li><strong>Safe:</strong> BPM under 110, not on red-flag list</li>
+            <li><strong>Caution:</strong> BPM between 110-130</li>
+            <li><strong>Danger:</strong> BPM over 130 OR artist associated with false doctrine</li>
           </ul>
         </div>
       </main>

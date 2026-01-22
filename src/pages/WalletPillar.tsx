@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { AppHeader } from '@/components/AppHeader';
 import { UserProfile, WalletCalculation } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import templeBackground from '@/assets/temple-background.jpg';
 
 interface WalletPillarProps {
   profile: UserProfile;
@@ -66,7 +67,12 @@ export const WalletPillar = ({ profile, onLogout }: WalletPillarProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div 
+      className="min-h-screen bg-cover bg-center bg-fixed"
+      style={{ 
+        backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${templeBackground})` 
+      }}
+    >
       <AppHeader userName={profile.name} onLogout={onLogout} showLogout />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
@@ -84,12 +90,12 @@ export const WalletPillar = ({ profile, onLogout }: WalletPillarProps) => {
           <div className="inline-flex bg-pillar-wallet/10 p-4 rounded-2xl mb-4">
             <Wallet className="w-12 h-12 text-pillar-wallet" />
           </div>
-          <h1 className="font-display text-3xl text-primary mb-2">WALLET PILLAR</h1>
+          <h1 className="text-3xl text-primary font-bold mb-2">WALLET PILLAR</h1>
           <p className="text-muted-foreground">Money Calculator</p>
         </div>
 
         {/* Input Form */}
-        <div className="bg-card rounded-3xl shadow-lg border border-border p-8 mb-6">
+        <div className="bg-card rounded-3xl shadow-lg border border-border p-8 mb-6 gold-border-frame">
           <div className="space-y-4">
             <div>
               <Label htmlFor="income" className="text-foreground">Monthly Income ($)</Label>
@@ -145,7 +151,7 @@ export const WalletPillar = ({ profile, onLogout }: WalletPillarProps) => {
         {result && (
           <div
             className={cn(
-              'rounded-2xl p-6 border animate-slide-up',
+              'rounded-2xl p-6 border',
               result.status === 'safe' && 'bg-success/10 border-success/20',
               result.status === 'warning' && 'bg-warning/10 border-warning/20',
               result.status === 'danger' && 'bg-danger/10 border-danger/20'
@@ -162,15 +168,15 @@ export const WalletPillar = ({ profile, onLogout }: WalletPillarProps) => {
               <div className="flex-1">
                 <h3
                   className={cn(
-                    'font-display text-xl mb-3',
+                    'text-xl font-bold mb-3',
                     result.status === 'safe' && 'text-success',
                     result.status === 'warning' && 'text-warning',
                     result.status === 'danger' && 'text-danger'
                   )}
                 >
-                  {result.status === 'safe' && '✅ SAFE'}
-                  {result.status === 'warning' && '⚠️ WARNING'}
-                  {result.status === 'danger' && '🔴 DANGER'}
+                  {result.status === 'safe' && 'SAFE'}
+                  {result.status === 'warning' && 'WARNING'}
+                  {result.status === 'danger' && 'DANGER'}
                 </h3>
 
                 <div className="grid grid-cols-2 gap-4 mb-4">
@@ -214,9 +220,9 @@ export const WalletPillar = ({ profile, onLogout }: WalletPillarProps) => {
             <h4 className="font-semibold text-foreground">Guidelines</h4>
           </div>
           <ul className="text-sm text-muted-foreground space-y-2">
-            <li>✅ <strong>Safe:</strong> Payment ≤ 10% of income</li>
-            <li>⚠️ <strong>Warning:</strong> Payment 10-15% of income</li>
-            <li>🔴 <strong>Danger:</strong> Payment &gt; 15% of income</li>
+            <li><strong>Safe:</strong> Payment 10% or less of income</li>
+            <li><strong>Warning:</strong> Payment 10-15% of income</li>
+            <li><strong>Danger:</strong> Payment greater than 15% of income</li>
           </ul>
         </div>
       </main>

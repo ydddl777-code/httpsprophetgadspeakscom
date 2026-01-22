@@ -6,6 +6,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { UserProfile, DailyVerse } from '@/lib/types';
 import { DAILY_VERSES } from '@/lib/data';
 import { useTextToSpeech } from '@/hooks/useTextToSpeech';
+import templeBackground from '@/assets/temple-background.jpg';
 
 interface SpiritPillarProps {
   profile: UserProfile;
@@ -51,7 +52,12 @@ export const SpiritPillar = ({ profile, onLogout }: SpiritPillarProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div 
+      className="min-h-screen bg-cover bg-center bg-fixed"
+      style={{ 
+        backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${templeBackground})` 
+      }}
+    >
       <AppHeader userName={profile.name} onLogout={onLogout} showLogout />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
@@ -70,12 +76,12 @@ export const SpiritPillar = ({ profile, onLogout }: SpiritPillarProps) => {
           <div className="inline-flex bg-pillar-spirit/10 p-4 rounded-2xl mb-4">
             <Sparkles className="w-12 h-12 text-pillar-spirit" />
           </div>
-          <h1 className="font-display text-3xl text-primary mb-2">SPIRIT PILLAR</h1>
+          <h1 className="text-3xl text-primary font-bold mb-2">SPIRIT PILLAR</h1>
           <p className="text-muted-foreground">Daily Devotional</p>
         </div>
 
         {/* Verse Card */}
-        <div className="bg-card rounded-3xl shadow-lg border border-border p-8 mb-6">
+        <div className="bg-card rounded-3xl shadow-lg border border-border p-8 mb-6 gold-border-frame">
           <div className="flex items-center justify-between mb-6">
             <span className="text-sm text-accent font-semibold uppercase tracking-wide">
               Today's Verse
@@ -86,7 +92,7 @@ export const SpiritPillar = ({ profile, onLogout }: SpiritPillarProps) => {
               onClick={handleReadAloud}
               className="gap-2 text-accent hover:bg-accent/10"
             >
-              <Volume2 className={`w-4 h-4 ${isSpeaking ? 'animate-pulse' : ''}`} />
+              <Volume2 className="w-4 h-4" />
               Read Aloud
             </Button>
           </div>
@@ -94,13 +100,13 @@ export const SpiritPillar = ({ profile, onLogout }: SpiritPillarProps) => {
           <blockquote className="verse-display text-primary mb-6">
             "{verse.text}"
           </blockquote>
-          <p className="text-right text-muted-foreground font-display">
+          <p className="text-right text-muted-foreground font-bold">
             — {verse.reference} (KJV)
           </p>
         </div>
 
         {/* Counsel */}
-        <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-6 mb-6 border border-primary/10">
+        <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-6 mb-6 border border-primary/10 gold-border-frame">
           <div className="flex items-center gap-2 mb-4">
             <BookOpen className="w-5 h-5 text-primary" />
             <span className="font-semibold text-foreground">PGAI Counsel</span>
@@ -114,16 +120,16 @@ export const SpiritPillar = ({ profile, onLogout }: SpiritPillarProps) => {
             onClick={() => setShowMemorize(true)}
             className="w-full h-14 text-lg bg-accent hover:bg-accent/90 text-accent-foreground gap-2"
           >
-            ✨ Try to Memorize
+            Try to Memorize
           </Button>
         ) : (
-          <div className="bg-success/10 rounded-2xl p-6 border border-success/20 animate-fade-in">
-            <h3 className="font-display text-xl text-success mb-3">Great Choice!</h3>
+          <div className="bg-success/10 rounded-2xl p-6 border border-success/20">
+            <h3 className="text-xl text-success font-bold mb-3">Great Choice!</h3>
             <p className="text-foreground/80 mb-4">
               Memorizing Scripture strengthens your spirit. Try reading it 3 times, then close your eyes and recite it.
             </p>
             <p className="text-sm text-muted-foreground">
-              💡 Tip: Break it into smaller parts and master each section before moving on.
+              Tip: Break it into smaller parts and master each section before moving on.
             </p>
           </div>
         )}
