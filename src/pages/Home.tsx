@@ -4,7 +4,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { MorningGreeting } from '@/components/MorningGreeting';
 import { FivePillarsNav } from '@/components/FivePillarsNav';
 import { UserProfile } from '@/lib/types';
-import templeBackground from '@/assets/temple-background.jpg';
+import jerusalemBackground from '@/assets/jerusalem-background.jpg';
 
 interface HomeProps {
   profile: UserProfile;
@@ -22,7 +22,7 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
     <div 
       className="min-h-screen bg-cover bg-center bg-fixed"
       style={{ 
-        backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${templeBackground})` 
+        backgroundImage: `url(${jerusalemBackground})` 
       }}
     >
       <AppHeader

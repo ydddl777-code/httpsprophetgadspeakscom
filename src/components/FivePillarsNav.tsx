@@ -1,21 +1,19 @@
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, Music, Utensils, Wallet, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface PillarData {
   id: string;
   name: string;
-  icon: React.ReactNode;
   path: string;
   colorClass: string;
 }
 
 const pillars: PillarData[] = [
-  { id: 'spirit', name: 'SPIRIT', icon: <Sparkles className="w-6 h-6" />, path: '/spirit', colorClass: 'bg-primary' },
-  { id: 'ear', name: 'EAR', icon: <Music className="w-6 h-6" />, path: '/ear', colorClass: 'bg-pillar-ear' },
-  { id: 'mouth', name: 'MOUTH', icon: <Utensils className="w-6 h-6" />, path: '/mouth', colorClass: 'bg-pillar-mouth' },
-  { id: 'wallet', name: 'WALLET', icon: <Wallet className="w-6 h-6" />, path: '/wallet', colorClass: 'bg-pillar-wallet' },
-  { id: 'doctrine', name: 'DOCTRINE', icon: <BookOpen className="w-6 h-6" />, path: '/doctrine', colorClass: 'bg-pillar-doctrine' },
+  { id: 'spirit', name: 'SPIRIT', path: '/spirit', colorClass: 'bg-primary' },
+  { id: 'ear', name: 'EAR', path: '/ear', colorClass: 'bg-pillar-ear' },
+  { id: 'mouth', name: 'MOUTH', path: '/mouth', colorClass: 'bg-pillar-mouth' },
+  { id: 'wallet', name: 'WALLET', path: '/wallet', colorClass: 'bg-pillar-wallet' },
+  { id: 'doctrine', name: 'DOCTRINE', path: '/doctrine', colorClass: 'bg-pillar-doctrine' },
 ];
 
 export const FivePillarsNav = () => {
@@ -58,11 +56,6 @@ export const FivePillarsNav = () => {
                 'bg-accent',
                 'border-2 border-foreground/20'
               )} />
-              
-              {/* Icon in pillar */}
-              <div className="absolute top-6 left-1/2 -translate-x-1/2 text-primary-foreground">
-                {pillar.icon}
-              </div>
               
               {/* Pillar segments (5 blocks) */}
               <div className="absolute inset-x-0 top-14 bottom-0 flex flex-col justify-evenly px-1">
