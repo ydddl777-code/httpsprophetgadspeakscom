@@ -4,7 +4,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { MorningGreeting } from '@/components/MorningGreeting';
 import { FivePillarsNav } from '@/components/FivePillarsNav';
 import { UserProfile } from '@/lib/types';
-import goldenGateBackground from '@/assets/golden-gate-background.jpg';
+import jerusalemBackground from '@/assets/jerusalem-background.jpg';
 
 interface HomeProps {
   profile: UserProfile;
@@ -22,7 +22,7 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
     <div 
       className="min-h-screen bg-cover bg-center bg-fixed"
       style={{ 
-        backgroundImage: `url(${goldenGateBackground})` 
+        backgroundImage: `url(${jerusalemBackground})` 
       }}
     >
       <AppHeader
