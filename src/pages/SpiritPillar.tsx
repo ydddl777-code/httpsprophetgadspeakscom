@@ -66,33 +66,33 @@ export const SpiritPillar = ({ profile, onLogout }: SpiritPillarProps) => {
         <Button
           variant="ghost"
           onClick={() => navigate('/')}
-          className="mb-6 gap-2 text-muted-foreground hover:text-foreground"
+          className="mb-4 gap-2 text-purple-900 hover:text-purple-700 hover:bg-purple-500/20"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Home
         </Button>
 
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex bg-pillar-spirit/10 p-4 rounded-2xl mb-4">
-            <Sparkles className="w-12 h-12 text-pillar-spirit" />
+        <div className="text-center mb-6">
+          <div className="inline-flex bg-purple-600/20 backdrop-blur-sm p-3 rounded-xl mb-3">
+            <Sparkles className="w-10 h-10 text-purple-800" />
           </div>
-          <h1 className="text-3xl text-primary font-bold mb-2">SPIRIT PILLAR</h1>
-          <p className="text-muted-foreground">Daily Devotional</p>
+          <h1 className="text-2xl text-purple-900 font-bold mb-1">SPIRIT PILLAR</h1>
+          <p className="text-purple-800/80 text-sm">Daily Devotional</p>
         </div>
 
         {/* Verse Card */}
-        <div className="bg-card rounded-3xl shadow-lg border border-border p-8 mb-6 gold-border-frame">
-          <div className="flex items-center justify-between mb-6">
-            <span className="text-sm text-accent font-semibold uppercase tracking-wide">
-              Today's Verse
+        <div className="bg-white/20 backdrop-blur-sm rounded-2xl shadow-lg border border-purple-300/30 p-5 mb-4">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm text-purple-900 font-semibold uppercase tracking-wide">
+              Today's Memory Verse
             </span>
             <Button
               variant="ghost"
               size="sm"
               onClick={handleReadAloud}
               disabled={isLoading || isSpeaking}
-              className="gap-2 text-accent hover:bg-accent/10"
+              className="gap-2 text-purple-700 hover:bg-purple-500/20"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -103,35 +103,35 @@ export const SpiritPillar = ({ profile, onLogout }: SpiritPillarProps) => {
             </Button>
           </div>
 
-          <blockquote className="verse-display text-primary mb-6">
+          <blockquote className="text-xl font-bold text-purple-900 mb-4 leading-relaxed">
             "{verse.text}"
           </blockquote>
-          <p className="text-right text-muted-foreground font-bold">
+          <p className="text-right text-purple-800 font-bold text-sm">
             — {verse.reference} (KJV)
           </p>
         </div>
 
         {/* Counsel */}
-        <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-6 mb-6 border border-primary/10 gold-border-frame">
-          <p className="font-semibold text-foreground mb-4">Prophet Gad Says:</p>
-          <p className="text-foreground/80 leading-relaxed">{counsel}</p>
+        <div className="bg-purple-900/20 backdrop-blur-sm rounded-xl p-4 mb-4 border border-purple-400/30">
+          <p className="font-semibold text-purple-900 mb-2 text-sm">Prophet Gad Says:</p>
+          <p className="text-purple-900/90 leading-relaxed text-sm">{counsel}</p>
         </div>
 
         {/* Memorize Section */}
         {!showMemorize ? (
           <Button
             onClick={() => setShowMemorize(true)}
-            className="w-full h-14 text-lg bg-accent hover:bg-accent/90 text-accent-foreground gap-2"
+            className="w-full h-12 text-base bg-purple-700 hover:bg-purple-800 text-white gap-2 shadow-lg"
           >
             Try to Memorize
           </Button>
         ) : (
-          <div className="bg-success/10 rounded-2xl p-6 border border-success/20">
-            <h3 className="text-xl text-success font-bold mb-3">Great Choice!</h3>
-            <p className="text-foreground/80 mb-4">
+          <div className="bg-purple-100/30 backdrop-blur-sm rounded-xl p-4 border border-purple-400/30">
+            <h3 className="text-lg text-purple-900 font-bold mb-2">Great Choice!</h3>
+            <p className="text-purple-900/80 mb-3 text-sm">
               Memorizing Scripture strengthens your spirit. Try reading it 3 times, then close your eyes and recite it.
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-purple-800/70">
               Tip: Break it into smaller parts and master each section before moving on.
             </p>
           </div>
