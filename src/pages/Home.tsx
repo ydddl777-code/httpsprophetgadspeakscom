@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, Music, Utensils, Wallet, BookOpen } from 'lucide-react';
 import { AppHeader } from '@/components/AppHeader';
 import { MorningGreeting } from '@/components/MorningGreeting';
-import { PillarButton } from '@/components/PillarButton';
+import { FivePillarsNav } from '@/components/FivePillarsNav';
 import { UserProfile } from '@/lib/types';
 import templeBackground from '@/assets/temple-background.jpg';
 
@@ -16,6 +15,9 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
   const navigate = useNavigate();
   const [showGreeting, setShowGreeting] = useState(true);
 
+  // Extract first name only
+  const firstName = profile.name.split(' ')[0];
+
   return (
     <div 
       className="min-h-screen bg-cover bg-center bg-fixed"
@@ -24,7 +26,7 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
       }}
     >
       <AppHeader
-        userName={profile.name}
+        userName={firstName}
         onSettingsClick={() => navigate('/settings')}
         onLogout={onLogout}
         showLogout
@@ -38,52 +40,15 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
             {/* Welcome back message */}
             <div className="text-center mb-10">
               <h2 className="text-2xl md:text-3xl text-primary font-bold mb-2">
-                Good morning, {profile.name}
+                Good morning, {firstName}
               </h2>
               <p className="text-muted-foreground">
                 Choose a pillar to begin your journey today
               </p>
             </div>
 
-            {/* Pillars Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              <PillarButton
-                icon={<Sparkles className="w-10 h-10" />}
-                title="SPIRIT"
-                subtitle="Daily Devotional"
-                onClick={() => navigate('/spirit')}
-                variant="spirit"
-              />
-              <PillarButton
-                icon={<Music className="w-10 h-10" />}
-                title="EAR"
-                subtitle="Music Checker"
-                onClick={() => navigate('/ear')}
-                variant="ear"
-              />
-              <PillarButton
-                icon={<Utensils className="w-10 h-10" />}
-                title="MOUTH"
-                subtitle="Food Checker"
-                onClick={() => navigate('/mouth')}
-                variant="mouth"
-              />
-              <PillarButton
-                icon={<Wallet className="w-10 h-10" />}
-                title="WALLET"
-                subtitle="Money Calculator"
-                onClick={() => navigate('/wallet')}
-                variant="wallet"
-              />
-              <PillarButton
-                icon={<BookOpen className="w-10 h-10" />}
-                title="DOCTRINE"
-                subtitle="Ask Counsel"
-                onClick={() => navigate('/doctrine')}
-                variant="doctrine"
-                className="col-span-2 lg:col-span-1"
-              />
-            </div>
+            {/* Five Pillars Navigation */}
+            <FivePillarsNav />
 
             {/* Show greeting again button */}
             <div className="mt-10 text-center">
