@@ -6,7 +6,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { UserProfile, DailyVerse } from '@/lib/types';
 import { DAILY_VERSES } from '@/lib/data';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
-import templeBackground from '@/assets/temple-background.jpg';
+import jerusalemBackground from '@/assets/jerusalem-background.jpg';
 
 interface SpiritPillarProps {
   profile: UserProfile;
@@ -56,7 +56,7 @@ export const SpiritPillar = ({ profile, onLogout }: SpiritPillarProps) => {
     <div 
       className="min-h-screen bg-cover bg-center bg-fixed"
       style={{ 
-        backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${templeBackground})` 
+        backgroundImage: `url(${jerusalemBackground})` 
       }}
     >
       <AppHeader userName={firstName} onLogout={onLogout} showLogout />
