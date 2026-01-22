@@ -4,7 +4,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { MorningGreeting } from '@/components/MorningGreeting';
 import { FivePillarsNav } from '@/components/FivePillarsNav';
 import { UserProfile } from '@/lib/types';
-import jerusalemBackground from '@/assets/jerusalem-background.jpg';
+import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 
 interface HomeProps {
   profile: UserProfile;
