@@ -22,7 +22,7 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
     <div 
       className="min-h-screen bg-cover bg-center bg-fixed"
       style={{ 
-        backgroundImage: `url(${jerusalemBackground})` 
+        backgroundImage: `url(${goldenGateBackground})` 
       }}
     >
       <AppHeader
