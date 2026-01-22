@@ -10,6 +10,7 @@ export interface UserProfile {
   };
   schoolDistrict?: string;
   alarmTime: string;
+  alarmEnabled: boolean;
   audioEnabled: boolean;
   createdAt: Date;
 }

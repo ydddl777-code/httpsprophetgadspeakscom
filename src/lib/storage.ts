@@ -38,6 +38,7 @@ export const createNewProfile = (
     location: { city, state },
     schoolDistrict,
     alarmTime: '07:00',
+    alarmEnabled: false,
     audioEnabled: true,
     createdAt: new Date(),
   };
