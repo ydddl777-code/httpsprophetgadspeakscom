@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, BookOpen, ChevronDown, Volume2, Lightbulb } from 'lucide-react';
+import { ArrowLeft, BookOpen, ChevronDown, Volume2, Lightbulb, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AppHeader } from '@/components/AppHeader';
 import { UserProfile, DoctrineQuestion } from '@/lib/types';
 import { DOCTRINE_QUESTIONS } from '@/lib/data';
-import { useTextToSpeech } from '@/hooks/useTextToSpeech';
+import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
 import { cn } from '@/lib/utils';
 import templeBackground from '@/assets/temple-background.jpg';
 
@@ -16,9 +16,10 @@ interface DoctrinePillarProps {
 
 export const DoctrinePillar = ({ profile, onLogout }: DoctrinePillarProps) => {
   const navigate = useNavigate();
-  const { speak, isSpeaking } = useTextToSpeech();
+  const { speak, isSpeaking, isLoading } = useElevenLabsTTS();
   const [selectedQuestion, setSelectedQuestion] = useState<DoctrineQuestion | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const firstName = profile.name.split(' ')[0];
 
   // Filter questions by age group
   const availableQuestions = DOCTRINE_QUESTIONS.filter((q) =>
@@ -45,7 +46,7 @@ export const DoctrinePillar = ({ profile, onLogout }: DoctrinePillarProps) => {
         backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${templeBackground})` 
       }}
     >
-      <AppHeader userName={profile.name} onLogout={onLogout} showLogout />
+      <AppHeader userName={firstName} onLogout={onLogout} showLogout />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
         <Button
@@ -124,9 +125,14 @@ export const DoctrinePillar = ({ profile, onLogout }: DoctrinePillarProps) => {
                   variant="ghost"
                   size="sm"
                   onClick={handleReadAloud}
+                  disabled={isLoading || isSpeaking}
                   className="gap-2 text-accent hover:bg-accent/10"
                 >
-                  <Volume2 className="w-4 h-4" />
+                  {isLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Volume2 className="w-4 h-4" />
+                  )}
                   Read Aloud
                 </Button>
               </div>

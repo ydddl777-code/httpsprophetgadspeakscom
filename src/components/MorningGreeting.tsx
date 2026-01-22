@@ -1,9 +1,9 @@
 import { forwardRef, useEffect, useState } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { UserProfile, AGE_GROUP_GREETINGS, DailyVerse } from '@/lib/types';
+import { UserProfile, DailyVerse } from '@/lib/types';
 import { DAILY_VERSES } from '@/lib/data';
-import { useTextToSpeech } from '@/hooks/useTextToSpeech';
+import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
 
 interface MorningGreetingProps {
   profile: UserProfile;
@@ -35,29 +35,20 @@ const getDailyVerse = (profile: UserProfile): DailyVerse => {
   return verses[dayOfYear % verses.length];
 };
 
-// English greetings based on age group
-const getEnglishGreeting = (ageGroup: string): string => {
-  switch (ageGroup) {
-    case 'child': return 'little one';
-    case 'teen': return 'young one';
-    case 'parent': return 'friend';
-    case 'elder': return 'elder';
-    default: return 'friend';
-  }
-};
-
 export const MorningGreeting = forwardRef<HTMLDivElement, MorningGreetingProps>(
   ({ profile, onComplete }, ref) => {
-    const { speak, stop, isSpeaking } = useTextToSpeech();
+    const { speak, stop, isSpeaking, isLoading } = useElevenLabsTTS();
     const [verse] = useState(() => getDailyVerse(profile));
     const [hasSpoken, setHasSpoken] = useState(false);
 
-    const greeting = getEnglishGreeting(profile.ageGroup);
+    // Extract first name only for personalized greeting
+    const firstName = profile.name.split(' ')[0];
+    
     const dayName = getDayName();
     const formattedDate = getFormattedDate();
     const weekend = isWeekend();
 
-    const greetingText = `Good morning, ${profile.name}! Today is ${dayName}, ${formattedDate}. ${
+    const greetingText = `Good morning, ${firstName}! Today is ${dayName}, ${formattedDate}. ${
       weekend ? "It's the weekend, a time for rest and family." : "Have a blessed day."
     }`;
 
@@ -95,14 +86,21 @@ export const MorningGreeting = forwardRef<HTMLDivElement, MorningGreetingProps>(
               variant="ghost"
               size="icon"
               onClick={handleToggleAudio}
+              disabled={isLoading}
               className="text-accent hover:bg-accent/10"
             >
-              {isSpeaking ? <Volume2 className="w-6 h-6" /> : <VolumeX className="w-6 h-6" />}
+              {isLoading ? (
+                <Loader2 className="w-6 h-6 animate-spin" />
+              ) : isSpeaking ? (
+                <Volume2 className="w-6 h-6" />
+              ) : (
+                <VolumeX className="w-6 h-6" />
+              )}
             </Button>
           </div>
 
           <h1 className="text-2xl md:text-3xl text-primary font-bold mb-2">
-            Good morning, {greeting} {profile.name}!
+            Good morning, {firstName}!
           </h1>
           <p className="text-muted-foreground">
             {weekend
@@ -127,9 +125,14 @@ export const MorningGreeting = forwardRef<HTMLDivElement, MorningGreetingProps>(
             <Button
               onClick={() => speak(verse.text)}
               variant="outline"
+              disabled={isLoading || isSpeaking}
               className="flex-1 gap-2 border-accent text-accent hover:bg-accent/10"
             >
-              <Volume2 className="w-4 h-4" />
+              {isLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Volume2 className="w-4 h-4" />
+              )}
               Read Aloud
             </Button>
             <Button
