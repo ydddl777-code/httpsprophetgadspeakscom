@@ -20,7 +20,7 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(
               <PillarIcon className="w-8 h-8 text-accent" />
             </div>
             <div>
-              <h1 className="font-display text-xl font-bold tracking-wide">THE PILLAR</h1>
+              <h1 className="text-xl font-bold tracking-wide">THE PILLAR</h1>
               <p className="text-xs text-primary-foreground/70">Prophet Gad Speaks</p>
             </div>
           </div>
@@ -28,7 +28,7 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(
           <div className="flex items-center gap-2">
             {userName && (
               <span className="hidden sm:block text-sm text-primary-foreground/80 mr-2">
-                Shalom, {userName}
+                Good morning, {userName}
               </span>
             )}
             {onSettingsClick && (

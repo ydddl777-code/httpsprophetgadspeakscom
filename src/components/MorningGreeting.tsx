@@ -35,13 +35,24 @@ const getDailyVerse = (profile: UserProfile): DailyVerse => {
   return verses[dayOfYear % verses.length];
 };
 
+// English greetings based on age group
+const getEnglishGreeting = (ageGroup: string): string => {
+  switch (ageGroup) {
+    case 'child': return 'little one';
+    case 'teen': return 'young one';
+    case 'parent': return 'friend';
+    case 'elder': return 'elder';
+    default: return 'friend';
+  }
+};
+
 export const MorningGreeting = forwardRef<HTMLDivElement, MorningGreetingProps>(
   ({ profile, onComplete }, ref) => {
     const { speak, stop, isSpeaking } = useTextToSpeech();
     const [verse] = useState(() => getDailyVerse(profile));
     const [hasSpoken, setHasSpoken] = useState(false);
 
-    const greeting = AGE_GROUP_GREETINGS[profile.ageGroup];
+    const greeting = getEnglishGreeting(profile.ageGroup);
     const dayName = getDayName();
     const formattedDate = getFormattedDate();
     const weekend = isWeekend();
@@ -70,9 +81,9 @@ export const MorningGreeting = forwardRef<HTMLDivElement, MorningGreetingProps>(
     };
 
     return (
-      <div ref={ref} className="w-full max-w-2xl mx-auto p-6 animate-fade-in">
+      <div ref={ref} className="w-full max-w-2xl mx-auto p-6">
         {/* Greeting Card */}
-        <div className="bg-card rounded-3xl shadow-lg p-8 mb-6 border border-border">
+        <div className="bg-card rounded-3xl shadow-lg p-8 mb-6 border border-border gold-border-frame">
           <div className="flex items-center justify-between mb-6">
             <div>
               <p className="text-muted-foreground text-sm uppercase tracking-wide">
@@ -86,11 +97,11 @@ export const MorningGreeting = forwardRef<HTMLDivElement, MorningGreetingProps>(
               onClick={handleToggleAudio}
               className="text-accent hover:bg-accent/10"
             >
-              {isSpeaking ? <Volume2 className="w-6 h-6 animate-pulse" /> : <VolumeX className="w-6 h-6" />}
+              {isSpeaking ? <Volume2 className="w-6 h-6" /> : <VolumeX className="w-6 h-6" />}
             </Button>
           </div>
 
-          <h1 className="font-display text-2xl md:text-3xl text-primary mb-2">
+          <h1 className="text-2xl md:text-3xl text-primary font-bold mb-2">
             Good morning, {greeting} {profile.name}!
           </h1>
           <p className="text-muted-foreground">
@@ -101,14 +112,14 @@ export const MorningGreeting = forwardRef<HTMLDivElement, MorningGreetingProps>(
         </div>
 
         {/* Daily Verse */}
-        <div className="bg-gradient-to-b from-primary/5 to-transparent rounded-3xl p-8 border border-primary/10">
+        <div className="bg-gradient-to-b from-primary/5 to-transparent rounded-3xl p-8 border border-primary/10 gold-border-frame">
           <p className="text-sm text-accent font-semibold uppercase tracking-wide mb-4">
             Today's Verse
           </p>
           <p className="verse-display text-primary leading-relaxed">
             "{verse.text}"
           </p>
-          <p className="text-right text-muted-foreground font-display mt-4">
+          <p className="text-right text-muted-foreground font-bold mt-4">
             — {verse.reference}
           </p>
           
@@ -125,7 +136,7 @@ export const MorningGreeting = forwardRef<HTMLDivElement, MorningGreetingProps>(
               onClick={onComplete}
               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground"
             >
-              Try to Memorize ✨
+              Continue to Pillars
             </Button>
           </div>
         </div>

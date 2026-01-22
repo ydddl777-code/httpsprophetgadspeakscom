@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { PillarIcon } from '@/components/PillarIcon';
 import { AgeGroup, AGE_GROUP_LABELS } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import templeBackground from '@/assets/temple-background.jpg';
 
 interface OnboardingProps {
   onComplete: (name: string, ageGroup: AgeGroup, city: string, state: string, schoolDistrict?: string) => void;
@@ -56,14 +57,19 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div 
+      className="min-h-screen flex flex-col bg-cover bg-center bg-fixed"
+      style={{ 
+        backgroundImage: `linear-gradient(to bottom, rgba(26,54,93,0.95), rgba(26,54,93,0.85)), url(${templeBackground})` 
+      }}
+    >
       {/* Header */}
-      <div className="hero-gradient text-primary-foreground py-12 px-6">
+      <div className="text-primary-foreground py-12 px-6">
         <div className="max-w-md mx-auto text-center">
           <div className="inline-flex bg-accent/20 p-4 rounded-2xl mb-4">
             <PillarIcon className="w-16 h-16 text-accent" />
           </div>
-          <h1 className="font-display text-3xl font-bold mb-2">THE PILLAR</h1>
+          <h1 className="text-3xl font-bold mb-2">THE PILLAR</h1>
           <p className="text-primary-foreground/80 text-lg">
             Five Pillars That Stand When Everything Falls
           </p>
@@ -77,7 +83,7 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
             <div
               key={s}
               className={cn(
-                'h-1.5 flex-1 rounded-full transition-all duration-300',
+                'h-1.5 flex-1 rounded-full',
                 s <= step ? 'bg-accent' : 'bg-muted'
               )}
             />
@@ -86,8 +92,8 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
 
         {/* Step 1: Name */}
         {step === 1 && (
-          <div className="animate-fade-in">
-            <h2 className="font-display text-2xl text-primary mb-2">Welcome, friend</h2>
+          <div className="bg-card rounded-2xl p-6 gold-border-frame">
+            <h2 className="text-2xl text-primary font-bold mb-2">Welcome, friend</h2>
             <p className="text-muted-foreground mb-8">What should we call you?</p>
             <div className="space-y-4">
               <div>
@@ -107,8 +113,8 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
 
         {/* Step 2: Age Group */}
         {step === 2 && (
-          <div className="animate-fade-in">
-            <h2 className="font-display text-2xl text-primary mb-2">Hello, {name}!</h2>
+          <div className="bg-card rounded-2xl p-6 gold-border-frame">
+            <h2 className="text-2xl text-primary font-bold mb-2">Hello, {name}!</h2>
             <p className="text-muted-foreground mb-8">Which age group are you in?</p>
             <div className="grid grid-cols-2 gap-4">
               {(Object.entries(AGE_GROUP_LABELS) as [AgeGroup, string][]).map(([key, label]) => (
@@ -116,7 +122,7 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
                   key={key}
                   onClick={() => setAgeGroup(key)}
                   className={cn(
-                    'p-6 rounded-2xl border-2 transition-all duration-200 text-left',
+                    'p-6 rounded-2xl border-2 text-left',
                     'hover:border-accent hover:shadow-md',
                     ageGroup === key
                       ? 'border-accent bg-accent/10 shadow-md'
@@ -138,8 +144,8 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
 
         {/* Step 3: Location */}
         {step === 3 && (
-          <div className="animate-fade-in">
-            <h2 className="font-display text-2xl text-primary mb-2">Almost there!</h2>
+          <div className="bg-card rounded-2xl p-6 gold-border-frame">
+            <h2 className="text-2xl text-primary font-bold mb-2">Almost there!</h2>
             <p className="text-muted-foreground mb-8">Where are you located?</p>
             <div className="space-y-4">
               <div>

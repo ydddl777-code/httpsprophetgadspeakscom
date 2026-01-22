@@ -8,6 +8,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { UserProfile, FoodCheckResult } from '@/lib/types';
 import { CLEAN_FOODS, UNCLEAN_FOODS } from '@/lib/data';
 import { cn } from '@/lib/utils';
+import templeBackground from '@/assets/temple-background.jpg';
 
 interface MouthPillarProps {
   profile: UserProfile;
@@ -65,7 +66,12 @@ export const MouthPillar = ({ profile, onLogout }: MouthPillarProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div 
+      className="min-h-screen bg-cover bg-center bg-fixed"
+      style={{ 
+        backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${templeBackground})` 
+      }}
+    >
       <AppHeader userName={profile.name} onLogout={onLogout} showLogout />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
@@ -83,12 +89,12 @@ export const MouthPillar = ({ profile, onLogout }: MouthPillarProps) => {
           <div className="inline-flex bg-pillar-mouth/10 p-4 rounded-2xl mb-4">
             <Utensils className="w-12 h-12 text-pillar-mouth" />
           </div>
-          <h1 className="font-display text-3xl text-primary mb-2">MOUTH PILLAR</h1>
+          <h1 className="text-3xl text-primary font-bold mb-2">MOUTH PILLAR</h1>
           <p className="text-muted-foreground">Food Checker</p>
         </div>
 
         {/* Input Form */}
-        <div className="bg-card rounded-3xl shadow-lg border border-border p-8 mb-6">
+        <div className="bg-card rounded-3xl shadow-lg border border-border p-8 mb-6 gold-border-frame">
           <div className="space-y-4">
             <div>
               <Label htmlFor="food" className="text-foreground">Food Name</Label>
@@ -127,7 +133,7 @@ export const MouthPillar = ({ profile, onLogout }: MouthPillarProps) => {
         {result && (
           <div
             className={cn(
-              'rounded-2xl p-6 border animate-slide-up',
+              'rounded-2xl p-6 border',
               result.status === 'clean' && 'bg-success/10 border-success/20',
               result.status === 'unclean' && 'bg-danger/10 border-danger/20'
             )}
@@ -141,11 +147,11 @@ export const MouthPillar = ({ profile, onLogout }: MouthPillarProps) => {
               <div className="flex-1">
                 <h3
                   className={cn(
-                    'font-display text-xl mb-1',
+                    'text-xl font-bold mb-1',
                     result.status === 'clean' ? 'text-success' : 'text-danger'
                   )}
                 >
-                  {result.status === 'clean' ? '✅ CLEAN' : '⚠️ UNCLEAN'}
+                  {result.status === 'clean' ? 'CLEAN' : 'UNCLEAN'}
                 </h3>
                 <p className="text-foreground font-medium text-lg mb-2 capitalize">
                   {result.food}
@@ -160,11 +166,11 @@ export const MouthPillar = ({ profile, onLogout }: MouthPillarProps) => {
 
         {/* Not Found */}
         {notFound && (
-          <div className="rounded-2xl p-6 border border-muted bg-muted/50 animate-slide-up">
+          <div className="rounded-2xl p-6 border border-muted bg-muted/50">
             <div className="flex items-start gap-4">
               <HelpCircle className="w-8 h-8 text-muted-foreground flex-shrink-0" />
               <div>
-                <h3 className="font-display text-xl text-foreground mb-1">Not Found</h3>
+                <h3 className="text-xl text-foreground font-bold mb-1">Not Found</h3>
                 <p className="text-muted-foreground">
                   We don't have information about "{food}" in our database. Try a more specific term or consult Leviticus 11 directly.
                 </p>
@@ -181,9 +187,9 @@ export const MouthPillar = ({ profile, onLogout }: MouthPillarProps) => {
               Clean Examples
             </h4>
             <ul className="text-sm text-foreground/70 space-y-1">
-              <li>• Chicken, Turkey, Duck</li>
-              <li>• Beef, Lamb, Deer</li>
-              <li>• Salmon, Tuna, Cod</li>
+              <li>Chicken, Turkey, Duck</li>
+              <li>Beef, Lamb, Deer</li>
+              <li>Salmon, Tuna, Cod</li>
             </ul>
           </div>
           <div className="bg-danger/5 border border-danger/10 rounded-2xl p-5">
@@ -192,9 +198,9 @@ export const MouthPillar = ({ profile, onLogout }: MouthPillarProps) => {
               Unclean Examples
             </h4>
             <ul className="text-sm text-foreground/70 space-y-1">
-              <li>• Pork, Bacon, Ham</li>
-              <li>• Shrimp, Crab, Lobster</li>
-              <li>• Catfish, Eel, Shark</li>
+              <li>Pork, Bacon, Ham</li>
+              <li>Shrimp, Crab, Lobster</li>
+              <li>Catfish, Eel, Shark</li>
             </ul>
           </div>
         </div>

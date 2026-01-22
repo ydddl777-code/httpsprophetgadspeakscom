@@ -7,6 +7,7 @@ import { UserProfile, DoctrineQuestion } from '@/lib/types';
 import { DOCTRINE_QUESTIONS } from '@/lib/data';
 import { useTextToSpeech } from '@/hooks/useTextToSpeech';
 import { cn } from '@/lib/utils';
+import templeBackground from '@/assets/temple-background.jpg';
 
 interface DoctrinePillarProps {
   profile: UserProfile;
@@ -38,7 +39,12 @@ export const DoctrinePillar = ({ profile, onLogout }: DoctrinePillarProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div 
+      className="min-h-screen bg-cover bg-center bg-fixed"
+      style={{ 
+        backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${templeBackground})` 
+      }}
+    >
       <AppHeader userName={profile.name} onLogout={onLogout} showLogout />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
@@ -56,12 +62,12 @@ export const DoctrinePillar = ({ profile, onLogout }: DoctrinePillarProps) => {
           <div className="inline-flex bg-pillar-doctrine/10 p-4 rounded-2xl mb-4">
             <BookOpen className="w-12 h-12 text-pillar-doctrine" />
           </div>
-          <h1 className="font-display text-3xl text-primary mb-2">DOCTRINE PILLAR</h1>
+          <h1 className="text-3xl text-primary font-bold mb-2">DOCTRINE PILLAR</h1>
           <p className="text-muted-foreground">Ask Counsel</p>
         </div>
 
         {/* Question Selector */}
-        <div className="bg-card rounded-3xl shadow-lg border border-border p-6 mb-6">
+        <div className="bg-card rounded-3xl shadow-lg border border-border p-6 mb-6 gold-border-frame">
           <label className="block text-sm font-medium text-foreground mb-3">
             Select a Question
           </label>
@@ -69,7 +75,7 @@ export const DoctrinePillar = ({ profile, onLogout }: DoctrinePillarProps) => {
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className={cn(
-                'w-full flex items-center justify-between p-4 rounded-xl border transition-all',
+                'w-full flex items-center justify-between p-4 rounded-xl border',
                 'bg-background hover:border-accent text-left',
                 isDropdownOpen ? 'border-accent' : 'border-input'
               )}
@@ -79,7 +85,7 @@ export const DoctrinePillar = ({ profile, onLogout }: DoctrinePillarProps) => {
               </span>
               <ChevronDown
                 className={cn(
-                  'w-5 h-5 text-muted-foreground transition-transform',
+                  'w-5 h-5 text-muted-foreground',
                   isDropdownOpen && 'rotate-180'
                 )}
               />
@@ -92,7 +98,7 @@ export const DoctrinePillar = ({ profile, onLogout }: DoctrinePillarProps) => {
                     key={q.id}
                     onClick={() => handleSelectQuestion(q)}
                     className={cn(
-                      'w-full text-left p-4 hover:bg-muted transition-colors',
+                      'w-full text-left p-4 hover:bg-muted',
                       'first:rounded-t-xl last:rounded-b-xl',
                       selectedQuestion?.id === q.id && 'bg-accent/10'
                     )}
@@ -107,9 +113,9 @@ export const DoctrinePillar = ({ profile, onLogout }: DoctrinePillarProps) => {
 
         {/* Answer Display */}
         {selectedQuestion && (
-          <div className="space-y-4 animate-slide-up">
+          <div className="space-y-4">
             {/* Scripture Card */}
-            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-6 border border-primary/10">
+            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-6 border border-primary/10 gold-border-frame">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm text-accent font-semibold uppercase tracking-wide">
                   Scripture
@@ -120,21 +126,21 @@ export const DoctrinePillar = ({ profile, onLogout }: DoctrinePillarProps) => {
                   onClick={handleReadAloud}
                   className="gap-2 text-accent hover:bg-accent/10"
                 >
-                  <Volume2 className={`w-4 h-4 ${isSpeaking ? 'animate-pulse' : ''}`} />
+                  <Volume2 className="w-4 h-4" />
                   Read Aloud
                 </Button>
               </div>
-              <blockquote className="text-lg font-medium text-foreground mb-3 leading-relaxed">
+              <blockquote className="text-lg font-medium text-foreground mb-3 leading-relaxed italic">
                 "{selectedQuestion.verseText}"
               </blockquote>
-              <p className="text-right text-muted-foreground font-display">
+              <p className="text-right text-muted-foreground font-bold">
                 — {selectedQuestion.verse} (KJV)
               </p>
             </div>
 
             {/* Answer Card */}
-            <div className="bg-card rounded-2xl p-6 border border-border">
-              <h3 className="font-display text-lg text-primary mb-3">Answer</h3>
+            <div className="bg-card rounded-2xl p-6 border border-border gold-border-frame">
+              <h3 className="text-lg text-primary font-bold mb-3">Answer</h3>
               <p className="text-foreground/80 leading-relaxed">{selectedQuestion.answer}</p>
             </div>
 

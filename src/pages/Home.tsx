@@ -5,6 +5,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { MorningGreeting } from '@/components/MorningGreeting';
 import { PillarButton } from '@/components/PillarButton';
 import { UserProfile } from '@/lib/types';
+import templeBackground from '@/assets/temple-background.jpg';
 
 interface HomeProps {
   profile: UserProfile;
@@ -16,7 +17,12 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
   const [showGreeting, setShowGreeting] = useState(true);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div 
+      className="min-h-screen bg-cover bg-center bg-fixed"
+      style={{ 
+        backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${templeBackground})` 
+      }}
+    >
       <AppHeader
         userName={profile.name}
         onSettingsClick={() => navigate('/settings')}
@@ -28,11 +34,11 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
         {showGreeting ? (
           <MorningGreeting profile={profile} onComplete={() => setShowGreeting(false)} />
         ) : (
-          <div className="animate-fade-in">
+          <div>
             {/* Welcome back message */}
             <div className="text-center mb-10">
-              <h2 className="font-display text-2xl md:text-3xl text-primary mb-2">
-                Shalom, {profile.name}
+              <h2 className="text-2xl md:text-3xl text-primary font-bold mb-2">
+                Good morning, {profile.name}
               </h2>
               <p className="text-muted-foreground">
                 Choose a pillar to begin your journey today
@@ -83,7 +89,7 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
             <div className="mt-10 text-center">
               <button
                 onClick={() => setShowGreeting(true)}
-                className="text-sm text-muted-foreground hover:text-accent transition-colors"
+                className="text-sm text-muted-foreground hover:text-accent"
               >
                 Show today's verse again
               </button>
@@ -94,7 +100,7 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
 
       {/* Footer */}
       <footer className="mt-auto py-6 text-center">
-        <p className="text-xs text-muted-foreground font-display">
+        <p className="text-xs text-muted-foreground font-bold italic">
           "Five Pillars That Stand When Everything Falls"
         </p>
       </footer>
