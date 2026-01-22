@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Volume2, BookOpen, Sparkles, Loader2 } from 'lucide-react';
+import { ArrowLeft, Volume2, Sparkles, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AppHeader } from '@/components/AppHeader';
 import { UserProfile, DailyVerse } from '@/lib/types';
@@ -113,10 +113,7 @@ export const SpiritPillar = ({ profile, onLogout }: SpiritPillarProps) => {
 
         {/* Counsel */}
         <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-6 mb-6 border border-primary/10 gold-border-frame">
-          <div className="flex items-center gap-2 mb-4">
-            <BookOpen className="w-5 h-5 text-primary" />
-            <span className="font-semibold text-foreground">PGAI Counsel</span>
-          </div>
+          <p className="font-semibold text-foreground mb-4">Prophet Gad Says:</p>
           <p className="text-foreground/80 leading-relaxed">{counsel}</p>
         </div>
 
