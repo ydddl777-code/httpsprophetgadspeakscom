@@ -52,16 +52,21 @@ serve(async (req) => {
       const errorText = await response.text();
       console.error("ElevenLabs API error:", errorText);
 
-      // Propagate provider status (e.g., 401) instead of converting everything to a 500.
-      // The client hook can then gracefully fall back to browser TTS.
+      // IMPORTANT: Return 200 so the web app doesn't treat this as a hard runtime failure.
+      // The client detects JSON (not audio/mpeg) and falls back to browser TTS.
       return new Response(
         JSON.stringify({
           error: `ElevenLabs API error: ${response.status}`,
           details: errorText,
+          status: response.status,
         }),
         {
-          status: response.status,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 200,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+            "X-TTS-Provider-Error": "1",
+          },
         }
       );
     }
