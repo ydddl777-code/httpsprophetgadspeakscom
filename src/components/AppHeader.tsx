@@ -1,7 +1,6 @@
 import { forwardRef } from 'react';
 import { Settings, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { PillarIcon } from './PillarIcon';
 
 interface AppHeaderProps {
   userName?: string;
@@ -15,14 +14,9 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(
     return (
       <header ref={ref} className="w-full bg-primary text-primary-foreground py-4 px-6 shadow-lg">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="bg-accent/20 p-2 rounded-lg">
-              <PillarIcon className="w-8 h-8 text-accent" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold tracking-wide">THE PILLAR</h1>
-              <p className="text-xs text-primary-foreground/70">Prophet Gad Speaks</p>
-            </div>
+          <div>
+            <h1 className="text-xl font-bold tracking-wide">THE PILLAR</h1>
+            <p className="text-xs text-primary-foreground/70">Prophet Gad Speaks</p>
           </div>
 
           <div className="flex items-center gap-2">
