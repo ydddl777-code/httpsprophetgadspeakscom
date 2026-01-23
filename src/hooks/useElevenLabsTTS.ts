@@ -15,9 +15,9 @@ interface UseElevenLabsTTSOptions {
   voiceId?: VoiceId;
 }
 
-// Browser TTS fallback
-const speakWithBrowserTTS = (text: string, onEnd?: () => void): SpeechSynthesisUtterance | null => {
-  if (!('speechSynthesis' in window)) return null;
+// Browser TTS fallback helper
+function speakWithBrowserTTS(text: string, onEnd?: () => void): boolean {
+  if (!('speechSynthesis' in window)) return false;
   
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
@@ -25,7 +25,6 @@ const speakWithBrowserTTS = (text: string, onEnd?: () => void): SpeechSynthesisU
   utterance.pitch = 1;
   utterance.volume = 1;
   
-  // Try to find a good voice
   const voices = window.speechSynthesis.getVoices();
   const preferredVoice = voices.find(v => v.name.includes('Google') && v.lang.startsWith('en')) 
     || voices.find(v => v.lang.startsWith('en'));
@@ -33,15 +32,15 @@ const speakWithBrowserTTS = (text: string, onEnd?: () => void): SpeechSynthesisU
   
   utterance.onend = () => onEnd?.();
   window.speechSynthesis.speak(utterance);
-  return utterance;
-};
+  return true;
+}
 
-export const useElevenLabsTTS = (options: UseElevenLabsTTSOptions = {}) => {
+export function useElevenLabsTTS(options: UseElevenLabsTTSOptions = {}) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [usingFallback, setUsingFallback] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  
   const currentVoiceId = options.voiceId || 'JBFqnCBsd6RMkjVDRZzb';
 
   const stop = useCallback(() => {
@@ -51,7 +50,9 @@ export const useElevenLabsTTS = (options: UseElevenLabsTTSOptions = {}) => {
       URL.revokeObjectURL(audioRef.current.src);
       audioRef.current = null;
     }
-    window.speechSynthesis?.cancel();
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
     setIsSpeaking(false);
   }, []);
 
@@ -61,7 +62,6 @@ export const useElevenLabsTTS = (options: UseElevenLabsTTSOptions = {}) => {
     stop();
     setIsLoading(true);
     setError(null);
-    setUsingFallback(false);
 
     try {
       const projectUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -86,7 +86,6 @@ export const useElevenLabsTTS = (options: UseElevenLabsTTSOptions = {}) => {
 
       const audioBlob = await response.blob();
       
-      // Check if we got an error JSON instead of audio
       if (audioBlob.type.includes('json')) {
         throw new Error('ElevenLabs API unavailable');
       }
@@ -119,14 +118,12 @@ export const useElevenLabsTTS = (options: UseElevenLabsTTSOptions = {}) => {
     } catch (err) {
       console.warn('ElevenLabs TTS failed, using browser fallback:', err);
       
-      // Fallback to browser TTS
-      setUsingFallback(true);
-      const utterance = speakWithBrowserTTS(text, () => {
+      const success = speakWithBrowserTTS(text, () => {
         setIsSpeaking(false);
         onEnd?.();
       });
       
-      if (utterance) {
+      if (success) {
         setIsSpeaking(true);
         setIsLoading(false);
         setError(null);
@@ -143,6 +140,5 @@ export const useElevenLabsTTS = (options: UseElevenLabsTTSOptions = {}) => {
     isSpeaking, 
     isLoading,
     error,
-    usingFallback,
   };
-};
+}
