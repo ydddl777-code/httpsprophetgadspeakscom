@@ -39,10 +39,10 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
           <div>
             {/* Welcome back message */}
             <div className="text-center mb-10">
-              <h2 className="text-2xl md:text-3xl text-primary font-bold mb-2">
+              <h2 className="text-2xl md:text-3xl text-purple-900 font-bold mb-2">
                 Good morning, {firstName}
               </h2>
-              <p className="text-muted-foreground">
+              <p className="text-purple-800/80">
                 Choose a pillar to begin your journey today
               </p>
             </div>
@@ -54,7 +54,7 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
             <div className="mt-10 text-center">
               <button
                 onClick={() => setShowGreeting(true)}
-                className="text-sm text-muted-foreground hover:text-accent"
+                className="text-sm text-purple-700 hover:text-purple-900 hover:underline"
               >
                 Show today's verse again
               </button>
@@ -65,7 +65,7 @@ export const Home = ({ profile, onLogout }: HomeProps) => {
 
       {/* Footer */}
       <footer className="mt-auto py-6 text-center">
-        <p className="text-xs text-muted-foreground font-bold italic">
+        <p className="text-xs text-purple-800/70 font-bold italic">
           "Five Pillars That Stand When Everything Falls"
         </p>
       </footer>

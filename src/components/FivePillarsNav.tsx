@@ -9,11 +9,11 @@ interface PillarData {
 }
 
 const pillars: PillarData[] = [
-  { id: 'spirit', name: 'SPIRIT', path: '/spirit', colorClass: 'bg-primary' },
-  { id: 'ear', name: 'EAR', path: '/ear', colorClass: 'bg-pillar-ear' },
-  { id: 'mouth', name: 'MOUTH', path: '/mouth', colorClass: 'bg-pillar-mouth' },
-  { id: 'wallet', name: 'WALLET', path: '/wallet', colorClass: 'bg-pillar-wallet' },
-  { id: 'doctrine', name: 'DOCTRINE', path: '/doctrine', colorClass: 'bg-pillar-doctrine' },
+  { id: 'spirit', name: 'SPIRIT', path: '/spirit', colorClass: 'bg-purple-600' },
+  { id: 'ear', name: 'EAR', path: '/ear', colorClass: 'bg-purple-500' },
+  { id: 'mouth', name: 'MOUTH', path: '/mouth', colorClass: 'bg-purple-700' },
+  { id: 'wallet', name: 'WALLET', path: '/wallet', colorClass: 'bg-purple-500' },
+  { id: 'doctrine', name: 'DOCTRINE', path: '/doctrine', colorClass: 'bg-purple-600' },
 ];
 
 export const FivePillarsNav = () => {
@@ -22,7 +22,7 @@ export const FivePillarsNav = () => {
   return (
     <div className="w-full max-w-3xl mx-auto">
       {/* Title */}
-      <h2 className="text-center text-xl font-bold text-primary mb-6">
+      <h2 className="text-center text-xl font-bold text-purple-900 mb-6">
         The Five Pillars
       </h2>
       
@@ -34,7 +34,7 @@ export const FivePillarsNav = () => {
             onClick={() => navigate(pillar.path)}
             className={cn(
               'flex flex-col items-center group cursor-pointer',
-              'focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-lg'
+              'focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 rounded-lg'
             )}
           >
             {/* Pillar Column */}
@@ -42,7 +42,8 @@ export const FivePillarsNav = () => {
               className={cn(
                 'relative w-14 md:w-20 rounded-t-lg',
                 'group-hover:scale-105 group-hover:shadow-lg',
-                'border-2 border-foreground/20',
+                'border-2 border-purple-900/30',
+                'transition-transform duration-200',
                 pillar.colorClass
               )}
               style={{
@@ -53,8 +54,8 @@ export const FivePillarsNav = () => {
               <div className={cn(
                 'absolute -top-3 left-1/2 -translate-x-1/2',
                 'w-16 md:w-24 h-3 rounded-t-sm',
-                'bg-accent',
-                'border-2 border-foreground/20'
+                'bg-yellow-500',
+                'border-2 border-purple-900/30'
               )} />
               
               {/* Pillar segments (5 blocks) */}
@@ -62,7 +63,7 @@ export const FivePillarsNav = () => {
                 {[1, 2, 3, 4, 5].map((segment) => (
                   <div
                     key={segment}
-                    className="h-[1px] bg-foreground/20 mx-1"
+                    className="h-[1px] bg-purple-900/20 mx-1"
                   />
                 ))}
               </div>
@@ -71,12 +72,12 @@ export const FivePillarsNav = () => {
             {/* Pillar Base */}
             <div className={cn(
               'w-16 md:w-24 h-4 rounded-b-sm',
-              'bg-muted',
-              'border-2 border-t-0 border-foreground/20'
+              'bg-yellow-600/80',
+              'border-2 border-t-0 border-purple-900/30'
             )} />
             
             {/* Label */}
-            <span className="mt-2 text-xs md:text-sm font-bold text-foreground text-center">
+            <span className="mt-2 text-xs md:text-sm font-bold text-purple-900 text-center">
               {pillar.name}
             </span>
           </button>
@@ -84,7 +85,7 @@ export const FivePillarsNav = () => {
       </div>
       
       {/* Instruction */}
-      <p className="text-center text-sm text-muted-foreground mt-4">
+      <p className="text-center text-sm text-purple-800/70 mt-4">
         Tap a pillar to begin
       </p>
     </div>
