@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { TribesBorder } from "@/components/TribesBorder";
 import Index from "./pages/Index";
 import SpiritPillar from "./pages/SpiritPillar";
 import EarPillar from "./pages/EarPillar";
@@ -55,6 +56,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <TribesBorder />
         <AppRoutes />
       </BrowserRouter>
     </TooltipProvider>
