@@ -8,7 +8,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { UserProfile, MusicCheckResult } from '@/lib/types';
 import { RED_FLAG_ARTISTS } from '@/lib/data';
 import { cn } from '@/lib/utils';
-import templeBackground from '@/assets/temple-background.jpg';
+import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 
 interface EarPillarProps {
   profile: UserProfile;
@@ -73,62 +73,64 @@ export const EarPillar = ({ profile, onLogout }: EarPillarProps) => {
       ? AlertTriangle 
       : XCircle;
 
+  const firstName = profile.name.split(' ')[0];
+
   return (
     <div 
       className="min-h-screen bg-cover bg-center bg-fixed"
       style={{ 
-        backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url(${templeBackground})` 
+        backgroundImage: `url(${goldenGateBackground})` 
       }}
     >
-      <AppHeader userName={profile.name} onLogout={onLogout} showLogout />
+      <AppHeader userName={firstName} onLogout={onLogout} showLogout />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
         <Button
           variant="ghost"
           onClick={() => navigate('/')}
-          className="mb-6 gap-2 text-muted-foreground hover:text-foreground"
+          className="mb-4 gap-2 text-purple-900 hover:text-purple-700 hover:bg-purple-500/20"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Home
         </Button>
 
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex bg-pillar-ear/10 p-4 rounded-2xl mb-4">
-            <Music className="w-12 h-12 text-pillar-ear" />
+        <div className="text-center mb-6">
+          <div className="inline-flex bg-purple-600/20 backdrop-blur-sm p-3 rounded-xl mb-3">
+            <Music className="w-10 h-10 text-purple-800" />
           </div>
-          <h1 className="text-3xl text-primary font-bold mb-2">EAR PILLAR</h1>
-          <p className="text-muted-foreground">Music Checker</p>
+          <h1 className="text-2xl text-purple-900 font-bold mb-1">EAR PILLAR</h1>
+          <p className="text-purple-800/80 text-sm">Music Checker</p>
         </div>
 
         {/* Input Form */}
-        <div className="bg-card rounded-3xl shadow-lg border border-border p-8 mb-6 gold-border-frame">
+        <div className="bg-white/20 backdrop-blur-sm rounded-2xl shadow-lg border border-purple-300/30 p-5 mb-4">
           <div className="space-y-4">
             <div>
-              <Label htmlFor="song" className="text-foreground">Song Name</Label>
+              <Label htmlFor="song" className="text-purple-900 font-medium">Song Name</Label>
               <Input
                 id="song"
                 value={song}
                 onChange={(e) => setSong(e.target.value)}
                 placeholder="Enter song title"
-                className="mt-2 h-12"
+                className="mt-2 h-12 bg-white/50 border-purple-300/50 text-purple-900 placeholder:text-purple-600/50"
               />
             </div>
             <div>
-              <Label htmlFor="artist" className="text-foreground">Artist</Label>
+              <Label htmlFor="artist" className="text-purple-900 font-medium">Artist</Label>
               <Input
                 id="artist"
                 value={artist}
                 onChange={(e) => setArtist(e.target.value)}
                 placeholder="Enter artist name"
-                className="mt-2 h-12"
+                className="mt-2 h-12 bg-white/50 border-purple-300/50 text-purple-900 placeholder:text-purple-600/50"
               />
             </div>
             <div className="flex gap-3 pt-2">
               <Button
                 onClick={handleCheck}
                 disabled={!song.trim() || !artist.trim() || isChecking}
-                className="flex-1 h-12 bg-pillar-ear hover:bg-pillar-ear/90 text-primary-foreground gap-2"
+                className="flex-1 h-12 bg-purple-700 hover:bg-purple-800 text-white gap-2"
               >
                 <Search className="w-4 h-4" />
                 {isChecking ? 'Checking...' : 'Check Music'}
@@ -137,7 +139,7 @@ export const EarPillar = ({ profile, onLogout }: EarPillarProps) => {
                 <Button
                   variant="outline"
                   onClick={handleClear}
-                  className="h-12"
+                  className="h-12 border-purple-400/50 text-purple-900 hover:bg-purple-500/20"
                 >
                   Clear
                 </Button>
@@ -150,41 +152,41 @@ export const EarPillar = ({ profile, onLogout }: EarPillarProps) => {
         {result && (
           <div
             className={cn(
-              'rounded-2xl p-6 border',
-              result.status === 'safe' && 'bg-success/10 border-success/20',
-              result.status === 'caution' && 'bg-warning/10 border-warning/20',
-              result.status === 'danger' && 'bg-danger/10 border-danger/20'
+              'rounded-2xl p-5 border backdrop-blur-sm',
+              result.status === 'safe' && 'bg-green-500/20 border-green-400/30',
+              result.status === 'caution' && 'bg-yellow-500/20 border-yellow-400/30',
+              result.status === 'danger' && 'bg-red-500/20 border-red-400/30'
             )}
           >
             <div className="flex items-start gap-4">
               <StatusIcon
                 className={cn(
                   'w-8 h-8 mt-1 flex-shrink-0',
-                  result.status === 'safe' && 'text-success',
-                  result.status === 'caution' && 'text-warning',
-                  result.status === 'danger' && 'text-danger'
+                  result.status === 'safe' && 'text-green-700',
+                  result.status === 'caution' && 'text-yellow-700',
+                  result.status === 'danger' && 'text-red-700'
                 )}
               />
               <div className="flex-1">
                 <h3
                   className={cn(
                     'text-xl font-bold mb-1',
-                    result.status === 'safe' && 'text-success',
-                    result.status === 'caution' && 'text-warning',
-                    result.status === 'danger' && 'text-danger'
+                    result.status === 'safe' && 'text-green-800',
+                    result.status === 'caution' && 'text-yellow-800',
+                    result.status === 'danger' && 'text-red-800'
                   )}
                 >
                   {result.status === 'safe' && 'SAFE'}
                   {result.status === 'caution' && 'CAUTION'}
                   {result.status === 'danger' && 'DANGER'}
                 </h3>
-                <p className="text-foreground font-medium mb-2">
+                <p className="text-purple-900 font-medium mb-2">
                   "{result.song}" by {result.artist}
                 </p>
-                <p className="text-foreground/70 mb-3">
+                <p className="text-purple-800/80 mb-3">
                   BPM: {result.bpm}
                 </p>
-                <p className="text-sm text-foreground/80">
+                <p className="text-sm text-purple-900/80">
                   {result.reason}
                 </p>
               </div>
@@ -193,9 +195,9 @@ export const EarPillar = ({ profile, onLogout }: EarPillarProps) => {
         )}
 
         {/* Info Card */}
-        <div className="mt-8 bg-muted rounded-2xl p-6">
-          <h4 className="font-semibold text-foreground mb-2">How It Works</h4>
-          <ul className="text-sm text-muted-foreground space-y-2">
+        <div className="mt-6 bg-purple-900/20 backdrop-blur-sm rounded-xl p-4 border border-purple-400/30">
+          <h4 className="font-semibold text-purple-900 mb-2 text-sm">How It Works</h4>
+          <ul className="text-sm text-purple-900/80 space-y-1">
             <li><strong>Safe:</strong> BPM under 110, not on red-flag list</li>
             <li><strong>Caution:</strong> BPM between 110-130</li>
             <li><strong>Danger:</strong> BPM over 130 OR artist associated with false doctrine</li>
