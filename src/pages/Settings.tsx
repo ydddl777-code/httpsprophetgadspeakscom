@@ -9,6 +9,7 @@ import { AppHeader } from '@/components/AppHeader';
 import { UserProfile, AGE_GROUP_LABELS } from '@/lib/types';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useToast } from '@/hooks/use-toast';
+import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 
 interface SettingsProps {
   profile: UserProfile;
@@ -30,6 +31,8 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
   const [alarmTime, setAlarmTime] = useState(profile.alarmTime);
   const [alarmEnabled, setAlarmEnabled] = useState(profile.alarmEnabled ?? false);
   const [audioEnabled, setAudioEnabled] = useState(profile.audioEnabled);
+
+  const firstName = profile.name.split(' ')[0];
 
   // Schedule alarm when enabled or time changes
   useEffect(() => {
@@ -76,53 +79,58 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
   };
 
   const getPermissionStatus = () => {
-    if (!isSupported) return { text: 'Not supported', color: 'text-muted-foreground' };
-    if (permission === 'granted') return { text: 'Enabled', color: 'text-green-600' };
-    if (permission === 'denied') return { text: 'Blocked', color: 'text-destructive' };
-    return { text: 'Not set', color: 'text-amber-600' };
+    if (!isSupported) return { text: 'Not supported', color: 'text-purple-600/70' };
+    if (permission === 'granted') return { text: 'Enabled', color: 'text-green-700' };
+    if (permission === 'denied') return { text: 'Blocked', color: 'text-red-700' };
+    return { text: 'Not set', color: 'text-yellow-700' };
   };
 
   const permissionStatus = getPermissionStatus();
 
   return (
-    <div className="min-h-screen bg-background">
-      <AppHeader userName={profile.name} />
+    <div 
+      className="min-h-screen bg-cover bg-center bg-fixed"
+      style={{ 
+        backgroundImage: `url(${goldenGateBackground})` 
+      }}
+    >
+      <AppHeader userName={firstName} />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
         <Button
           variant="ghost"
           onClick={() => navigate('/')}
-          className="mb-6 gap-2 text-muted-foreground hover:text-foreground"
+          className="mb-4 gap-2 text-purple-900 hover:text-purple-700 hover:bg-purple-500/20"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Home
         </Button>
 
-        <h1 className="font-display text-3xl text-primary mb-8">Settings</h1>
+        <h1 className="text-2xl text-purple-900 font-bold mb-6">Settings</h1>
 
         {/* Profile Info */}
-        <div className="bg-card rounded-2xl border border-border p-6 mb-6">
-          <h2 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+        <div className="bg-white/20 backdrop-blur-sm rounded-2xl border border-purple-300/30 p-5 mb-4">
+          <h2 className="font-semibold text-purple-900 mb-4 flex items-center gap-2 text-sm">
             <User className="w-5 h-5" />
             Profile Information
           </h2>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center py-2 border-b border-border">
-              <span className="text-muted-foreground">Name</span>
-              <span className="text-foreground font-medium">{profile.name}</span>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center py-2 border-b border-purple-300/30">
+              <span className="text-purple-800/80 text-sm">Name</span>
+              <span className="text-purple-900 font-medium text-sm">{profile.name}</span>
             </div>
-            <div className="flex justify-between items-center py-2 border-b border-border">
-              <span className="text-muted-foreground">Age Group</span>
-              <span className="text-foreground font-medium">
+            <div className="flex justify-between items-center py-2 border-b border-purple-300/30">
+              <span className="text-purple-800/80 text-sm">Age Group</span>
+              <span className="text-purple-900 font-medium text-sm">
                 {AGE_GROUP_LABELS[profile.ageGroup]}
               </span>
             </div>
             <div className="flex justify-between items-center py-2">
-              <span className="text-muted-foreground flex items-center gap-2">
+              <span className="text-purple-800/80 flex items-center gap-2 text-sm">
                 <MapPin className="w-4 h-4" />
                 Location
               </span>
-              <span className="text-foreground font-medium">
+              <span className="text-purple-900 font-medium text-sm">
                 {profile.location.city}, {profile.location.state}
               </span>
             </div>
@@ -130,15 +138,15 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
         </div>
 
         {/* Audio Settings */}
-        <div className="bg-card rounded-2xl border border-border p-6 mb-6">
-          <h2 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+        <div className="bg-white/20 backdrop-blur-sm rounded-2xl border border-purple-300/30 p-5 mb-4">
+          <h2 className="font-semibold text-purple-900 mb-4 flex items-center gap-2 text-sm">
             {audioEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
             Audio Settings
           </h2>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-foreground font-medium">Audio Greeting</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-purple-900 font-medium text-sm">Audio Greeting</p>
+              <p className="text-xs text-purple-800/70">
                 Play audio greeting and read verses aloud
               </p>
             </div>
@@ -150,17 +158,17 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
         </div>
 
         {/* Morning Alarm with Notifications */}
-        <div className="bg-card rounded-2xl border border-border p-6 mb-8">
-          <h2 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+        <div className="bg-white/20 backdrop-blur-sm rounded-2xl border border-purple-300/30 p-5 mb-6">
+          <h2 className="font-semibold text-purple-900 mb-4 flex items-center gap-2 text-sm">
             {alarmEnabled ? <Bell className="w-5 h-5" /> : <BellOff className="w-5 h-5" />}
             Morning Alarm
           </h2>
           
           {/* Notification Permission Status */}
-          <div className="flex items-center justify-between py-3 border-b border-border mb-4">
+          <div className="flex items-center justify-between py-3 border-b border-purple-300/30 mb-4">
             <div>
-              <p className="text-foreground font-medium">Notification Status</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-purple-900 font-medium text-sm">Notification Status</p>
+              <p className="text-xs text-purple-800/70">
                 {isSupported ? 'Push notifications for morning reminders' : 'Your browser does not support notifications'}
               </p>
             </div>
@@ -170,10 +178,10 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
           </div>
 
           {/* Enable Alarm Toggle */}
-          <div className="flex items-center justify-between py-3 border-b border-border mb-4">
+          <div className="flex items-center justify-between py-3 border-b border-purple-300/30 mb-4">
             <div>
-              <p className="text-foreground font-medium">Enable Morning Alarm</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-purple-900 font-medium text-sm">Enable Morning Alarm</p>
+              <p className="text-xs text-purple-800/70">
                 Receive a notification at your set time
               </p>
             </div>
@@ -186,7 +194,7 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
 
           {/* Alarm Time */}
           <div className="mb-4">
-            <Label htmlFor="alarmTime" className="text-foreground flex items-center gap-2">
+            <Label htmlFor="alarmTime" className="text-purple-900 flex items-center gap-2 text-sm font-medium">
               <Clock className="w-4 h-4" />
               Wake-up Time
             </Label>
@@ -195,7 +203,7 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
               type="time"
               value={alarmTime}
               onChange={(e) => setAlarmTime(e.target.value)}
-              className="mt-2 w-40"
+              className="mt-2 w-40 bg-white/50 border-purple-300/50 text-purple-900"
             />
           </div>
 
@@ -204,7 +212,7 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
             <Button
               variant="outline"
               onClick={handleTestNotification}
-              className="gap-2"
+              className="gap-2 border-purple-400/50 text-purple-900 hover:bg-purple-500/20"
             >
               <Send className="w-4 h-4" />
               Send Test Notification
@@ -212,7 +220,7 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
           )}
 
           {permission === 'denied' && (
-            <p className="text-sm text-destructive mt-3">
+            <p className="text-sm text-red-700 mt-3">
               Notifications are blocked. Please enable them in your browser settings.
             </p>
           )}
@@ -222,14 +230,14 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
         <div className="space-y-3">
           <Button
             onClick={handleSave}
-            className="w-full h-12 bg-primary hover:bg-primary/90"
+            className="w-full h-12 bg-purple-700 hover:bg-purple-800 text-white"
           >
             Save Settings
           </Button>
           <Button
             variant="outline"
             onClick={onLogout}
-            className="w-full h-12 text-destructive border-destructive hover:bg-destructive/10"
+            className="w-full h-12 text-red-700 border-red-400/50 hover:bg-red-500/20"
           >
             Sign Out
           </Button>
