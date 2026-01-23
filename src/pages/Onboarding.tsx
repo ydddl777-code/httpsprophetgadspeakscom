@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { PillarIcon } from '@/components/PillarIcon';
 import { AgeGroup, AGE_GROUP_LABELS } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import templeBackground from '@/assets/temple-background.jpg';
+import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 
 interface OnboardingProps {
   onComplete: (name: string, ageGroup: AgeGroup, city: string, state: string, schoolDistrict?: string) => void;
@@ -60,17 +60,17 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
     <div 
       className="min-h-screen flex flex-col bg-cover bg-center bg-fixed"
       style={{ 
-        backgroundImage: `linear-gradient(to bottom, rgba(26,54,93,0.95), rgba(26,54,93,0.85)), url(${templeBackground})` 
+        backgroundImage: `url(${goldenGateBackground})` 
       }}
     >
       {/* Header */}
-      <div className="text-primary-foreground py-12 px-6">
+      <div className="py-12 px-6">
         <div className="max-w-md mx-auto text-center">
-          <div className="inline-flex bg-accent/20 p-4 rounded-2xl mb-4">
-            <PillarIcon className="w-16 h-16 text-accent" />
+          <div className="inline-flex bg-purple-600/20 backdrop-blur-sm p-4 rounded-2xl mb-4">
+            <PillarIcon className="w-16 h-16 text-purple-800" />
           </div>
-          <h1 className="text-3xl font-bold mb-2">THE PILLAR</h1>
-          <p className="text-primary-foreground/80 text-lg">
+          <h1 className="text-3xl font-bold text-purple-900 mb-2">THE PILLAR</h1>
+          <p className="text-purple-800/80 text-lg">
             Five Pillars That Stand When Everything Falls
           </p>
         </div>
@@ -84,7 +84,7 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
               key={s}
               className={cn(
                 'h-1.5 flex-1 rounded-full',
-                s <= step ? 'bg-accent' : 'bg-muted'
+                s <= step ? 'bg-purple-700' : 'bg-purple-300/50'
               )}
             />
           ))}
@@ -92,18 +92,18 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
 
         {/* Step 1: Name */}
         {step === 1 && (
-          <div className="bg-card rounded-2xl p-6 gold-border-frame">
-            <h2 className="text-2xl text-primary font-bold mb-2">Welcome, friend</h2>
-            <p className="text-muted-foreground mb-8">What should we call you?</p>
+          <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30">
+            <h2 className="text-2xl text-purple-900 font-bold mb-2">Welcome, friend</h2>
+            <p className="text-purple-800/80 mb-8">What should we call you?</p>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name" className="text-foreground">Your Name</Label>
+                <Label htmlFor="name" className="text-purple-900 font-medium">Your Name</Label>
                 <Input
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Enter your name"
-                  className="mt-2 h-12 text-lg"
+                  className="mt-2 h-12 text-lg bg-white/50 border-purple-300/50 text-purple-900 placeholder:text-purple-600/50"
                   autoFocus
                 />
               </div>
@@ -113,20 +113,20 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
 
         {/* Step 2: Age Group */}
         {step === 2 && (
-          <div className="bg-card rounded-2xl p-6 gold-border-frame">
-            <h2 className="text-2xl text-primary font-bold mb-2">Hello, {name}!</h2>
-            <p className="text-muted-foreground mb-8">Which age group are you in?</p>
+          <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30">
+            <h2 className="text-2xl text-purple-900 font-bold mb-2">Hello, {name}!</h2>
+            <p className="text-purple-800/80 mb-8">Which age group are you in?</p>
             <div className="grid grid-cols-2 gap-4">
               {(Object.entries(AGE_GROUP_LABELS) as [AgeGroup, string][]).map(([key, label]) => (
                 <button
                   key={key}
                   onClick={() => setAgeGroup(key)}
                   className={cn(
-                    'p-6 rounded-2xl border-2 text-left',
-                    'hover:border-accent hover:shadow-md',
+                    'p-6 rounded-2xl border-2 text-left backdrop-blur-sm',
+                    'hover:border-purple-500 hover:shadow-md transition-all',
                     ageGroup === key
-                      ? 'border-accent bg-accent/10 shadow-md'
-                      : 'border-border bg-card'
+                      ? 'border-purple-600 bg-purple-500/30 shadow-md'
+                      : 'border-purple-300/50 bg-white/30'
                   )}
                 >
                   <span className="text-2xl mb-2 block">
@@ -135,7 +135,7 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
                     {key === 'parent' && '👨‍👩‍👧'}
                     {key === 'elder' && '👴'}
                   </span>
-                  <span className="font-semibold text-foreground">{label}</span>
+                  <span className="font-semibold text-purple-900">{label}</span>
                 </button>
               ))}
             </div>
@@ -144,27 +144,27 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
 
         {/* Step 3: Location */}
         {step === 3 && (
-          <div className="bg-card rounded-2xl p-6 gold-border-frame">
-            <h2 className="text-2xl text-primary font-bold mb-2">Almost there!</h2>
-            <p className="text-muted-foreground mb-8">Where are you located?</p>
+          <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30">
+            <h2 className="text-2xl text-purple-900 font-bold mb-2">Almost there!</h2>
+            <p className="text-purple-800/80 mb-8">Where are you located?</p>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="city" className="text-foreground">City</Label>
+                <Label htmlFor="city" className="text-purple-900 font-medium">City</Label>
                 <Input
                   id="city"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="Your city"
-                  className="mt-2 h-12"
+                  className="mt-2 h-12 bg-white/50 border-purple-300/50 text-purple-900 placeholder:text-purple-600/50"
                 />
               </div>
               <div>
-                <Label htmlFor="state" className="text-foreground">State</Label>
+                <Label htmlFor="state" className="text-purple-900 font-medium">State</Label>
                 <select
                   id="state"
                   value={state}
                   onChange={(e) => setState(e.target.value)}
-                  className="mt-2 w-full h-12 px-3 rounded-lg border border-input bg-background text-foreground"
+                  className="mt-2 w-full h-12 px-3 rounded-lg border border-purple-300/50 bg-white/50 text-purple-900"
                 >
                   <option value="">Select a state</option>
                   {US_STATES.map((s) => (
@@ -174,7 +174,7 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
               </div>
               {(ageGroup === 'child' || ageGroup === 'teen') && (
                 <div>
-                  <Label htmlFor="school" className="text-foreground">
+                  <Label htmlFor="school" className="text-purple-900 font-medium">
                     School District (Optional)
                   </Label>
                   <Input
@@ -182,7 +182,7 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
                     value={schoolDistrict}
                     onChange={(e) => setSchoolDistrict(e.target.value)}
                     placeholder="Your school district"
-                    className="mt-2 h-12"
+                    className="mt-2 h-12 bg-white/50 border-purple-300/50 text-purple-900 placeholder:text-purple-600/50"
                   />
                 </div>
               )}
@@ -196,7 +196,7 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
             <Button
               variant="outline"
               onClick={handleBack}
-              className="flex-1 h-12 gap-2"
+              className="flex-1 h-12 gap-2 border-purple-400/50 text-purple-900 hover:bg-purple-500/20"
             >
               <ArrowLeft className="w-4 h-4" />
               Back
@@ -206,7 +206,7 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
             onClick={handleNext}
             disabled={!canProceed()}
             className={cn(
-              'flex-1 h-12 gap-2 bg-primary hover:bg-primary/90',
+              'flex-1 h-12 gap-2 bg-purple-700 hover:bg-purple-800 text-white',
               step === 1 && 'w-full'
             )}
           >
