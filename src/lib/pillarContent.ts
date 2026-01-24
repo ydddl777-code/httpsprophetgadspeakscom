@@ -123,7 +123,7 @@ export const FIVE_DISCIPLINES: DisciplineItem[] = [
     id: 'praise',
     title: 'PRAISE',
     icon: 'music',
-    description: 'Remnant Hymnal with 200 non-Trinitarian hymns',
+    description: 'Remnant Seed Hymnal with 200 hymns',
     scripture: '"Sing unto the LORD a new song." — Psalm 96:1'
   },
   {
@@ -137,7 +137,7 @@ export const FIVE_DISCIPLINES: DisciplineItem[] = [
     id: 'stewardship',
     title: 'STEWARDSHIP',
     icon: 'scale',
-    description: 'Budget tool, tithe calculator, savings tracker',
+    description: 'Budget calculator, savings tracker',
     scripture: '"Honour the LORD with thy substance, and with the firstfruits of all thine increase." — Proverbs 3:9'
   },
   {
