@@ -76,8 +76,8 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
           {step === 2 && (
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-primary text-center">Select your age group</h2>
-              <div className="grid grid-cols-1 gap-3">
-                {(Object.entries(AGE_GROUP_LABELS) as [AgeGroup, string][]).filter(([key]) => key !== 'elder').map(([key, label]) => (
+              <div className="grid grid-cols-1 gap-2">
+                {(Object.entries(AGE_GROUP_LABELS) as [AgeGroup, string][]).map(([key, label]) => (
                   <button key={key} onClick={() => setAgeGroup(key)} className={cn('px-4 py-3 rounded-lg border-2 text-left font-medium', ageGroup === key ? 'border-accent bg-accent/20' : 'border-accent/30 bg-card/30 hover:border-accent/50')}>
                     {label}
                   </button>

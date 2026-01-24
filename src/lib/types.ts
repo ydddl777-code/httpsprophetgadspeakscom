@@ -1,4 +1,4 @@
-export type AgeGroup = 'child' | 'teen' | 'parent' | 'elder';
+export type AgeGroup = 'child' | 'teen' | 'youngAdult' | 'parent' | 'adult' | 'elder';
 
 export interface UserProfile {
   id: string;
@@ -57,14 +57,18 @@ export interface DoctrineQuestion {
 
 export const AGE_GROUP_LABELS: Record<AgeGroup, string> = {
   child: 'Child (4-12)',
-  teen: 'Teen (13-19)',
+  teen: 'Teenager (13-19)',
+  youngAdult: 'Young Adult (20-29)',
   parent: 'Parent',
-  elder: 'Elder (60+)',
+  adult: 'Adult (30-59)',
+  elder: 'Elder / Grandparent (60+)',
 };
 
 export const AGE_GROUP_GREETINGS: Record<AgeGroup, string> = {
   child: 'little one',
   teen: 'young one',
+  youngAdult: 'young adult',
   parent: 'brother/sister',
+  adult: 'brother/sister',
   elder: 'elder',
 };

@@ -55,6 +55,29 @@ export const DAILY_VERSES: Record<AgeGroup, DailyVerse[]> = {
       verse: 5,
     },
   ],
+  youngAdult: [
+    {
+      reference: 'Proverbs 3:5-6',
+      text: 'Trust in the LORD with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.',
+      book: 'Proverbs',
+      chapter: 3,
+      verse: 5,
+    },
+    {
+      reference: 'Jeremiah 29:11',
+      text: 'For I know the thoughts that I think toward you, saith the LORD, thoughts of peace, and not of evil, to give you an expected end.',
+      book: 'Jeremiah',
+      chapter: 29,
+      verse: 11,
+    },
+    {
+      reference: 'Ecclesiastes 11:9',
+      text: 'Rejoice, O young man, in thy youth; and let thy heart cheer thee in the days of thy youth, and walk in the ways of thine heart.',
+      book: 'Ecclesiastes',
+      chapter: 11,
+      verse: 9,
+    },
+  ],
   parent: [
     {
       reference: 'Deuteronomy 6:7',
@@ -76,6 +99,29 @@ export const DAILY_VERSES: Record<AgeGroup, DailyVerse[]> = {
       book: 'Proverbs',
       chapter: 31,
       verse: 27,
+    },
+  ],
+  adult: [
+    {
+      reference: 'Colossians 3:23',
+      text: 'And whatsoever ye do, do it heartily, as to the Lord, and not unto men.',
+      book: 'Colossians',
+      chapter: 3,
+      verse: 23,
+    },
+    {
+      reference: 'Proverbs 16:3',
+      text: 'Commit thy works unto the LORD, and thy thoughts shall be established.',
+      book: 'Proverbs',
+      chapter: 16,
+      verse: 3,
+    },
+    {
+      reference: 'Isaiah 40:31',
+      text: 'But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles.',
+      book: 'Isaiah',
+      chapter: 40,
+      verse: 31,
     },
   ],
   elder: [
@@ -138,7 +184,7 @@ export const DOCTRINE_QUESTIONS: DoctrineQuestion[] = [
     answer: 'The Sabbath is the fourth commandment, a sign between the Most High and His people forever. It was established at creation and remains binding for all who follow the Creator.',
     verse: 'Exodus 20:8-10',
     verseText: 'Remember the sabbath day, to keep it holy. Six days shalt thou labour, and do all thy work: But the seventh day is the sabbath of the LORD thy God.',
-    ageGroups: ['child', 'teen', 'parent', 'elder'],
+    ageGroups: ['child', 'teen', 'youngAdult', 'parent', 'adult', 'elder'],
   },
   {
     id: '2',
@@ -146,7 +192,7 @@ export const DOCTRINE_QUESTIONS: DoctrineQuestion[] = [
     answer: 'The Creator declared the pig unclean in Leviticus 11. The swine does not chew the cud, making it an abomination to eat. This law was never abolished.',
     verse: 'Leviticus 11:7-8',
     verseText: 'And the swine, though he divide the hoof, and be clovenfooted, yet he cheweth not the cud; he is unclean to you.',
-    ageGroups: ['child', 'teen', 'parent', 'elder'],
+    ageGroups: ['child', 'teen', 'youngAdult', 'parent', 'adult', 'elder'],
   },
   {
     id: '3',
@@ -154,7 +200,7 @@ export const DOCTRINE_QUESTIONS: DoctrineQuestion[] = [
     answer: 'Christmas has pagan origins rooted in sun worship. The Bible warns against learning the way of the heathen and adopting their customs to worship the Most High.',
     verse: 'Jeremiah 10:2-4',
     verseText: 'Thus saith the LORD, Learn not the way of the heathen... For the customs of the people are vain.',
-    ageGroups: ['teen', 'parent', 'elder'],
+    ageGroups: ['teen', 'youngAdult', 'parent', 'adult', 'elder'],
   },
   {
     id: '4',
@@ -163,7 +209,7 @@ export const DOCTRINE_QUESTIONS: DoctrineQuestion[] = [
     verse: 'Proverbs 12:22',
     verseText: 'Lying lips are abomination to the LORD: but they that deal truly are his delight.',
     practicalTip: 'Have a calm conversation about why they felt they needed to lie. Focus on building trust and explain the consequences of dishonesty.',
-    ageGroups: ['parent', 'elder'],
+    ageGroups: ['parent', 'adult', 'elder'],
   },
   {
     id: '5',
@@ -171,7 +217,7 @@ export const DOCTRINE_QUESTIONS: DoctrineQuestion[] = [
     answer: 'The feast days (Passover, Unleavened Bread, Pentecost, Trumpets, Atonement, Tabernacles) are commanded forever. They prophesy of the Messiah and His return.',
     verse: 'Leviticus 23:2',
     verseText: 'Speak unto the children of Israel, and say unto them, Concerning the feasts of the LORD, which ye shall proclaim to be holy convocations, even these are my feasts.',
-    ageGroups: ['teen', 'parent', 'elder'],
+    ageGroups: ['teen', 'youngAdult', 'parent', 'adult', 'elder'],
   },
   {
     id: '6',
@@ -180,7 +226,7 @@ export const DOCTRINE_QUESTIONS: DoctrineQuestion[] = [
     verse: 'Proverbs 18:22',
     verseText: 'Whoso findeth a wife findeth a good thing, and obtaineth favour of the LORD.',
     practicalTip: 'Set clear boundaries and have open conversations about purity. Ensure any potential spouse shares your faith and values.',
-    ageGroups: ['parent', 'elder'],
+    ageGroups: ['parent', 'adult', 'elder'],
   },
   {
     id: '7',
@@ -188,7 +234,7 @@ export const DOCTRINE_QUESTIONS: DoctrineQuestion[] = [
     answer: 'The seventh day Sabbath has always been from Friday sunset to Saturday sunset. Sunday worship was introduced by Rome, not Scripture.',
     verse: 'Genesis 2:2-3',
     verseText: 'And on the seventh day God ended his work which he had made; and he rested on the seventh day from all his work which he had made.',
-    ageGroups: ['child', 'teen', 'parent', 'elder'],
+    ageGroups: ['child', 'teen', 'youngAdult', 'parent', 'adult', 'elder'],
   },
   {
     id: '8',
@@ -196,7 +242,7 @@ export const DOCTRINE_QUESTIONS: DoctrineQuestion[] = [
     answer: 'Speak with gentleness and respect. Let your life be a testimony. Focus on Scripture rather than arguments. Plant seeds and let the Most High give the increase.',
     verse: '1 Peter 3:15',
     verseText: 'But sanctify the Lord God in your hearts: and be ready always to give an answer to every man that asketh you a reason of the hope that is in you with meekness and fear.',
-    ageGroups: ['teen', 'parent', 'elder'],
+    ageGroups: ['teen', 'youngAdult', 'parent', 'adult', 'elder'],
   },
   {
     id: '9',
@@ -204,7 +250,7 @@ export const DOCTRINE_QUESTIONS: DoctrineQuestion[] = [
     answer: 'The Creator revealed His name as YHWH (Yahweh/Yahuah). This name appears over 6,800 times in the Hebrew Scriptures. We should use His name with reverence.',
     verse: 'Exodus 3:14-15',
     verseText: 'And God said unto Moses, I AM THAT I AM... this is my name for ever, and this is my memorial unto all generations.',
-    ageGroups: ['teen', 'parent', 'elder'],
+    ageGroups: ['teen', 'youngAdult', 'parent', 'adult', 'elder'],
   },
   {
     id: '10',
@@ -212,6 +258,6 @@ export const DOCTRINE_QUESTIONS: DoctrineQuestion[] = [
     answer: 'Clean food laws were given for our physical and spiritual wellbeing. Our bodies are temples. What we eat affects our health and our ability to serve the Most High.',
     verse: '1 Corinthians 6:19',
     verseText: 'What? know ye not that your body is the temple of the Holy Ghost which is in you, which ye have of God, and ye are not your own?',
-    ageGroups: ['child', 'teen', 'parent', 'elder'],
+    ageGroups: ['child', 'teen', 'youngAdult', 'parent', 'adult', 'elder'],
   },
 ];
