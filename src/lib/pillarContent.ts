@@ -20,7 +20,7 @@ export const FIVE_PILLARS: PillarContent[] = [
   },
   {
     id: 'israel',
-    title: 'Israel',
+    title: 'Nation of Israel',
     fullTitle: 'Israel - The Scroll',
     content: `The children of Israel are a set-apart nation with a distinct calling. The people who stood at Sinai are still here—the bloodline continues. Early rain (Moses, the patriarchs) and latter rain (end-time remnant) are the SAME PEOPLE. One scroll, one parchment, wrapped from beginning to end.
 
@@ -71,7 +71,7 @@ The warning is loud. The time is short. The remnant must stand.`,
   },
   {
     id: 'earth-new',
-    title: 'Earth Made New',
+    title: 'New Earth',
     fullTitle: 'Earth Made New',
     content: `The righteous will reign with Christ for 1,000 years, then inherit the Earth made new—our original inheritance restored. The New Jerusalem descends. God dwells with His people. Death, sorrow, and pain are gone forever.
 
