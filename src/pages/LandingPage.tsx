@@ -52,9 +52,17 @@ export const LandingPage = ({ onEnterApp }: LandingPageProps) => {
 
         {/* Footer */}
         <footer className="relative z-10 py-6 text-center">
-          <p className="text-sm text-primary-foreground/80 drop-shadow-text">
-            Remnant Seed © 2026
-          </p>
+          <div 
+            className="inline-block py-2 px-6 rounded border border-accent mx-auto"
+            style={{
+              background: 'rgba(88, 28, 135, 0.85)',
+              backdropFilter: 'blur(4px)'
+            }}
+          >
+            <p className="text-sm text-primary-foreground drop-shadow-text">
+              Remnant Seed © 2026
+            </p>
+          </div>
         </footer>
       </div>
     </div>
