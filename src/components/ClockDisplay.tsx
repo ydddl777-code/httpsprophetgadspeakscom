@@ -30,21 +30,16 @@ export const ClockDisplay = ({
     return date.toLocaleDateString('en-US', {
       weekday: 'long',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
+      year: 'numeric'
     });
   };
 
-  // Check if it's Sabbath (Friday sunset to Saturday sunset - simplified: Friday 6pm to Saturday 6pm)
+  // Check if it's Sabbath (Saturday only - the 7th day)
   const isSabbath = () => {
     const day = time.getDay();
-    const hour = time.getHours();
-    
-    // Friday after 6pm
-    if (day === 5 && hour >= 18) return true;
-    // Saturday before 6pm
-    if (day === 6 && hour < 18) return true;
-    
-    return false;
+    // Saturday is day 6 (0=Sunday, 6=Saturday)
+    return day === 6;
   };
 
   const sizeClasses = {

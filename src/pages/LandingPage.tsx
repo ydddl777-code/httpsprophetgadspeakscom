@@ -52,8 +52,8 @@ export const LandingPage = ({ onEnterApp }: LandingPageProps) => {
 
         {/* Footer */}
         <footer className="relative z-10 py-6 text-center">
-          <p className="text-sm text-primary-foreground/80 drop-shadow-text italic">
-            "Five Pillars That Stand When Everything Falls"
+          <p className="text-sm text-primary-foreground/80 drop-shadow-text">
+            Remnant Seed © 2026
           </p>
         </footer>
       </div>

@@ -70,7 +70,14 @@ export const TribalBanners = ({ side }: TribalBannersProps) => {
               filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
             }}
           />
-          <span className="text-[9px] font-bold text-primary-foreground/80 mt-1 drop-shadow-text">
+          {/* Tribe name with purple glass style and gold rim */}
+          <span 
+            className="text-[9px] font-bold text-primary-foreground mt-1 px-1.5 py-0.5 rounded border border-accent"
+            style={{
+              background: 'rgba(88, 28, 135, 0.85)',
+              backdropFilter: 'blur(4px)'
+            }}
+          >
             {tribeLabels[tribe]}
           </span>
         </div>
