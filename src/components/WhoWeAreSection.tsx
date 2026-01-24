@@ -23,11 +23,11 @@ export const WhoWeAreSection = () => {
         </h2>
       </div>
       
-      {/* Gold tint background container */}
+      {/* White tint background container */}
       <div 
         className="p-6 md:p-8 rounded-lg border border-accent"
         style={{
-          background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(184, 134, 11, 0.2) 50%, rgba(212, 175, 55, 0.15) 100%)',
+          background: 'rgba(255, 255, 255, 0.85)',
           backdropFilter: 'blur(2px)'
         }}
       >
