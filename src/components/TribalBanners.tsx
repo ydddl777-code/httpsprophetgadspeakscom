@@ -11,7 +11,7 @@ import gadImg from '@/assets/tribes/gad.jpeg';
 import asherImg from '@/assets/tribes/asher.jpeg';
 import issacharImg from '@/assets/tribes/issachar.jpeg';
 import zebulunImg from '@/assets/tribes/zebulun.jpeg';
-import ephraimImg from '@/assets/tribes/ephraim.png';
+import josephImg from '@/assets/tribes/joseph.jpeg';
 import benjaminImg from '@/assets/tribes/benjamin.jpeg';
 
 const tribeImages: Record<TribeName, string> = {
@@ -25,7 +25,7 @@ const tribeImages: Record<TribeName, string> = {
   asher: asherImg,
   issachar: issacharImg,
   zebulun: zebulunImg,
-  ephraim: ephraimImg,
+  ephraim: josephImg,
   benjamin: benjaminImg,
 };
 
