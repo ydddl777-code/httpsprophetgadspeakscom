@@ -11,7 +11,7 @@ export const LandingHeader = ({ onEnterApp }: LandingHeaderProps) => {
         {/* Logo/Title */}
         <div className="text-left">
           <p className="text-lg md:text-xl text-primary-foreground/90 drop-shadow-text mb-1">
-            Prophet God Speaks
+            Prophet Gad Speaks
           </p>
           <h1 className="text-3xl md:text-5xl font-bold gold-text drop-shadow-text tracking-wide">
             REMNANT SEED
