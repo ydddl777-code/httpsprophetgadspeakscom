@@ -11,13 +11,13 @@ export const LandingHeader = ({ onEnterApp }: LandingHeaderProps) => {
         {/* Logo/Title */}
         <div className="text-left">
           <p className="text-lg md:text-xl text-primary-foreground/90 drop-shadow-text mb-1">
-            Prophet Gad Speaks
+            The Pillar
           </p>
           <h1 className="text-3xl md:text-5xl font-bold gold-text drop-shadow-text tracking-wide">
             REMNANT SEED
           </h1>
           <p className="text-lg md:text-xl text-primary-foreground/90 drop-shadow-text mt-1">
-            The Pillar
+            Prophet Gad Speaks
           </p>
         </div>
 

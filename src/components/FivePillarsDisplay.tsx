@@ -22,38 +22,46 @@ export const FivePillarsDisplay = () => {
           backdropFilter: 'blur(4px)'
         }}
       >
-        {/* Five Pillars using the actual pillar image - spread wider */}
-        <div className="flex justify-between items-end px-2 md:px-4">
-          {FIVE_PILLARS.map((pillar) => (
-            <button
-              key={pillar.id}
-              onClick={() => setSelectedPillar(pillar)}
-              className="group flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-lg"
-              aria-label={`Learn about ${pillar.title}`}
-            >
-              {/* Title on TOP of pillar - purple glass style with gold rim */}
-              <span 
-                className="mb-1 text-[9px] md:text-xs text-primary-foreground text-center leading-tight px-1.5 py-0.5 rounded border border-accent whitespace-nowrap"
-                style={{ 
-                  fontFamily: 'Arial, sans-serif', 
-                  fontWeight: 'bold',
-                  background: 'rgba(88, 28, 135, 0.95)',
-                  backdropFilter: 'blur(4px)'
-                }}
+        {/* Five Pillars using the actual pillar image - all aligned on same plane */}
+        <div className="flex justify-between items-end px-0 md:px-2">
+          {FIVE_PILLARS.map((pillar, index) => {
+            // Make "One God" (first pillar) slightly larger
+            const isFirstPillar = index === 0;
+            const pillarSize = isFirstPillar ? 'w-16 md:w-24' : 'w-14 md:w-20';
+            
+            return (
+              <button
+                key={pillar.id}
+                onClick={() => setSelectedPillar(pillar)}
+                className="group flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-lg"
+                aria-label={`Learn about ${pillar.title}`}
               >
-                {pillar.title}
-              </span>
-              
-              {/* Pillar Image - new Nano Banana column */}
-              <div className="relative group-hover:brightness-110 transition-all duration-200">
-                <img 
-                  src={pillarImage} 
-                  alt="Pillar"
-                  className="w-14 md:w-20 h-auto object-contain"
-                />
-              </div>
-            </button>
-          ))}
+                {/* Title on TOP of pillar - fixed height container for alignment */}
+                <div className="h-6 md:h-7 flex items-end justify-center mb-1">
+                  <span 
+                    className="text-[8px] md:text-[10px] text-primary-foreground text-center leading-tight px-1 py-0.5 rounded border border-accent whitespace-nowrap"
+                    style={{ 
+                      fontFamily: 'Arial, sans-serif', 
+                      fontWeight: 'bold',
+                      background: 'rgba(88, 28, 135, 0.95)',
+                      backdropFilter: 'blur(4px)'
+                    }}
+                  >
+                    {pillar.title}
+                  </span>
+                </div>
+                
+                {/* Pillar Image */}
+                <div className="relative group-hover:brightness-110 transition-all duration-200">
+                  <img 
+                    src={pillarImage} 
+                    alt="Pillar"
+                    className={`${pillarSize} h-auto object-contain`}
+                  />
+                </div>
+              </button>
+            );
+          })}
         </div>
 
         {/* Platform Base with "Platform of Truth" label - sandy/beach yellow color */}
