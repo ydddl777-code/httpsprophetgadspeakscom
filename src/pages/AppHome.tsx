@@ -125,11 +125,28 @@ export const AppHome = ({ profile, onLogout }: AppHomeProps) => {
             </div>
 
             {/* Remnant Warning Series Section */}
-            <section className="mt-12">
-              <h3 className="text-lg font-bold gold-text drop-shadow-text mb-4">
-                REMNANT WARNING SERIES
-              </h3>
-              <div className="parchment-bg p-4 space-y-2">
+            <section className="mt-12 w-full max-w-3xl mx-auto">
+              {/* Header with purple glass style - matching landing page */}
+              <div 
+                className="text-center py-3 px-6 mb-6 rounded border border-accent mx-auto w-fit"
+                style={{
+                  background: 'rgba(88, 28, 135, 0.85)',
+                  backdropFilter: 'blur(4px)'
+                }}
+              >
+                <h3 className="text-xl md:text-2xl font-bold text-primary-foreground drop-shadow-text">
+                  REMNANT WARNING SERIES
+                </h3>
+              </div>
+              
+              {/* Content with purple glass background - matching landing page */}
+              <div 
+                className="p-6 md:p-8 rounded-lg border border-accent space-y-3"
+                style={{
+                  background: 'rgba(88, 28, 135, 0.85)',
+                  backdropFilter: 'blur(4px)'
+                }}
+              >
                 <CounselTopic 
                   bookNumber="One"
                   title="No Contemporary Worship Music for the Israelites" 
@@ -146,6 +163,19 @@ export const AppHome = ({ profile, onLogout }: AppHomeProps) => {
                   bookNumber="Four"
                   title="No Fake/Useless Diplomas for the Israelites" 
                 />
+              </div>
+              
+              {/* Bottom header with purple glass style - matching landing page */}
+              <div 
+                className="text-center py-3 px-6 mt-6 rounded border border-accent mx-auto w-fit"
+                style={{
+                  background: 'rgba(88, 28, 135, 0.85)',
+                  backdropFilter: 'blur(4px)'
+                }}
+              >
+                <h3 className="text-xl md:text-2xl font-bold text-primary-foreground drop-shadow-text">
+                  REMNANT WARNING SERIES
+                </h3>
               </div>
             </section>
 
@@ -178,12 +208,17 @@ interface CounselTopicProps {
 }
 
 const CounselTopic = ({ bookNumber, title }: CounselTopicProps) => (
-  <div className="flex items-center justify-between p-3 bg-card/30 rounded-lg hover:bg-card/50 cursor-pointer transition-colors">
-    <div>
-      <span className="text-sm text-accent font-semibold mr-2">Book {bookNumber}:</span>
-      <span className="font-semibold text-foreground">{title}</span>
+  <div 
+    className="flex items-center justify-between p-4 rounded-lg border border-accent/30 hover:border-accent cursor-pointer transition-colors"
+    style={{
+      background: 'rgba(139, 92, 246, 0.3)',
+    }}
+  >
+    <div style={{ fontFamily: 'Arial, sans-serif', fontSize: '14pt' }}>
+      <span className="text-tabernacle-gold font-bold mr-2">Book {bookNumber}:</span>
+      <span className="font-semibold text-primary-foreground drop-shadow-text">{title}</span>
     </div>
-    <span className="text-accent">→</span>
+    <span className="text-tabernacle-gold text-xl">→</span>
   </div>
 );
 
