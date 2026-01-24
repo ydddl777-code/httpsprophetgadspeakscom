@@ -137,7 +137,7 @@ export const FIVE_DISCIPLINES: DisciplineItem[] = [
     id: 'stewardship',
     title: 'STEWARDSHIP',
     icon: 'scale',
-    description: 'Budget calculator, savings tracker',
+    description: 'Budget calculator, savings projector',
     scripture: '"Honour the LORD with thy substance, and with the firstfruits of all thine increase." — Proverbs 3:9'
   },
   {
