@@ -14,8 +14,8 @@ export const FivePillarsDisplay = () => {
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4">
-      {/* Section Heading - Black Arial Bold */}
-      <h2 className="text-center text-xl md:text-2xl font-bold text-black drop-shadow-sm mb-6 tracking-widest uppercase" style={{ fontFamily: 'Arial, sans-serif' }}>
+      {/* Section Heading - Black Arial regular, bigger */}
+      <h2 className="text-center text-2xl md:text-3xl text-black drop-shadow-sm mb-6 tracking-widest uppercase" style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'normal' }}>
         Platform of Truth
       </h2>
 
@@ -28,8 +28,8 @@ export const FivePillarsDisplay = () => {
             className="group flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-lg"
             aria-label={`Learn about ${pillar.title}`}
           >
-            {/* Title on TOP of pillar */}
-            <span className="mb-1 text-[9px] md:text-[11px] font-bold text-black drop-shadow-sm text-center leading-tight max-w-14 md:max-w-18" style={{ fontFamily: 'Arial, sans-serif' }}>
+            {/* Title on TOP of pillar - more visible black text */}
+            <span className="mb-1 text-[10px] md:text-xs font-bold text-black drop-shadow-md text-center leading-tight max-w-14 md:max-w-20" style={{ fontFamily: 'Arial, sans-serif', textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}>
               {pillar.title}
             </span>
             
