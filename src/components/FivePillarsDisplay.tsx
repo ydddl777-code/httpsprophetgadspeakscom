@@ -7,19 +7,20 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import pillarImage from '@/assets/pillar-example.jpeg';
 
 export const FivePillarsDisplay = () => {
   const [selectedPillar, setSelectedPillar] = useState<PillarContent | null>(null);
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4">
-      {/* Section Heading */}
-      <h2 className="text-center text-xl md:text-2xl font-bold gold-text drop-shadow-text mb-6 tracking-widest uppercase">
+      {/* Section Heading - Black Arial Bold */}
+      <h2 className="text-center text-xl md:text-2xl font-bold text-black drop-shadow-sm mb-6 tracking-widest uppercase" style={{ fontFamily: 'Arial, sans-serif' }}>
         Platform of Truth
       </h2>
 
-      {/* Five Pillars */}
-      <div className="flex justify-center items-end gap-2 md:gap-4">
+      {/* Five Pillars using the actual pillar image */}
+      <div className="flex justify-center items-end gap-1 md:gap-3">
         {FIVE_PILLARS.map((pillar) => (
           <button
             key={pillar.id}
@@ -28,45 +29,34 @@ export const FivePillarsDisplay = () => {
             aria-label={`Learn about ${pillar.title}`}
           >
             {/* Title on TOP of pillar */}
-            <span className="mb-2 text-[10px] md:text-xs font-bold text-primary-foreground drop-shadow-text text-center leading-tight max-w-16 md:max-w-20">
+            <span className="mb-1 text-[9px] md:text-[11px] font-bold text-black drop-shadow-sm text-center leading-tight max-w-14 md:max-w-18" style={{ fontFamily: 'Arial, sans-serif' }}>
               {pillar.title}
             </span>
             
-            {/* Pillar Capital */}
-            <div className="w-12 md:w-16 h-2 md:h-3 rounded-t-sm bg-gradient-to-b from-amber-200 via-amber-100 to-amber-50 shadow-md" />
-            
-            {/* Pillar Column - clean marble look */}
-            <div 
-              className="relative w-10 md:w-14 group-hover:brightness-110 transition-all duration-200 shadow-lg"
-              style={{ 
-                height: '120px',
-                background: 'linear-gradient(90deg, hsl(45 30% 85%) 0%, hsl(45 40% 95%) 30%, hsl(45 50% 98%) 50%, hsl(45 40% 95%) 70%, hsl(45 30% 85%) 100%)'
-              }}
-            >
-              {/* Subtle fluting lines */}
-              <div className="absolute inset-0 flex justify-evenly px-1">
-                {[1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="w-[1px] h-full"
-                    style={{
-                      background: 'linear-gradient(180deg, transparent 5%, hsl(45 20% 75% / 0.3) 20%, hsl(45 20% 70% / 0.4) 50%, hsl(45 20% 75% / 0.3) 80%, transparent 95%)'
-                    }}
-                  />
-                ))}
-              </div>
+            {/* Pillar Image - flat orientation with sandy/beach yellow tint */}
+            <div className="relative group-hover:brightness-110 transition-all duration-200">
+              <img 
+                src={pillarImage} 
+                alt="Pillar"
+                className="w-12 md:w-16 h-auto object-contain"
+                style={{ 
+                  filter: 'sepia(30%) saturate(120%) hue-rotate(-10deg) brightness(1.05)'
+                }}
+              />
             </div>
-            
-            {/* Pillar Base */}
-            <div className="w-12 md:w-16 h-2 md:h-3 rounded-b-sm bg-gradient-to-t from-amber-200 via-amber-100 to-amber-50 shadow-md" />
           </button>
         ))}
       </div>
 
-      {/* Platform Base */}
-      <div className="mt-4 flex justify-center">
-        <div className="w-full max-w-md h-3 md:h-4 rounded-sm bg-gradient-to-b from-amber-300 via-amber-200 to-amber-400 shadow-lg flex items-center justify-center">
-          <span className="text-[8px] md:text-[10px] font-bold text-amber-900/70 tracking-widest uppercase">
+      {/* Platform Base - sandy/beach yellow color */}
+      <div className="mt-2 flex justify-center">
+        <div 
+          className="w-full max-w-lg h-4 md:h-5 rounded-sm shadow-lg flex items-center justify-center"
+          style={{ 
+            background: 'linear-gradient(180deg, hsl(45 60% 70%) 0%, hsl(40 50% 55%) 50%, hsl(35 45% 45%) 100%)'
+          }}
+        >
+          <span className="text-[9px] md:text-[11px] font-bold text-black tracking-widest uppercase" style={{ fontFamily: 'Arial, sans-serif' }}>
             Platform
           </span>
         </div>
