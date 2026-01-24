@@ -23,12 +23,12 @@ export const WhoWeAreSection = () => {
         </h2>
       </div>
       
-      {/* White tint background container */}
+      {/* Purple glass background container */}
       <div 
         className="p-6 md:p-8 rounded-lg border border-accent"
         style={{
-          background: 'rgba(255, 255, 255, 0.85)',
-          backdropFilter: 'blur(2px)'
+          background: 'rgba(88, 28, 135, 0.85)',
+          backdropFilter: 'blur(4px)'
         }}
       >
         {/* First paragraph - 14pt */}
