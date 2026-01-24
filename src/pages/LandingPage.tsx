@@ -28,15 +28,15 @@ export const LandingPage = ({ onEnterApp }: LandingPageProps) => {
         {/* Header */}
         <LandingHeader onEnterApp={onEnterApp} />
 
-        {/* Main Content with Tribal Banners */}
-        <main className="flex-1 flex">
-          {/* Left Tribal Banners */}
-          <aside className="hidden lg:flex w-20 justify-center">
+        {/* Main Content with Tribal Banners at extremes */}
+        <main className="flex-1 flex relative">
+          {/* Left Tribal Banners - extreme left edge */}
+          <aside className="hidden lg:flex absolute left-0 top-0 bottom-0 w-16 justify-start pl-1">
             <TribalBanners side="left" />
           </aside>
 
           {/* Central Content */}
-          <div className="flex-1 flex flex-col items-center justify-center py-8 space-y-12">
+          <div className="flex-1 flex flex-col items-center justify-center py-8 space-y-12 lg:px-20">
             {/* Five Pillars */}
             <FivePillarsDisplay />
 
@@ -44,8 +44,8 @@ export const LandingPage = ({ onEnterApp }: LandingPageProps) => {
             <WhoWeAreSection />
           </div>
 
-          {/* Right Tribal Banners */}
-          <aside className="hidden lg:flex w-20 justify-center">
+          {/* Right Tribal Banners - extreme right edge */}
+          <aside className="hidden lg:flex absolute right-0 top-0 bottom-0 w-16 justify-end pr-1">
             <TribalBanners side="right" />
           </aside>
         </main>

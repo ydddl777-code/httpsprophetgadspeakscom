@@ -48,6 +48,9 @@ interface TribalBannersProps {
   side: 'left' | 'right';
 }
 
+// Height variations for visual interest (in pixels)
+const heightVariations = [48, 52, 44, 56, 46, 50];
+
 export const TribalBanners = ({ side }: TribalBannersProps) => {
   // First 6 tribes on left, last 6 on right
   const tribes = side === 'left' 
@@ -55,8 +58,8 @@ export const TribalBanners = ({ side }: TribalBannersProps) => {
     : TRIBES_OF_ISRAEL.slice(6);
 
   return (
-    <div className="hidden lg:flex flex-col gap-3 py-8">
-      {tribes.map((tribe) => (
+    <div className="flex flex-col gap-2 py-4">
+      {tribes.map((tribe, index) => (
         <div
           key={tribe}
           className="tribal-banner flex flex-col items-center"
@@ -65,14 +68,16 @@ export const TribalBanners = ({ side }: TribalBannersProps) => {
           <img
             src={tribeImages[tribe]}
             alt={`Tribe of ${tribeLabels[tribe]}`}
-            className="w-12 h-12 object-contain rounded-sm"
+            className="object-contain rounded-sm"
             style={{ 
+              width: `${heightVariations[index]}px`,
+              height: `${heightVariations[index]}px`,
               filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
             }}
           />
           {/* Tribe name with purple glass style and gold rim */}
           <span 
-            className="text-[9px] font-bold text-primary-foreground mt-1 px-1.5 py-0.5 rounded border border-accent"
+            className="text-[8px] font-bold text-primary-foreground mt-0.5 px-1 py-0.5 rounded border border-accent"
             style={{
               background: 'rgba(88, 28, 135, 0.85)',
               backdropFilter: 'blur(4px)'

@@ -14,59 +14,68 @@ export const FivePillarsDisplay = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4">
-      {/* Five Pillars using the actual pillar image - spread wider */}
-      <div className="flex justify-between items-end px-4 md:px-8">
-        {FIVE_PILLARS.map((pillar) => (
-          <button
-            key={pillar.id}
-            onClick={() => setSelectedPillar(pillar)}
-            className="group flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-lg"
-            aria-label={`Learn about ${pillar.title}`}
+      {/* Purple glass container around pillars */}
+      <div 
+        className="rounded-lg p-4 md:p-6 border-2 border-accent"
+        style={{
+          background: 'rgba(88, 28, 135, 0.75)',
+          backdropFilter: 'blur(4px)'
+        }}
+      >
+        {/* Five Pillars using the actual pillar image - spread wider */}
+        <div className="flex justify-between items-end px-2 md:px-4">
+          {FIVE_PILLARS.map((pillar) => (
+            <button
+              key={pillar.id}
+              onClick={() => setSelectedPillar(pillar)}
+              className="group flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-lg"
+              aria-label={`Learn about ${pillar.title}`}
+            >
+              {/* Title on TOP of pillar - purple glass style with gold rim */}
+              <span 
+                className="mb-1 text-[9px] md:text-xs text-primary-foreground text-center leading-tight px-1.5 py-0.5 rounded border border-accent whitespace-nowrap"
+                style={{ 
+                  fontFamily: 'Arial, sans-serif', 
+                  fontWeight: 'bold',
+                  background: 'rgba(88, 28, 135, 0.95)',
+                  backdropFilter: 'blur(4px)'
+                }}
+              >
+                {pillar.title}
+              </span>
+              
+              {/* Pillar Image - new Nano Banana column */}
+              <div className="relative group-hover:brightness-110 transition-all duration-200">
+                <img 
+                  src={pillarImage} 
+                  alt="Pillar"
+                  className="w-14 md:w-20 h-auto object-contain"
+                />
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Platform Base with "Platform of Truth" label - sandy/beach yellow color */}
+        <div className="mt-3 flex justify-center">
+          <div 
+            className="w-full h-6 md:h-7 rounded-sm shadow-lg flex items-center justify-center"
+            style={{ 
+              background: 'linear-gradient(180deg, hsl(45 60% 70%) 0%, hsl(40 50% 55%) 50%, hsl(35 45% 45%) 100%)'
+            }}
           >
-            {/* Title on TOP of pillar - purple glass style with gold rim */}
             <span 
-              className="mb-1 text-[10px] md:text-xs text-primary-foreground text-center leading-tight px-2 py-1 rounded border-2 border-accent"
+              className="text-[10px] md:text-sm text-primary-foreground tracking-widest uppercase px-4 py-0.5 rounded border-2 border-accent whitespace-nowrap"
               style={{ 
-                fontFamily: 'Arial, sans-serif', 
-                fontWeight: 'bold',
+                fontFamily: 'Arial Black, Arial, sans-serif',
+                fontWeight: 'normal',
                 background: 'rgba(88, 28, 135, 0.85)',
                 backdropFilter: 'blur(4px)'
               }}
             >
-              {pillar.title}
+              Platform of Truth
             </span>
-            
-            {/* Pillar Image - new Nano Banana column */}
-            <div className="relative group-hover:brightness-110 transition-all duration-200">
-              <img 
-                src={pillarImage} 
-                alt="Pillar"
-                className="w-14 md:w-20 h-auto object-contain"
-              />
-            </div>
-          </button>
-        ))}
-      </div>
-
-      {/* Platform Base with "Platform of Truth" label - sandy/beach yellow color */}
-      <div className="mt-2 flex justify-center">
-        <div 
-          className="w-full h-5 md:h-6 rounded-sm shadow-lg flex items-center justify-center"
-          style={{ 
-            background: 'linear-gradient(180deg, hsl(45 60% 70%) 0%, hsl(40 50% 55%) 50%, hsl(35 45% 45%) 100%)'
-          }}
-        >
-          <span 
-            className="text-[10px] md:text-sm text-primary-foreground tracking-widest uppercase px-3 py-0.5 rounded border-2 border-accent"
-            style={{ 
-              fontFamily: 'Arial Black, Arial, sans-serif',
-              fontWeight: 'normal',
-              background: 'rgba(88, 28, 135, 0.85)',
-              backdropFilter: 'blur(4px)'
-            }}
-          >
-            Platform of Truth
-          </span>
+          </div>
         </div>
       </div>
 
