@@ -130,10 +130,22 @@ export const AppHome = ({ profile, onLogout }: AppHomeProps) => {
                 PROPHET GAD'S COUNSEL
               </h3>
               <div className="parchment-bg p-4 space-y-2">
-                <CounselTopic title="Music & Worship" description="Contemporary praise warnings" />
-                <CounselTopic title="Inordinate Affection" description="Pet idolatry" />
-                <CounselTopic title="The King's Meat" description="Food and health" />
-                <CounselTopic title="False Wisdom" description="Debt and finances" />
+                <CounselTopic 
+                  title="No Contemporary Worship Music for the Israelites" 
+                  description="Music & Worship warnings" 
+                />
+                <CounselTopic 
+                  title="No Dogs for the Israelites" 
+                  description="Pet idolatry (Inordinate Affection)" 
+                />
+                <CounselTopic 
+                  title="No King" 
+                  description="The King's Meat - Food and health" 
+                />
+                <CounselTopic 
+                  title="The Heavy Burden of Education" 
+                  description="False Wisdom - Debt and finances" 
+                />
               </div>
             </section>
 
