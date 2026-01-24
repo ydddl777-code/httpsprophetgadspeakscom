@@ -14,12 +14,12 @@ export const FivePillarsDisplay = () => {
   return (
     <div className="w-full max-w-4xl mx-auto px-4">
       {/* Section Heading */}
-      <h2 className="text-center text-xl md:text-2xl font-bold gold-text drop-shadow-text mb-8 tracking-wide">
-        ON THESE WE STAND
+      <h2 className="text-center text-xl md:text-2xl font-bold gold-text drop-shadow-text mb-6 tracking-widest uppercase">
+        Platform of Truth
       </h2>
 
       {/* Five Pillars */}
-      <div className="flex justify-center items-end gap-3 md:gap-6">
+      <div className="flex justify-center items-end gap-2 md:gap-4">
         {FIVE_PILLARS.map((pillar) => (
           <button
             key={pillar.id}
@@ -27,47 +27,49 @@ export const FivePillarsDisplay = () => {
             className="group flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-lg"
             aria-label={`Learn about ${pillar.title}`}
           >
-            {/* Pillar Capital */}
-            <div className="w-14 md:w-20 h-3 md:h-4 pillar-capital rounded-t-sm" />
+            {/* Title on TOP of pillar */}
+            <span className="mb-2 text-[10px] md:text-xs font-bold text-primary-foreground drop-shadow-text text-center leading-tight max-w-16 md:max-w-20">
+              {pillar.title}
+            </span>
             
-            {/* Pillar Column with fluting effect */}
+            {/* Pillar Capital */}
+            <div className="w-12 md:w-16 h-2 md:h-3 rounded-t-sm bg-gradient-to-b from-amber-200 via-amber-100 to-amber-50 shadow-md" />
+            
+            {/* Pillar Column - clean marble look */}
             <div 
-              className="relative w-12 md:w-16 pillar-column group-hover:brightness-105 transition-all duration-200"
-              style={{ height: '140px' }}
+              className="relative w-10 md:w-14 group-hover:brightness-110 transition-all duration-200 shadow-lg"
+              style={{ 
+                height: '120px',
+                background: 'linear-gradient(90deg, hsl(45 30% 85%) 0%, hsl(45 40% 95%) 30%, hsl(45 50% 98%) 50%, hsl(45 40% 95%) 70%, hsl(45 30% 85%) 100%)'
+              }}
             >
-              {/* Fluting lines */}
-              <div className="absolute inset-0 flex justify-evenly px-1 pt-2 pb-2">
-                {[1, 2, 3, 4, 5].map((i) => (
+              {/* Subtle fluting lines */}
+              <div className="absolute inset-0 flex justify-evenly px-1">
+                {[1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="w-[2px] h-full rounded-full"
+                    className="w-[1px] h-full"
                     style={{
-                      background: 'linear-gradient(180deg, transparent 0%, hsl(20 15% 70% / 0.4) 20%, hsl(20 15% 60% / 0.5) 50%, hsl(20 15% 70% / 0.4) 80%, transparent 100%)'
+                      background: 'linear-gradient(180deg, transparent 5%, hsl(45 20% 75% / 0.3) 20%, hsl(45 20% 70% / 0.4) 50%, hsl(45 20% 75% / 0.3) 80%, transparent 95%)'
                     }}
                   />
                 ))}
               </div>
-              
-              {/* Title on pillar */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span 
-                  className="text-[10px] md:text-xs font-bold text-foreground/80 text-center leading-tight px-1"
-                  style={{ writingMode: 'vertical-rl', textOrientation: 'mixed', transform: 'rotate(180deg)' }}
-                >
-                  {pillar.title}
-                </span>
-              </div>
             </div>
             
             {/* Pillar Base */}
-            <div className="w-14 md:w-20 h-3 md:h-4 pillar-base rounded-b-sm" />
-            
-            {/* Label below */}
-            <span className="mt-3 text-xs md:text-sm font-bold text-primary-foreground drop-shadow-text text-center">
-              {pillar.title}
-            </span>
+            <div className="w-12 md:w-16 h-2 md:h-3 rounded-b-sm bg-gradient-to-t from-amber-200 via-amber-100 to-amber-50 shadow-md" />
           </button>
         ))}
+      </div>
+
+      {/* Platform Base */}
+      <div className="mt-4 flex justify-center">
+        <div className="w-full max-w-md h-3 md:h-4 rounded-sm bg-gradient-to-b from-amber-300 via-amber-200 to-amber-400 shadow-lg flex items-center justify-center">
+          <span className="text-[8px] md:text-[10px] font-bold text-amber-900/70 tracking-widest uppercase">
+            Platform
+          </span>
+        </div>
       </div>
 
       {/* Pillar Detail Modal */}
