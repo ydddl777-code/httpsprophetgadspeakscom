@@ -116,7 +116,7 @@ export const FIVE_DISCIPLINES: DisciplineItem[] = [
     id: 'devotion',
     title: 'DEVOTION',
     icon: 'candle',
-    description: 'Through-the-year Bible reading, prayer reminders, worship time log',
+    description: 'Through-the-year Bible reading, Sabbath calendar with annotations, prayer reminders',
     scripture: '"Remember the sabbath day, to keep it holy." — Exodus 20:8'
   },
   {
