@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import pillarImage from '@/assets/pillar-example.jpeg';
+import pillarImage from '@/assets/pillar-column.jpg';
 
 export const FivePillarsDisplay = () => {
   const [selectedPillar, setSelectedPillar] = useState<PillarContent | null>(null);
@@ -36,15 +36,12 @@ export const FivePillarsDisplay = () => {
               {pillar.title}
             </span>
             
-            {/* Pillar Image - flat orientation with sandy/beach yellow tint */}
+            {/* Pillar Image - new Nano Banana column */}
             <div className="relative group-hover:brightness-110 transition-all duration-200">
               <img 
                 src={pillarImage} 
                 alt="Pillar"
-                className="w-12 md:w-16 h-auto object-contain"
-                style={{ 
-                  filter: 'sepia(30%) saturate(120%) hue-rotate(-10deg) brightness(1.05)'
-                }}
+                className="w-14 md:w-20 h-auto object-contain"
               />
             </div>
           </button>
