@@ -124,27 +124,27 @@ export const AppHome = ({ profile, onLogout }: AppHomeProps) => {
               ))}
             </div>
 
-            {/* Prophet Gad's Counsel Section */}
+            {/* Remnant Warning Series Section */}
             <section className="mt-12">
               <h3 className="text-lg font-bold gold-text drop-shadow-text mb-4">
-                PROPHET GAD'S COUNSEL
+                REMNANT WARNING SERIES
               </h3>
               <div className="parchment-bg p-4 space-y-2">
                 <CounselTopic 
+                  bookNumber="One"
                   title="No Contemporary Worship Music for the Israelites" 
-                  description="Music & Worship warnings" 
                 />
                 <CounselTopic 
+                  bookNumber="Two"
                   title="No Dogs for the Israelites" 
-                  description="Pet idolatry (Inordinate Affection)" 
                 />
                 <CounselTopic 
-                  title="No King" 
-                  description="The King's Meat - Food and health" 
+                  bookNumber="Three"
+                  title="No Unclean Foods for the Israelites" 
                 />
                 <CounselTopic 
-                  title="The Heavy Burden of Education" 
-                  description="False Wisdom - Debt and finances" 
+                  bookNumber="Four"
+                  title="No Fake/Useless Diplomas for the Israelites" 
                 />
               </div>
             </section>
@@ -173,15 +173,15 @@ export const AppHome = ({ profile, onLogout }: AppHomeProps) => {
 };
 
 interface CounselTopicProps {
+  bookNumber: string;
   title: string;
-  description: string;
 }
 
-const CounselTopic = ({ title, description }: CounselTopicProps) => (
+const CounselTopic = ({ bookNumber, title }: CounselTopicProps) => (
   <div className="flex items-center justify-between p-3 bg-card/30 rounded-lg hover:bg-card/50 cursor-pointer transition-colors">
     <div>
+      <span className="text-sm text-accent font-semibold mr-2">Book {bookNumber}:</span>
       <span className="font-semibold text-foreground">{title}</span>
-      <span className="text-sm text-muted-foreground ml-2">({description})</span>
     </div>
     <span className="text-accent">→</span>
   </div>
