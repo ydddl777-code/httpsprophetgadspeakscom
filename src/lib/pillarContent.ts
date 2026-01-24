@@ -116,14 +116,14 @@ export const FIVE_DISCIPLINES: DisciplineItem[] = [
     id: 'devotion',
     title: 'DEVOTION',
     icon: 'candle',
-    description: 'Sabbath tracker, prayer reminders, worship time log',
+    description: 'Through-the-year Bible reading, prayer reminders, worship time log',
     scripture: '"Remember the sabbath day, to keep it holy." — Exodus 20:8'
   },
   {
     id: 'praise',
     title: 'PRAISE',
     icon: 'music',
-    description: 'Remnant Seed Hymnal with 200 hymns',
+    description: 'Remnant Seed Hymnal',
     scripture: '"Sing unto the LORD a new song." — Psalm 96:1'
   },
   {
@@ -144,7 +144,7 @@ export const FIVE_DISCIPLINES: DisciplineItem[] = [
     id: 'study',
     title: 'STUDY',
     icon: 'scroll',
-    description: 'Doctrinal Q&A, KJV Scripture search, study guides',
+    description: 'Doctrine Q&A, KJV scripture search, Bible study',
     scripture: '"Study to shew thyself approved unto God." — 2 Timothy 2:15'
   }
 ];
