@@ -33,7 +33,7 @@ export const WhoWeAreSection = () => {
       >
         {/* First paragraph - 14pt */}
         <p 
-          className="text-foreground leading-relaxed drop-shadow-text mb-6"
+          className="text-primary-foreground leading-relaxed drop-shadow-text mb-6"
           style={{ 
             fontFamily: 'Arial, sans-serif',
             fontSize: '14pt',
@@ -46,7 +46,7 @@ export const WhoWeAreSection = () => {
         {/* We reject section - 14pt for bullets */}
         <div className="mb-6">
           <p 
-            className="text-foreground font-bold mb-2"
+            className="text-primary-foreground font-bold mb-2"
             style={{ 
               fontFamily: 'Arial, sans-serif',
               fontSize: '14pt'
@@ -55,7 +55,7 @@ export const WhoWeAreSection = () => {
             We reject:
           </p>
           <ul 
-            className="text-foreground leading-relaxed drop-shadow-text pl-4"
+            className="text-primary-foreground leading-relaxed drop-shadow-text pl-4"
             style={{ 
               fontFamily: 'Arial, sans-serif',
               fontSize: '14pt'
@@ -71,7 +71,7 @@ export const WhoWeAreSection = () => {
         {/* We proclaim section - 14pt for bullets */}
         <div className="mb-6">
           <p 
-            className="text-foreground font-bold mb-2"
+            className="text-primary-foreground font-bold mb-2"
             style={{ 
               fontFamily: 'Arial, sans-serif',
               fontSize: '14pt'
@@ -80,7 +80,7 @@ export const WhoWeAreSection = () => {
             We proclaim:
           </p>
           <ul 
-            className="text-foreground leading-relaxed drop-shadow-text pl-4"
+            className="text-primary-foreground leading-relaxed drop-shadow-text pl-4"
             style={{ 
               fontFamily: 'Arial, sans-serif',
               fontSize: '14pt'
@@ -95,7 +95,7 @@ export const WhoWeAreSection = () => {
 
         {/* Closing paragraphs - 12pt bold, justified */}
         <p 
-          className="text-foreground leading-relaxed drop-shadow-text mb-4"
+          className="text-primary-foreground leading-relaxed drop-shadow-text mb-4"
           style={{ 
             fontFamily: 'Arial, sans-serif',
             fontSize: '12pt',
@@ -107,7 +107,7 @@ export const WhoWeAreSection = () => {
         </p>
 
         <p 
-          className="text-foreground leading-relaxed drop-shadow-text"
+          className="text-primary-foreground leading-relaxed drop-shadow-text"
           style={{ 
             fontFamily: 'Arial, sans-serif',
             fontSize: '12pt',
