@@ -23,11 +23,11 @@ export const WhoWeAreSection = () => {
         </h2>
       </div>
       
-      {/* Purple glass background container - lighter shade */}
+      {/* Purple glass background container */}
       <div 
         className="p-6 md:p-8 rounded-lg border border-accent"
         style={{
-          background: 'rgba(107, 45, 163, 0.75)',
+          background: 'rgba(88, 28, 135, 0.85)',
           backdropFilter: 'blur(4px)'
         }}
       >
