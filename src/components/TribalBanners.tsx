@@ -1,0 +1,80 @@
+import { TRIBES_OF_ISRAEL, TribeName } from '@/lib/pillarContent';
+
+// Import all tribal banner images
+import reubenImg from '@/assets/tribes/reuben.jpeg';
+import simeonImg from '@/assets/tribes/simeon.jpeg';
+import leviImg from '@/assets/tribes/levi.jpeg';
+import judahImg from '@/assets/tribes/judah.jpeg';
+import danImg from '@/assets/tribes/dan.jpeg';
+import naphtaliImg from '@/assets/tribes/naphtali.jpeg';
+import gadImg from '@/assets/tribes/gad.jpeg';
+import asherImg from '@/assets/tribes/asher.jpeg';
+import issacharImg from '@/assets/tribes/issachar.jpeg';
+import zebulunImg from '@/assets/tribes/zebulun.jpeg';
+import ephraimImg from '@/assets/tribes/ephraim.png';
+import benjaminImg from '@/assets/tribes/benjamin.jpeg';
+
+const tribeImages: Record<TribeName, string> = {
+  reuben: reubenImg,
+  simeon: simeonImg,
+  levi: leviImg,
+  judah: judahImg,
+  dan: danImg,
+  naphtali: naphtaliImg,
+  gad: gadImg,
+  asher: asherImg,
+  issachar: issacharImg,
+  zebulun: zebulunImg,
+  ephraim: ephraimImg,
+  benjamin: benjaminImg,
+};
+
+const tribeLabels: Record<TribeName, string> = {
+  reuben: 'Reuben',
+  simeon: 'Simeon',
+  levi: 'Levi',
+  judah: 'Judah',
+  dan: 'Dan',
+  naphtali: 'Naphtali',
+  gad: 'Gad',
+  asher: 'Asher',
+  issachar: 'Issachar',
+  zebulun: 'Zebulun',
+  ephraim: 'Joseph',
+  benjamin: 'Benjamin',
+};
+
+interface TribalBannersProps {
+  side: 'left' | 'right';
+}
+
+export const TribalBanners = ({ side }: TribalBannersProps) => {
+  // First 6 tribes on left, last 6 on right
+  const tribes = side === 'left' 
+    ? TRIBES_OF_ISRAEL.slice(0, 6) 
+    : TRIBES_OF_ISRAEL.slice(6);
+
+  return (
+    <div className="hidden lg:flex flex-col gap-3 py-8">
+      {tribes.map((tribe) => (
+        <div
+          key={tribe}
+          className="tribal-banner flex flex-col items-center"
+          title={tribeLabels[tribe]}
+        >
+          <img
+            src={tribeImages[tribe]}
+            alt={`Tribe of ${tribeLabels[tribe]}`}
+            className="w-12 h-12 object-contain rounded-sm"
+            style={{ 
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+            }}
+          />
+          <span className="text-[9px] font-bold text-primary-foreground/80 mt-1 drop-shadow-text">
+            {tribeLabels[tribe]}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+};

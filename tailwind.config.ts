@@ -63,12 +63,22 @@ export default {
           DEFAULT: "hsl(var(--danger))",
           foreground: "hsl(var(--danger-foreground))",
         },
+        // Tabernacle colors
+        tabernacle: {
+          purple: "hsl(var(--tabernacle-purple))",
+          blue: "hsl(var(--tabernacle-blue))",
+          scarlet: "hsl(var(--tabernacle-scarlet))",
+          gold: "hsl(var(--tabernacle-gold))",
+          bronze: "hsl(var(--tabernacle-bronze))",
+          linen: "hsl(var(--tabernacle-linen))",
+        },
+        // Pillar colors
         pillar: {
-          spirit: "hsl(var(--pillar-spirit))",
-          ear: "hsl(var(--pillar-ear))",
-          mouth: "hsl(var(--pillar-mouth))",
-          wallet: "hsl(var(--pillar-wallet))",
-          doctrine: "hsl(var(--pillar-doctrine))",
+          "one-god": "hsl(var(--pillar-one-god))",
+          "israel": "hsl(var(--pillar-israel))",
+          "law": "hsl(var(--pillar-law))",
+          "judgment": "hsl(var(--pillar-judgment))",
+          "earth-new": "hsl(var(--pillar-earth-new))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -95,20 +105,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "fade-in": {
-          from: { opacity: "0" },
-          to: { opacity: "1" },
-        },
-        "slide-up": {
-          from: { opacity: "0", transform: "translateY(20px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.5s ease-out forwards",
-        "slide-up": "slide-up 0.5s ease-out forwards",
       },
     },
   },
