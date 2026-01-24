@@ -13,14 +13,9 @@ export const FivePillarsDisplay = () => {
   const [selectedPillar, setSelectedPillar] = useState<PillarContent | null>(null);
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4">
-      {/* Section Heading - Black Arial regular, bigger */}
-      <h2 className="text-center text-2xl md:text-3xl text-black drop-shadow-sm mb-6 tracking-widest uppercase" style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'normal' }}>
-        Platform of Truth
-      </h2>
-
-      {/* Five Pillars using the actual pillar image */}
-      <div className="flex justify-center items-end gap-1 md:gap-3">
+    <div className="w-full max-w-5xl mx-auto px-4">
+      {/* Five Pillars using the actual pillar image - spread wider */}
+      <div className="flex justify-between items-end px-4 md:px-8">
         {FIVE_PILLARS.map((pillar) => (
           <button
             key={pillar.id}
@@ -28,8 +23,16 @@ export const FivePillarsDisplay = () => {
             className="group flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-lg"
             aria-label={`Learn about ${pillar.title}`}
           >
-            {/* Title on TOP of pillar - more visible black text */}
-            <span className="mb-1 text-[10px] md:text-xs font-bold text-black drop-shadow-md text-center leading-tight max-w-14 md:max-w-20" style={{ fontFamily: 'Arial, sans-serif', textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}>
+            {/* Title on TOP of pillar - purple glass style with gold rim */}
+            <span 
+              className="mb-1 text-[10px] md:text-xs text-primary-foreground text-center leading-tight px-2 py-1 rounded border-2 border-accent"
+              style={{ 
+                fontFamily: 'Arial, sans-serif', 
+                fontWeight: 'bold',
+                background: 'rgba(88, 28, 135, 0.85)',
+                backdropFilter: 'blur(4px)'
+              }}
+            >
               {pillar.title}
             </span>
             
@@ -48,16 +51,24 @@ export const FivePillarsDisplay = () => {
         ))}
       </div>
 
-      {/* Platform Base - sandy/beach yellow color */}
+      {/* Platform Base with "Platform of Truth" label - sandy/beach yellow color */}
       <div className="mt-2 flex justify-center">
         <div 
-          className="w-full max-w-lg h-4 md:h-5 rounded-sm shadow-lg flex items-center justify-center"
+          className="w-full h-5 md:h-6 rounded-sm shadow-lg flex items-center justify-center"
           style={{ 
             background: 'linear-gradient(180deg, hsl(45 60% 70%) 0%, hsl(40 50% 55%) 50%, hsl(35 45% 45%) 100%)'
           }}
         >
-          <span className="text-[9px] md:text-[11px] font-bold text-black tracking-widest uppercase" style={{ fontFamily: 'Arial, sans-serif' }}>
-            Platform
+          <span 
+            className="text-[10px] md:text-sm text-primary-foreground tracking-widest uppercase px-3 py-0.5 rounded border-2 border-accent"
+            style={{ 
+              fontFamily: 'Arial Black, Arial, sans-serif',
+              fontWeight: 'normal',
+              background: 'rgba(88, 28, 135, 0.85)',
+              backdropFilter: 'blur(4px)'
+            }}
+          >
+            Platform of Truth
           </span>
         </div>
       </div>
