@@ -14,6 +14,16 @@ export const FivePillarsDisplay = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4">
+      {/* "The Pillar" label - positioned top left outside the container */}
+      <div className="mb-2">
+        <span 
+          className="text-sm md:text-base text-primary-foreground/90 drop-shadow-text italic"
+          style={{ fontFamily: 'Georgia, serif' }}
+        >
+          The Pillar
+        </span>
+      </div>
+
       {/* Purple glass container around pillars */}
       <div 
         className="rounded-lg p-4 md:p-6 border-2 border-accent"
