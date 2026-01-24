@@ -16,10 +16,7 @@ export const FivePillarsDisplay = () => {
     <div className="w-full max-w-5xl mx-auto px-4">
       {/* "The Pillar" label - positioned top left outside the container */}
       <div className="mb-2">
-        <span 
-          className="text-base md:text-lg text-primary-foreground drop-shadow-text font-black tracking-wide"
-          style={{ fontFamily: 'Arial Black, Arial, sans-serif' }}
-        >
+        <span className="text-xl md:text-2xl font-bold gold-text drop-shadow-text tracking-wide">
           THE PILLAR
         </span>
       </div>
