@@ -1,9 +1,12 @@
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { Onboarding } from './Onboarding';
-import { Home } from './Home';
+import { LandingPage } from './LandingPage';
+import { AppHome } from './AppHome';
+import { useState } from 'react';
 
 const Index = () => {
   const { profile, isLoading, createProfile, logout } = useUserProfile();
+  const [showApp, setShowApp] = useState(false);
 
   if (isLoading) {
     return (
@@ -16,11 +19,17 @@ const Index = () => {
     );
   }
 
+  // Not logged in - show onboarding
   if (!profile) {
     return <Onboarding onComplete={createProfile} />;
   }
 
-  return <Home profile={profile} onLogout={logout} />;
+  // Logged in - show either Landing or App based on state
+  if (showApp) {
+    return <AppHome profile={profile} onLogout={logout} />;
+  }
+
+  return <LandingPage onEnterApp={() => setShowApp(true)} />;
 };
 
 export default Index;

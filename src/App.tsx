@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import Index from "./pages/Index";
+import LandingPage from "./pages/LandingPage";
+import AppHome from "./pages/AppHome";
 import SpiritPillar from "./pages/SpiritPillar";
 import EarPillar from "./pages/EarPillar";
 import MouthPillar from "./pages/MouthPillar";
@@ -38,6 +40,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Index />} />
+      <Route path="/app" element={<AppHome profile={profile} onLogout={logout} />} />
       <Route path="/spirit" element={<SpiritPillar profile={profile} onLogout={logout} />} />
       <Route path="/ear" element={<EarPillar profile={profile} onLogout={logout} />} />
       <Route path="/mouth" element={<MouthPillar profile={profile} onLogout={logout} />} />
