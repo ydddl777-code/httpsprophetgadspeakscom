@@ -25,9 +25,11 @@ export const FivePillarsDisplay = () => {
         {/* Five Pillars using the actual pillar image - all aligned on same plane */}
         <div className="flex justify-between items-end px-0 md:px-2">
           {FIVE_PILLARS.map((pillar, index) => {
-            // Make "One God" (first pillar) slightly larger
+            // Make "One God" (first pillar) larger and more prominent
             const isFirstPillar = index === 0;
             const pillarSize = isFirstPillar ? 'w-16 md:w-24' : 'w-14 md:w-20';
+            const titleSize = isFirstPillar ? 'text-[10px] md:text-xs' : 'text-[8px] md:text-[10px]';
+            const titlePadding = isFirstPillar ? 'px-2 py-1' : 'px-1 py-0.5';
             
             return (
               <button
@@ -37,12 +39,12 @@ export const FivePillarsDisplay = () => {
                 aria-label={`Learn about ${pillar.title}`}
               >
                 {/* Title on TOP of pillar - fixed height container for alignment */}
-                <div className="h-6 md:h-7 flex items-end justify-center mb-1">
+                <div className="h-7 md:h-8 flex items-end justify-center mb-1">
                   <span 
-                    className="text-[8px] md:text-[10px] text-primary-foreground text-center leading-tight px-1 py-0.5 rounded border border-accent whitespace-nowrap"
+                    className={`${titleSize} ${titlePadding} text-primary-foreground text-center leading-tight rounded border border-accent whitespace-nowrap`}
                     style={{ 
                       fontFamily: 'Arial, sans-serif', 
-                      fontWeight: 'bold',
+                      fontWeight: isFirstPillar ? 900 : 'bold',
                       background: 'rgba(88, 28, 135, 0.95)',
                       backdropFilter: 'blur(4px)'
                     }}
