@@ -65,20 +65,26 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
           ))}
         </div>
 
-        <div className="w-full max-w-md parchment-bg p-6">
+        <div 
+          className="w-full max-w-md p-6 rounded-lg border border-accent"
+          style={{
+            background: 'rgba(88, 28, 135, 0.85)',
+            backdropFilter: 'blur(4px)'
+          }}
+        >
           {step === 1 && (
             <div className="space-y-4">
-              <h2 className="text-xl font-bold text-primary text-center">What name would you like to be called?</h2>
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name" className="w-full px-4 py-3 rounded-lg border-2 border-accent/30 bg-card/50 text-foreground focus:outline-none focus:border-accent" autoFocus />
+              <h2 className="text-xl font-bold text-primary-foreground text-center drop-shadow-text">What name would you like to be called?</h2>
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name" className="w-full px-4 py-3 rounded-lg border-2 border-accent/50 bg-white/10 text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:border-accent" autoFocus />
             </div>
           )}
 
           {step === 2 && (
             <div className="space-y-4">
-              <h2 className="text-xl font-bold text-primary text-center">Select your age group</h2>
+              <h2 className="text-xl font-bold text-primary-foreground text-center drop-shadow-text">Select your age group</h2>
               <div className="grid grid-cols-1 gap-2">
                 {(Object.entries(AGE_GROUP_LABELS) as [AgeGroup, string][]).map(([key, label]) => (
-                  <button key={key} onClick={() => setAgeGroup(key)} className={cn('px-4 py-3 rounded-lg border-2 text-left font-medium', ageGroup === key ? 'border-accent bg-accent/20' : 'border-accent/30 bg-card/30 hover:border-accent/50')}>
+                  <button key={key} onClick={() => setAgeGroup(key)} className={cn('px-4 py-3 rounded-lg border-2 text-left font-medium text-primary-foreground', ageGroup === key ? 'border-accent bg-accent/30' : 'border-accent/30 bg-white/10 hover:border-accent/50')}>
                     {label}
                   </button>
                 ))}
@@ -88,23 +94,23 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
 
           {step === 3 && (
             <div className="space-y-4">
-              <h2 className="text-xl font-bold text-primary text-center">Where are you located?</h2>
-              <input type="text" value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" className="w-full px-4 py-3 rounded-lg border-2 border-accent/30 bg-card/50 text-foreground focus:outline-none focus:border-accent" />
-              <select value={state} onChange={(e) => setState(e.target.value)} className="w-full px-4 py-3 rounded-lg border-2 border-accent/30 bg-card/50 text-foreground focus:outline-none focus:border-accent">
-                <option value="">Select State</option>
-                {US_STATES.map((s) => (<option key={s} value={s}>{s}</option>))}
+              <h2 className="text-xl font-bold text-primary-foreground text-center drop-shadow-text">Where are you located?</h2>
+              <input type="text" value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" className="w-full px-4 py-3 rounded-lg border-2 border-accent/50 bg-white/10 text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:border-accent" />
+              <select value={state} onChange={(e) => setState(e.target.value)} className="w-full px-4 py-3 rounded-lg border-2 border-accent/50 bg-white/10 text-primary-foreground focus:outline-none focus:border-accent">
+                <option value="" className="bg-purple-900 text-white">Select State</option>
+                {US_STATES.map((s) => (<option key={s} value={s} className="bg-purple-900 text-white">{s}</option>))}
               </select>
               {(ageGroup === 'child' || ageGroup === 'teen') && (
-                <input type="text" value={schoolDistrict} onChange={(e) => setSchoolDistrict(e.target.value)} placeholder="School District (optional)" className="w-full px-4 py-3 rounded-lg border-2 border-accent/30 bg-card/50 text-foreground focus:outline-none focus:border-accent" />
+                <input type="text" value={schoolDistrict} onChange={(e) => setSchoolDistrict(e.target.value)} placeholder="School District (optional)" className="w-full px-4 py-3 rounded-lg border-2 border-accent/50 bg-white/10 text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:border-accent" />
               )}
             </div>
           )}
 
           <div className="flex items-center justify-between mt-8">
-            <button onClick={handleBack} disabled={step === 1} className={cn('flex items-center gap-2 px-4 py-2 rounded-lg', step === 1 ? 'text-muted-foreground cursor-not-allowed' : 'text-foreground hover:bg-accent/20')}>
+            <button onClick={handleBack} disabled={step === 1} className={cn('flex items-center gap-2 px-4 py-2 rounded-lg text-primary-foreground', step === 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10')}>
               <ArrowLeft className="w-4 h-4" /> Back
             </button>
-            <button onClick={handleNext} disabled={!canProceed()} className={cn('flex items-center gap-2 px-6 py-2 rounded-lg font-semibold', canProceed() ? 'tabernacle-button' : 'bg-muted text-muted-foreground cursor-not-allowed')}>
+            <button onClick={handleNext} disabled={!canProceed()} className={cn('flex items-center gap-2 px-6 py-2 rounded-lg font-semibold', canProceed() ? 'tabernacle-button' : 'bg-white/20 text-primary-foreground/50 cursor-not-allowed')}>
               {step === 3 ? 'Get Started' : 'Continue'} <ArrowRight className="w-4 h-4" />
             </button>
           </div>
