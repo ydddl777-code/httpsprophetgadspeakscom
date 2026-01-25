@@ -2,6 +2,7 @@ import { LandingHeader } from '@/components/LandingHeader';
 import { FivePillarsDisplay } from '@/components/FivePillarsDisplay';
 import { TribalBanners } from '@/components/TribalBanners';
 import { WhoWeAreSection } from '@/components/WhoWeAreSection';
+import { ArtifactGallery } from '@/components/ArtifactGallery';
 import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 
 interface LandingPageProps {
@@ -39,6 +40,9 @@ export const LandingPage = ({ onEnterApp }: LandingPageProps) => {
           <div className="flex-1 flex flex-col items-center justify-center py-8 space-y-12 lg:px-20">
             {/* Five Pillars */}
             <FivePillarsDisplay />
+
+            {/* Tabernacle Artifacts Gallery */}
+            <ArtifactGallery />
 
             {/* Who We Are Section */}
             <WhoWeAreSection />
