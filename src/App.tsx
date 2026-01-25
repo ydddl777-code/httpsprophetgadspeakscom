@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { SanctuaryAmbienceProvider } from "@/contexts/SanctuaryAmbienceContext";
 import Index from "./pages/Index";
 import LandingPage from "./pages/LandingPage";
 import AppHome from "./pages/AppHome";
@@ -57,11 +58,13 @@ const AppRoutes = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      <SanctuaryAmbienceProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </SanctuaryAmbienceProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

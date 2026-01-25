@@ -1,4 +1,5 @@
 import { ClockDisplay } from './ClockDisplay';
+import { SanctuaryAmbienceToggle } from './SanctuaryAmbienceToggle';
 
 interface LandingHeaderProps {
   onEnterApp?: () => void;
@@ -18,8 +19,11 @@ export const LandingHeader = ({ onEnterApp }: LandingHeaderProps) => {
           </p>
         </div>
 
-        {/* Clock Display */}
+        {/* Right side controls */}
         <div className="flex flex-col items-end gap-4">
+          {/* Sanctuary Ambience Toggle - Top Right */}
+          <SanctuaryAmbienceToggle showInvitation />
+          
           <ClockDisplay size="medium" />
           
           {onEnterApp && (
