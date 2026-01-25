@@ -59,7 +59,7 @@ export const LandingPage = ({ onEnterApp }: LandingPageProps) => {
               backdropFilter: 'blur(4px)'
             }}
           >
-            <p className="text-sm text-primary-foreground drop-shadow-text">
+            <p className="text-sm text-primary drop-shadow-text font-bold">
               Remnant Seed © 2026
             </p>
           </div>

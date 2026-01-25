@@ -18,7 +18,7 @@ export const WhoWeAreSection = () => {
           backdropFilter: 'blur(4px)'
         }}
       >
-        <h2 className="text-xl md:text-2xl font-bold text-primary-foreground drop-shadow-text">
+        <h2 className="text-xl md:text-2xl font-bold text-primary drop-shadow-text">
           WHO WE ARE
         </h2>
       </div>
@@ -127,7 +127,7 @@ export const WhoWeAreSection = () => {
           backdropFilter: 'blur(4px)'
         }}
       >
-        <h2 className="text-xl md:text-2xl font-bold text-primary-foreground drop-shadow-text">
+        <h2 className="text-xl md:text-2xl font-bold text-primary drop-shadow-text">
           WHO WE ARE
         </h2>
       </div>
