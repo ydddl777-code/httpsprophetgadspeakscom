@@ -3,6 +3,7 @@ import { Flame, Music, Wheat, Scale, ScrollText, Settings, LogOut } from 'lucide
 import { FIVE_DISCIPLINES } from '@/lib/pillarContent';
 import { UserProfile } from '@/lib/types';
 import { ClockDisplay } from '@/components/ClockDisplay';
+import { SanctuaryAmbienceToggle } from '@/components/SanctuaryAmbienceToggle';
 import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 
 interface AppHomeProps {
@@ -73,6 +74,9 @@ export const AppHome = ({ profile, onLogout }: AppHomeProps) => {
               <ClockDisplay size="small" />
               
               <div className="flex gap-2">
+                {/* Sanctuary Ambience Toggle */}
+                <SanctuaryAmbienceToggle />
+                
                 <button
                   onClick={() => navigate('/settings')}
                   className="p-2 rounded-lg bg-card/30 backdrop-blur-sm border border-accent/30 text-primary-foreground hover:bg-card/50 transition-colors"

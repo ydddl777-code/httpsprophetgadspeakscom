@@ -1,0 +1,212 @@
+import { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
+
+const STORAGE_KEY = 'sanctuary_ambience_enabled';
+const FADE_DURATION = 2000;
+const AMBIENT_VOLUME = 0.15;
+
+interface SanctuaryAmbienceContextValue {
+  isEnabled: boolean;
+  isPlaying: boolean;
+  isLoading: boolean;
+  toggle: () => void;
+}
+
+const SanctuaryAmbienceContext = createContext<SanctuaryAmbienceContextValue | null>(null);
+
+export function SanctuaryAmbienceProvider({ children }: { children: ReactNode }) {
+  const [isEnabled, setIsEnabled] = useState<boolean>(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored === 'true';
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const fadeIntervalRef = useRef<number | null>(null);
+  const hasInteractedRef = useRef(false);
+  const audioUrlRef = useRef<string | null>(null);
+
+  const clearFadeInterval = useCallback(() => {
+    if (fadeIntervalRef.current) {
+      clearInterval(fadeIntervalRef.current);
+      fadeIntervalRef.current = null;
+    }
+  }, []);
+
+  const fadeVolume = useCallback((targetVolume: number, onComplete?: () => void) => {
+    clearFadeInterval();
+    
+    if (!audioRef.current) {
+      onComplete?.();
+      return;
+    }
+
+    const audio = audioRef.current;
+    const startVolume = audio.volume;
+    const volumeDiff = targetVolume - startVolume;
+    const steps = 40;
+    const stepDuration = FADE_DURATION / steps;
+    let currentStep = 0;
+
+    fadeIntervalRef.current = window.setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      audio.volume = Math.max(0, Math.min(1, startVolume + (volumeDiff * easeProgress)));
+
+      if (currentStep >= steps) {
+        clearFadeInterval();
+        audio.volume = targetVolume;
+        onComplete?.();
+      }
+    }, stepDuration);
+  }, [clearFadeInterval]);
+
+  const fetchAmbientAudio = useCallback(async (): Promise<string | null> => {
+    // Check if we have a cached blob URL that's still valid
+    if (audioUrlRef.current) {
+      return audioUrlRef.current;
+    }
+
+    try {
+      const projectUrl = import.meta.env.VITE_SUPABASE_URL;
+      const response = await fetch(
+        `${projectUrl}/functions/v1/generate-sanctuary-ambience`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ambient audio: ${response.status}`);
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      audioUrlRef.current = audioUrl;
+      return audioUrl;
+    } catch (error) {
+      console.error('Failed to fetch sanctuary ambience:', error);
+      return null;
+    }
+  }, []);
+
+  const initAudio = useCallback(async () => {
+    if (audioRef.current) return audioRef.current;
+
+    const audioUrl = await fetchAmbientAudio();
+    if (!audioUrl) return null;
+
+    const audio = new Audio(audioUrl);
+    audio.loop = true;
+    audio.volume = 0;
+    audio.preload = 'auto';
+    audioRef.current = audio;
+
+    audio.addEventListener('error', () => {
+      console.error('Sanctuary ambience audio failed to load');
+      setIsPlaying(false);
+    });
+
+    return audio;
+  }, [fetchAmbientAudio]);
+
+  const play = useCallback(async () => {
+    if (!hasInteractedRef.current) return;
+    
+    setIsLoading(true);
+    try {
+      const audio = await initAudio();
+      if (!audio) {
+        setIsLoading(false);
+        return;
+      }
+      
+      audio.volume = 0;
+      
+      await audio.play();
+      setIsPlaying(true);
+      fadeVolume(AMBIENT_VOLUME);
+    } catch (error) {
+      console.error('Failed to play ambient audio:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [initAudio, fadeVolume]);
+
+  const stop = useCallback(() => {
+    if (!audioRef.current) return;
+    
+    fadeVolume(0, () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        setIsPlaying(false);
+      }
+    });
+  }, [fadeVolume]);
+
+  const toggle = useCallback(() => {
+    hasInteractedRef.current = true;
+    const newState = !isEnabled;
+    setIsEnabled(newState);
+    localStorage.setItem(STORAGE_KEY, String(newState));
+
+    if (newState) {
+      play();
+    } else {
+      stop();
+    }
+  }, [isEnabled, play, stop]);
+
+  // Handle user interaction to enable audio playback
+  useEffect(() => {
+    const handleInteraction = () => {
+      hasInteractedRef.current = true;
+      if (isEnabled && !isPlaying && !isLoading) {
+        play();
+      }
+    };
+
+    document.addEventListener('click', handleInteraction, { once: true });
+    document.addEventListener('touchstart', handleInteraction, { once: true });
+
+    return () => {
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('touchstart', handleInteraction);
+    };
+  }, [isEnabled, isPlaying, isLoading, play]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      clearFadeInterval();
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      if (audioUrlRef.current) {
+        URL.revokeObjectURL(audioUrlRef.current);
+        audioUrlRef.current = null;
+      }
+    };
+  }, [clearFadeInterval]);
+
+  return (
+    <SanctuaryAmbienceContext.Provider value={{ isEnabled, isPlaying, isLoading, toggle }}>
+      {children}
+    </SanctuaryAmbienceContext.Provider>
+  );
+}
+
+export function useSanctuaryAmbienceContext() {
+  const context = useContext(SanctuaryAmbienceContext);
+  if (!context) {
+    throw new Error('useSanctuaryAmbienceContext must be used within a SanctuaryAmbienceProvider');
+  }
+  return context;
+}
