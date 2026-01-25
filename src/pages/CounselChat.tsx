@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, PenTool, Volume2 } from 'lucide-react';
+import { ArrowLeft, PenTool, Volume2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
+import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import type { UserProfile } from '@/lib/types';
 
@@ -21,15 +22,7 @@ interface ChatMessage {
   timestamp: Date;
 }
 
-const INITIAL_GREETING = "Shalom, beloved. I am here to listen. What weighs upon your heart today?";
-
-const PROPHET_RESPONSES = [
-  "The Most High sees your heart, child. Remember what is written: 'Cast thy burden upon the LORD, and he shall sustain thee.' - Psalm 55:22",
-  "Walk in the path of righteousness, for the LORD guides those who seek Him. Be patient and trust in His timing.",
-  "The scriptures remind us: 'Trust in the LORD with all thine heart; and lean not unto thine own understanding.' - Proverbs 3:5",
-  "This too shall pass. The trials of today strengthen the faith of tomorrow. Stay rooted in the Word.",
-  "Remember, you are not alone in this journey. The congregation stands with you, and the Most High watches over His children always.",
-];
+const INITIAL_GREETING = "Peace be with you, beloved. I am here to listen. What weighs upon your heart today?";
 
 export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
   const navigate = useNavigate();
@@ -42,6 +35,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
     },
   ]);
   const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { speak, isSpeaking } = useElevenLabsTTS();
 
@@ -57,8 +51,8 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
     }
   }, [messages]);
 
-  const handleSendMessage = () => {
-    if (!inputValue.trim()) return;
+  const handleSendMessage = async () => {
+    if (!inputValue.trim() || isLoading) return;
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -69,18 +63,44 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
 
     setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
+    setIsLoading(true);
 
-    // Simulate Prophet response after a short delay
-    setTimeout(() => {
-      const randomResponse = PROPHET_RESPONSES[Math.floor(Math.random() * PROPHET_RESPONSES.length)];
+    try {
+      // Build conversation history for context
+      const conversationHistory = messages.map((msg) => ({
+        role: msg.role === 'prophet' ? 'assistant' : 'user',
+        content: msg.content,
+      }));
+
+      const { data, error } = await supabase.functions.invoke('pgai-counsel', {
+        body: {
+          message: userMessage.content,
+          conversationHistory,
+        },
+      });
+
+      if (error) throw error;
+
       const prophetMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'prophet',
-        content: randomResponse,
+        content: data.response || "I am here, my child. Please share what is on your heart.",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, prophetMessage]);
-    }, 1500);
+    } catch (error) {
+      console.error('PGAI error:', error);
+      // Fallback response if AI fails
+      const fallbackMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: 'prophet',
+        content: "My child, there seems to be a moment of silence in the connection. Please try again, and know that the Most High hears you always.\n\n— PGAI (Prophet Gad AI)",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, fallbackMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -209,10 +229,14 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               />
               <Button
                 onClick={handleSendMessage}
-                disabled={!inputValue.trim()}
+                disabled={!inputValue.trim() || isLoading}
                 className="bg-accent hover:bg-accent/90 text-accent-foreground px-4"
               >
-                <PenTool className="w-5 h-5" />
+                {isLoading ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <PenTool className="w-5 h-5" />
+                )}
               </Button>
             </div>
           </div>
