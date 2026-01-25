@@ -10,7 +10,7 @@ export const LandingHeader = ({ onEnterApp }: LandingHeaderProps) => {
       <div className="max-w-6xl mx-auto flex items-start justify-between">
         {/* Logo/Title */}
         <div className="text-left">
-          <h1 className="text-3xl md:text-5xl font-bold text-secondary drop-shadow-text tracking-wide">
+          <h1 className="text-3xl md:text-5xl font-bold text-primary drop-shadow-text tracking-wide">
             REMNANT SEED
           </h1>
           <p className="text-lg md:text-xl text-primary-foreground/90 drop-shadow-text mt-1">
