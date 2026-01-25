@@ -41,11 +41,11 @@ export const LandingPage = ({ onEnterApp }: LandingPageProps) => {
             {/* Five Pillars */}
             <FivePillarsDisplay />
 
-            {/* Tabernacle Artifacts Gallery */}
-            <ArtifactGallery />
-
             {/* Who We Are Section */}
             <WhoWeAreSection />
+
+            {/* Tabernacle Artifacts Gallery */}
+            <ArtifactGallery />
           </div>
 
           {/* Right Tribal Banners - extreme right edge */}
