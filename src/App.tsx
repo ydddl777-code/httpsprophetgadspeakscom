@@ -12,6 +12,7 @@ import EarPillar from "./pages/EarPillar";
 import MouthPillar from "./pages/MouthPillar";
 import WalletPillar from "./pages/WalletPillar";
 import DoctrinePillar from "./pages/DoctrinePillar";
+import CounselChat from "./pages/CounselChat";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -46,6 +47,7 @@ const AppRoutes = () => {
       <Route path="/mouth" element={<MouthPillar profile={profile} onLogout={logout} />} />
       <Route path="/wallet" element={<WalletPillar profile={profile} onLogout={logout} />} />
       <Route path="/doctrine" element={<DoctrinePillar profile={profile} onLogout={logout} />} />
+      <Route path="/counsel" element={<CounselChat profile={profile} onLogout={logout} />} />
       <Route path="/settings" element={<Settings profile={profile} onUpdateProfile={updateProfile} onLogout={logout} />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
