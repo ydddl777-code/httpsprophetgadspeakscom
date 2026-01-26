@@ -25,9 +25,6 @@ export const TribeModal = ({ tribe, tribeImage, isOpen, onClose }: TribeModalPro
           <DialogTitle className="text-primary-foreground font-bold text-xl text-center">
             {tribe.title}
           </DialogTitle>
-          <p className="text-accent text-center text-lg font-semibold">
-            {tribe.hebrewName}
-          </p>
         </DialogHeader>
 
         <ScrollArea className="max-h-[60vh]">

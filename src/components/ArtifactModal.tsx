@@ -25,9 +25,6 @@ export const ArtifactModal = ({ artifact, artifactImage, isOpen, onClose }: Arti
           <DialogTitle className="text-primary-foreground font-bold text-xl text-center">
             {artifact.title}
           </DialogTitle>
-          <p className="text-accent text-center text-lg font-semibold">
-            {artifact.hebrew}
-          </p>
         </DialogHeader>
 
         <ScrollArea className="max-h-[60vh]">
