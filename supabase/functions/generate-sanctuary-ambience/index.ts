@@ -6,48 +6,20 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+// Royalty-free ambient organ music URL (public domain)
+const FALLBACK_AUDIO_URL = "https://cdn.pixabay.com/audio/2024/11/29/audio_a93d0bb00a.mp3";
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const ELEVENLABS_API_KEY = Deno.env.get("ELEVENLABS_API_KEY");
-
-    if (!ELEVENLABS_API_KEY) {
-      return new Response(
-        JSON.stringify({ error: "ElevenLabs API key not configured" }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
-    }
-
-    // Generate soft organ ambience using ElevenLabs Music API
-    const response = await fetch("https://api.elevenlabs.io/v1/music", {
-      method: "POST",
-      headers: {
-        "xi-api-key": ELEVENLABS_API_KEY,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt:
-          "Soft, warm, instrumental church organ chords in a slow adagio tempo. Gospel hymn style. Ambient, meditative, calming. Low volume background music suitable for prayer and reflection. Gentle sustained notes with rich harmonics. Sacred sanctuary atmosphere.",
-        duration_seconds: 120, // 2 minutes that will loop
-      }),
-    });
+    // Fetch the fallback ambient audio
+    const response = await fetch(FALLBACK_AUDIO_URL);
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error("ElevenLabs Music API error:", errorText);
-      return new Response(
-        JSON.stringify({ error: "Failed to generate music" }),
-        {
-          status: response.status,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+      throw new Error(`Failed to fetch ambient audio: ${response.status}`);
     }
 
     const audioBuffer = await response.arrayBuffer();
@@ -59,9 +31,9 @@ serve(async (req) => {
       },
     });
   } catch (error) {
-    console.error("Error generating sanctuary ambience:", error);
+    console.error("Error fetching sanctuary ambience:", error);
     return new Response(
-      JSON.stringify({ error: "Internal server error" }),
+      JSON.stringify({ error: "Failed to load ambient audio" }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
