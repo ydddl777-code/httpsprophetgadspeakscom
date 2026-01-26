@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Volume2, VolumeX, Clock, User, MapPin, Bell, BellOff, Send } from 'lucide-react';
+import { ArrowLeft, Volume2, VolumeX, Clock, User, MapPin, Bell, BellOff, Send, Music } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Slider } from '@/components/ui/slider';
 import { AppHeader } from '@/components/AppHeader';
 import { UserProfile, AGE_GROUP_LABELS } from '@/lib/types';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useToast } from '@/hooks/use-toast';
+import { useSanctuaryAmbienceContext } from '@/contexts/SanctuaryAmbienceContext';
 import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 
 interface SettingsProps {
@@ -27,6 +29,14 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
     scheduleAlarm, 
     sendTestNotification 
   } = useNotifications();
+  const {
+    isEnabled: ambienceEnabled,
+    volume: ambienceVolume,
+    minVolume,
+    maxVolume,
+    toggle: toggleAmbience,
+    setVolume: setAmbienceVolume
+  } = useSanctuaryAmbienceContext();
   
   const [alarmTime, setAlarmTime] = useState(profile.alarmTime);
   const [alarmEnabled, setAlarmEnabled] = useState(profile.alarmEnabled ?? false);
@@ -143,7 +153,7 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
             {audioEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
             Audio Settings
           </h2>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between py-3 border-b border-purple-300/30 mb-4">
             <div>
               <p className="text-purple-900 font-medium text-sm">Audio Greeting</p>
               <p className="text-xs text-purple-800/70">
@@ -154,6 +164,48 @@ export const Settings = ({ profile, onUpdateProfile, onLogout }: SettingsProps) 
               checked={audioEnabled}
               onCheckedChange={setAudioEnabled}
             />
+          </div>
+
+          {/* Sanctuary Ambience */}
+          <div className="py-3 border-b border-purple-300/30 mb-4">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <p className="text-purple-900 font-medium text-sm flex items-center gap-2">
+                  <Music className="w-4 h-4" />
+                  Sanctuary Ambience
+                </p>
+                <p className="text-xs text-purple-800/70">
+                  Soft organ music for a peaceful atmosphere
+                </p>
+              </div>
+              <Switch
+                checked={ambienceEnabled}
+                onCheckedChange={toggleAmbience}
+              />
+            </div>
+            
+            {/* Volume Slider */}
+            <div className="mt-4">
+              <div className="flex items-center justify-between mb-2">
+                <Label className="text-purple-900 text-sm">Volume Level</Label>
+                <span className="text-purple-800/70 text-xs">
+                  {Math.round(ambienceVolume * 100)}%
+                </span>
+              </div>
+              <Slider
+                value={[ambienceVolume]}
+                onValueChange={(values) => setAmbienceVolume(values[0])}
+                min={minVolume}
+                max={maxVolume}
+                step={0.01}
+                className="w-full"
+                disabled={!ambienceEnabled}
+              />
+              <div className="flex justify-between text-xs text-purple-800/50 mt-1">
+                <span>5%</span>
+                <span>30%</span>
+              </div>
+            </div>
           </div>
         </div>
 
