@@ -1,14 +1,21 @@
 import { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
 
 const STORAGE_KEY = 'sanctuary_ambience_enabled';
+const VOLUME_STORAGE_KEY = 'sanctuary_ambience_volume';
 const FADE_DURATION = 2000;
-const AMBIENT_VOLUME = 0.15;
+const DEFAULT_VOLUME = 0.15;
+const MIN_VOLUME = 0.05;
+const MAX_VOLUME = 0.30;
 
 interface SanctuaryAmbienceContextValue {
   isEnabled: boolean;
   isPlaying: boolean;
   isLoading: boolean;
+  volume: number;
+  minVolume: number;
+  maxVolume: number;
   toggle: () => void;
+  setVolume: (volume: number) => void;
 }
 
 const SanctuaryAmbienceContext = createContext<SanctuaryAmbienceContextValue | null>(null);
@@ -18,12 +25,17 @@ export function SanctuaryAmbienceProvider({ children }: { children: ReactNode })
     const stored = localStorage.getItem(STORAGE_KEY);
     return stored === 'true';
   });
+  const [volume, setVolumeState] = useState<number>(() => {
+    const stored = localStorage.getItem(VOLUME_STORAGE_KEY);
+    return stored ? parseFloat(stored) : DEFAULT_VOLUME;
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fadeIntervalRef = useRef<number | null>(null);
   const hasInteractedRef = useRef(false);
   const audioUrlRef = useRef<string | null>(null);
+  const targetVolumeRef = useRef(volume);
 
   const clearFadeInterval = useCallback(() => {
     if (fadeIntervalRef.current) {
@@ -130,7 +142,7 @@ export function SanctuaryAmbienceProvider({ children }: { children: ReactNode })
       
       await audio.play();
       setIsPlaying(true);
-      fadeVolume(AMBIENT_VOLUME);
+      fadeVolume(targetVolumeRef.current);
     } catch (error) {
       console.error('Failed to play ambient audio:', error);
     } finally {
@@ -162,6 +174,18 @@ export function SanctuaryAmbienceProvider({ children }: { children: ReactNode })
       stop();
     }
   }, [isEnabled, play, stop]);
+
+  const setVolume = useCallback((newVolume: number) => {
+    const clampedVolume = Math.max(MIN_VOLUME, Math.min(MAX_VOLUME, newVolume));
+    setVolumeState(clampedVolume);
+    targetVolumeRef.current = clampedVolume;
+    localStorage.setItem(VOLUME_STORAGE_KEY, String(clampedVolume));
+    
+    // Apply volume immediately if playing
+    if (audioRef.current && isPlaying) {
+      audioRef.current.volume = clampedVolume;
+    }
+  }, [isPlaying]);
 
   // Handle user interaction to enable audio playback
   useEffect(() => {
@@ -197,7 +221,16 @@ export function SanctuaryAmbienceProvider({ children }: { children: ReactNode })
   }, [clearFadeInterval]);
 
   return (
-    <SanctuaryAmbienceContext.Provider value={{ isEnabled, isPlaying, isLoading, toggle }}>
+    <SanctuaryAmbienceContext.Provider value={{ 
+      isEnabled, 
+      isPlaying, 
+      isLoading, 
+      volume, 
+      minVolume: MIN_VOLUME, 
+      maxVolume: MAX_VOLUME, 
+      toggle, 
+      setVolume 
+    }}>
       {children}
     </SanctuaryAmbienceContext.Provider>
   );
