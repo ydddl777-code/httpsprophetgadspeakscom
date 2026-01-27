@@ -38,7 +38,7 @@ export const ArtifactGallery = () => {
             backdropFilter: 'blur(4px)'
           }}
         >
-          <h2 className="text-xl md:text-2xl font-bold text-primary drop-shadow-text">
+          <h2 className="text-xl md:text-2xl font-bold text-white drop-shadow-text">
             TABERNACLE ARTIFACTS
           </h2>
         </div>
@@ -64,7 +64,7 @@ export const ArtifactGallery = () => {
                 </div>
                 {/* Artifact name - simple gold strip label */}
                 <span 
-                  className="text-xs md:text-sm font-bold text-primary mt-2 px-3 py-1 rounded border border-accent text-center"
+                  className="text-xs md:text-sm font-bold text-white mt-2 px-3 py-1 rounded border border-accent text-center"
                   style={{
                     background: 'rgba(88, 28, 135, 0.85)',
                   }}

@@ -107,7 +107,7 @@ export const TribalBanners = ({ side }: TribalBannersProps) => {
             />
             {/* Tribe name with purple glass style and gold rim */}
             <span 
-              className="text-[8px] font-bold text-primary-foreground mt-0.5 px-1 py-0.5 rounded border border-accent"
+              className="text-[8px] font-bold text-white mt-0.5 px-1 py-0.5 rounded border border-accent"
               style={{
                 background: 'rgba(88, 28, 135, 0.85)',
                 backdropFilter: 'blur(4px)'

@@ -1,13 +1,4 @@
-import { WHO_WE_ARE_MANIFESTO } from '@/lib/pillarContent';
-
 export const WhoWeAreSection = () => {
-  // Split the manifesto into parts for different styling
-  const parts = WHO_WE_ARE_MANIFESTO.split('\n\n');
-  const firstParagraph = parts[0];
-  const rejectSection = parts[1] + '\n' + parts[2] + '\n' + parts[3] + '\n' + parts[4];
-  const proclaimSection = parts[5] + '\n' + parts[6] + '\n' + parts[7] + '\n' + parts[8] + '\n' + parts[9];
-  const closingParagraphs = parts.slice(10).join('\n\n');
-
   return (
     <section className="w-full max-w-3xl mx-auto px-4 py-8">
       {/* Top header with purple glass style */}
@@ -18,7 +9,7 @@ export const WhoWeAreSection = () => {
           backdropFilter: 'blur(4px)'
         }}
       >
-        <h2 className="text-xl md:text-2xl font-bold text-primary drop-shadow-text">
+        <h2 className="text-xl md:text-2xl font-bold text-white drop-shadow-text">
           WHO WE ARE
         </h2>
       </div>
@@ -33,20 +24,20 @@ export const WhoWeAreSection = () => {
       >
         {/* First paragraph - 14pt */}
         <p 
-          className="text-primary-foreground leading-relaxed drop-shadow-text mb-6"
+          className="text-white leading-relaxed drop-shadow-text mb-6"
           style={{ 
             fontFamily: 'Arial, sans-serif',
             fontSize: '14pt',
             textAlign: 'justify'
           }}
         >
-          {firstParagraph}
+          The Remnant Seed are the last-generation faithful—those who keep the Commandments of God and the faith of Jesus (Revelation 14:12). We are not a denomination. We are a family: the scattered seed of Israel awakening to our identity, and Gentiles grafted in by faith.
         </p>
 
         {/* We reject section - 14pt for bullets */}
         <div className="mb-6">
           <p 
-            className="text-primary-foreground font-bold mb-2"
+            className="text-white font-bold mb-2"
             style={{ 
               fontFamily: 'Arial, sans-serif',
               fontSize: '14pt'
@@ -55,7 +46,7 @@ export const WhoWeAreSection = () => {
             We reject:
           </p>
           <ul 
-            className="text-primary-foreground leading-relaxed drop-shadow-text pl-4"
+            className="text-white leading-relaxed drop-shadow-text pl-4"
             style={{ 
               fontFamily: 'Arial, sans-serif',
               fontSize: '14pt'
@@ -71,7 +62,7 @@ export const WhoWeAreSection = () => {
         {/* We proclaim section - 14pt for bullets */}
         <div className="mb-6">
           <p 
-            className="text-primary-foreground font-bold mb-2"
+            className="text-white font-bold mb-2"
             style={{ 
               fontFamily: 'Arial, sans-serif',
               fontSize: '14pt'
@@ -80,7 +71,7 @@ export const WhoWeAreSection = () => {
             We proclaim:
           </p>
           <ul 
-            className="text-primary-foreground leading-relaxed drop-shadow-text pl-4"
+            className="text-white leading-relaxed drop-shadow-text pl-4"
             style={{ 
               fontFamily: 'Arial, sans-serif',
               fontSize: '14pt'
@@ -95,7 +86,7 @@ export const WhoWeAreSection = () => {
 
         {/* Closing paragraphs - 12pt bold, justified */}
         <p 
-          className="text-primary-foreground leading-relaxed drop-shadow-text mb-4"
+          className="text-white leading-relaxed drop-shadow-text mb-4"
           style={{ 
             fontFamily: 'Arial, sans-serif',
             fontSize: '12pt',
@@ -107,7 +98,7 @@ export const WhoWeAreSection = () => {
         </p>
 
         <p 
-          className="text-primary-foreground leading-relaxed drop-shadow-text"
+          className="text-white leading-relaxed drop-shadow-text"
           style={{ 
             fontFamily: 'Arial, sans-serif',
             fontSize: '12pt',
@@ -119,7 +110,7 @@ export const WhoWeAreSection = () => {
         </p>
       </div>
 
-      {/* Bottom header with purple glass style - duplicated from top */}
+      {/* Bottom header with purple glass style */}
       <div 
         className="text-center py-3 px-6 mt-6 rounded border border-accent mx-auto w-fit"
         style={{
@@ -127,7 +118,7 @@ export const WhoWeAreSection = () => {
           backdropFilter: 'blur(4px)'
         }}
       >
-        <h2 className="text-xl md:text-2xl font-bold text-primary drop-shadow-text">
+        <h2 className="text-xl md:text-2xl font-bold text-white drop-shadow-text">
           WHO WE ARE
         </h2>
       </div>
