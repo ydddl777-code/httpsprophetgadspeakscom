@@ -3,8 +3,6 @@
 
 export interface TribeData {
   title: string;
-  hebrewName: string;
-  hebrew: string;
   meaning: string;
   symbol: string;
   lineage: string;
@@ -14,7 +12,6 @@ export interface TribeData {
 
 export interface ArtifactData {
   title: string;
-  hebrew: string;
   significance: string;
   details: string;
 }
@@ -22,8 +19,6 @@ export interface ArtifactData {
 export const TRIBES_DATA: Record<string, TribeData> = {
   Reuben: {
     title: "Tribe of Reuben",
-    hebrewName: "רְאוּבֵן",
-    hebrew: "רְאוּבֵן (Reuven)",
     meaning: "See, a Son",
     symbol: "Mandrake / Rising Sun / Water",
     lineage: "1st Born Son of Jacob & Leah",
@@ -32,8 +27,6 @@ export const TRIBES_DATA: Record<string, TribeData> = {
   },
   Simeon: {
     title: "Tribe of Simeon",
-    hebrewName: "שִׁמְעוֹן",
-    hebrew: "שִׁמְעוֹן (Shimon)",
     meaning: "Heard",
     symbol: "Castle / Towers / Sword",
     lineage: "2nd Son of Jacob & Leah",
@@ -42,8 +35,6 @@ export const TRIBES_DATA: Record<string, TribeData> = {
   },
   Levi: {
     title: "Tribe of Levi",
-    hebrewName: "לֵוִי",
-    hebrew: "לֵוִי (Levi)",
     meaning: "Joined / Attached",
     symbol: "Priestly Breastplate",
     lineage: "3rd Son of Jacob & Leah",
@@ -52,8 +43,6 @@ export const TRIBES_DATA: Record<string, TribeData> = {
   },
   Judah: {
     title: "Tribe of Judah",
-    hebrewName: "יְהוּדָה",
-    hebrew: "יְהוּדָה (Yehudah)",
     meaning: "Yahweh be Praised",
     symbol: "Lion",
     lineage: "4th Son of Jacob & Leah",
@@ -62,8 +51,6 @@ export const TRIBES_DATA: Record<string, TribeData> = {
   },
   Dan: {
     title: "Tribe of Dan",
-    hebrewName: "דָּן",
-    hebrew: "דָּן (Dan)",
     meaning: "Judge",
     symbol: "Serpent / Scales of Justice",
     lineage: "5th Son of Jacob (1st of Bilhah)",
@@ -72,8 +59,6 @@ export const TRIBES_DATA: Record<string, TribeData> = {
   },
   Naphtali: {
     title: "Tribe of Naphtali",
-    hebrewName: "נַפְתָּלִי",
-    hebrew: "נַפְתָּלִי (Naftali)",
     meaning: "My Wrestling",
     symbol: "Hind (Deer) Let Loose",
     lineage: "6th Son of Jacob (2nd of Bilhah)",
@@ -82,8 +67,6 @@ export const TRIBES_DATA: Record<string, TribeData> = {
   },
   Gad: {
     title: "Tribe of Gad",
-    hebrewName: "גָּד",
-    hebrew: "גָּד (Gad)",
     meaning: "Troop / Fortune",
     symbol: "Tents / Troop",
     lineage: "7th Son of Jacob (1st of Zilpah)",
@@ -92,8 +75,6 @@ export const TRIBES_DATA: Record<string, TribeData> = {
   },
   Asher: {
     title: "Tribe of Asher",
-    hebrewName: "אָשֵׁר",
-    hebrew: "אָשֵׁר (Asher)",
     meaning: "Happy / Blessed",
     symbol: "Olive Tree / Cup / Bread",
     lineage: "8th Son of Jacob (2nd of Zilpah)",
@@ -102,8 +83,6 @@ export const TRIBES_DATA: Record<string, TribeData> = {
   },
   Issachar: {
     title: "Tribe of Issachar",
-    hebrewName: "יִשָּׂשכָר",
-    hebrew: "יִשָּׂשכָר (Yissachar)",
     meaning: "Reward / Hire",
     symbol: "Donkey with Burdens",
     lineage: "9th Son of Jacob & Leah",
@@ -112,8 +91,6 @@ export const TRIBES_DATA: Record<string, TribeData> = {
   },
   Zebulun: {
     title: "Tribe of Zebulun",
-    hebrewName: "זְבוּלֻן",
-    hebrew: "זְבוּלֻן (Zevulun)",
     meaning: "Dwelling",
     symbol: "Ship / Haven",
     lineage: "10th Son of Jacob & Leah",
@@ -122,8 +99,6 @@ export const TRIBES_DATA: Record<string, TribeData> = {
   },
   Joseph: {
     title: "Tribe of Joseph",
-    hebrewName: "יוֹסֵף",
-    hebrew: "יוֹסֵף (Yosef)",
     meaning: "He Shall Add",
     symbol: "Sheaf of Wheat / Bull",
     lineage: "11th Son of Jacob (1st of Rachel)",
@@ -132,8 +107,6 @@ export const TRIBES_DATA: Record<string, TribeData> = {
   },
   Benjamin: {
     title: "Tribe of Benjamin",
-    hebrewName: "בִּנְיָמִין",
-    hebrew: "בִּנְיָמִין (Binyamin)",
     meaning: "Son of My Right Hand",
     symbol: "Wolf",
     lineage: "12th Son of Jacob (2nd of Rachel)",
@@ -145,31 +118,26 @@ export const TRIBES_DATA: Record<string, TribeData> = {
 export const ARTIFACTS_DATA: Record<string, ArtifactData> = {
   Ark: {
     title: "The Ark of the Covenant",
-    hebrew: "אֲרוֹן הַבְּרִית (Aron HaBrit)",
     significance: "The most sacred object, symbolizing God's throne and presence among His people.",
     details: "A wooden chest covered in gold, containing the stone tablets of the 10 Commandments, a pot of manna, and Aaron's rod. Its lid, the 'Mercy Seat,' featured two golden cherubim where God's glory would appear."
   },
   Menorah: {
     title: "The Golden Menorah",
-    hebrew: "מְנוֹרָה (Menorah)",
     significance: "Symbolizes the light of God and the mission of Israel to be a 'light to the nations'.",
     details: "A seven-branched lampstand hammered from a single piece of pure gold. It was kept burning daily in the Holy Place of the Tabernacle, using pure olive oil."
   },
   Showbread: {
     title: "Table of Showbread",
-    hebrew: "שֻׁלְחַן הַפָּנִים (Shulchan HaPanim)",
     significance: "Represents God's constant provision for the twelve tribes of Israel and their fellowship with Him.",
     details: "A table overlaid with gold, holding twelve loaves of bread (one for each tribe) that were replaced every Sabbath by the priests. Also held golden pitchers and bowls for libation offerings."
   },
   Altar: {
     title: "Altar of Incense",
-    hebrew: "מִזְבַּח הַקְּטֹרֶת (Mizbach HaKtoret)",
     significance: "Symbolizes the prayers of the people ascending to God, a pleasing aroma to Him.",
     details: "A small, tall altar overlaid with gold, placed directly in front of the veil to the Most Holy Place. A special, holy incense was burned on it morning and evening."
   },
   Breastplate: {
     title: "High Priest's Breastplate",
-    hebrew: "חֹשֶׁן מִשְׁפָּט (Choshen Mishpat)",
     significance: "A breastplate of judgment worn by the High Priest, bearing the names of the tribes before God as a continual memorial.",
     details: "A sacred vestment set with twelve precious stones (like Ruby, Topaz, Emerald, Sapphire, etc.), each engraved with the name of one of the twelve tribes of Israel."
   }

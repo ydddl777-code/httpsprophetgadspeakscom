@@ -1,12 +1,15 @@
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { Onboarding } from './Onboarding';
-import { LandingPage } from './LandingPage';
+import { WelcomeLanding } from './WelcomeLanding';
+import { WhatWeBelieve } from './WhatWeBelieve';
 import { AppHome } from './AppHome';
 import { useState } from 'react';
 
+type ViewState = 'welcome' | 'beliefs' | 'app';
+
 const Index = () => {
   const { profile, isLoading, createProfile, logout } = useUserProfile();
-  const [showApp, setShowApp] = useState(false);
+  const [currentView, setCurrentView] = useState<ViewState>('welcome');
 
   if (isLoading) {
     return (
@@ -24,12 +27,21 @@ const Index = () => {
     return <Onboarding onComplete={createProfile} />;
   }
 
-  // Logged in - show either Landing or App based on state
-  if (showApp) {
+  // Logged in - show appropriate view based on state
+  if (currentView === 'app') {
     return <AppHome profile={profile} onLogout={logout} />;
   }
 
-  return <LandingPage onEnterApp={() => setShowApp(true)} />;
+  if (currentView === 'beliefs') {
+    return <WhatWeBelieve onBack={() => setCurrentView('welcome')} />;
+  }
+
+  return (
+    <WelcomeLanding 
+      onEnterApp={() => setCurrentView('app')} 
+      onViewBeliefs={() => setCurrentView('beliefs')}
+    />
+  );
 };
 
 export default Index;

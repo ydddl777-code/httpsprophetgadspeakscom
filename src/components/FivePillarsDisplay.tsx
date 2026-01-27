@@ -48,7 +48,7 @@ export const FivePillarsDisplay = () => {
                 {/* Title on TOP of pillar - fixed height container for alignment */}
                 <div className="h-7 md:h-8 flex items-end justify-center mb-1">
                   <span 
-                    className={`${titleSize} ${titlePadding} text-primary-foreground text-center leading-tight rounded border border-accent whitespace-nowrap`}
+                    className={`${titleSize} ${titlePadding} text-white text-center leading-tight rounded border border-accent whitespace-nowrap`}
                     style={{ 
                       fontFamily: 'Arial, sans-serif', 
                       fontWeight: isFirstPillar ? 900 : 'bold',
@@ -82,7 +82,7 @@ export const FivePillarsDisplay = () => {
             }}
           >
             <span 
-              className="text-[10px] md:text-sm text-primary-foreground tracking-widest uppercase px-4 py-0.5 rounded border-2 border-accent whitespace-nowrap"
+              className="text-[10px] md:text-sm text-white tracking-widest uppercase px-4 py-0.5 rounded border-2 border-accent whitespace-nowrap"
               style={{ 
                 fontFamily: 'Arial Black, Arial, sans-serif',
                 fontWeight: 'normal',
