@@ -146,27 +146,27 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
               Come sit at the table. Prophet Gad is here to guide you with wisdom from the Scriptures.
             </p>
 
-            {/* Prophet Gad Images - Tribal flanking Modern */}
-            <div className="my-4 flex items-center justify-center gap-4">
-              {/* Left Tribal Image - Circular */}
+            {/* Prophet Gad Images - Large Tribal flanking Modern */}
+            <div className="my-4 flex items-center justify-center gap-6 -mx-8">
+              {/* Left Tribal Image - Large and Imposing */}
               <img 
                 src={prophetGadTribal} 
                 alt="Prophet Gad Emblem" 
-                className="w-16 h-16 rounded-full object-cover border-2 border-accent shadow-md"
+                className="w-28 h-28 md:w-36 md:h-36 rounded-lg object-cover border-3 border-accent shadow-xl"
               />
               
               {/* Center Modern Image - Rectangular for contrast */}
               <img 
                 src={prophetGadModern} 
                 alt="Prophet Gad" 
-                className="w-24 h-32 rounded-lg object-cover border-4 border-accent shadow-lg"
+                className="w-28 h-36 md:w-32 md:h-40 rounded-lg object-cover border-4 border-accent shadow-lg"
               />
               
-              {/* Right Tribal Image - Circular */}
+              {/* Right Tribal Image - Large and Imposing */}
               <img 
                 src={prophetGadTribal} 
                 alt="Prophet Gad Emblem" 
-                className="w-16 h-16 rounded-full object-cover border-2 border-accent shadow-md"
+                className="w-28 h-28 md:w-36 md:h-36 rounded-lg object-cover border-3 border-accent shadow-xl"
               />
             </div>
             
