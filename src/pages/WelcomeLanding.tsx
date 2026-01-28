@@ -1,5 +1,6 @@
 import { LandingHeader } from '@/components/LandingHeader';
 import { TribalBanners } from '@/components/TribalBanners';
+import { SanctuaryAmbienceToggle } from '@/components/SanctuaryAmbienceToggle';
 import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 
 interface WelcomeLandingProps {
@@ -81,6 +82,11 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             </div>
           </div>
         </main>
+
+        {/* Mini Music Player - Bottom Right Corner */}
+        <div className="fixed bottom-6 right-6 z-30">
+          <SanctuaryAmbienceToggle />
+        </div>
 
         {/* Footer */}
         <footer className="relative z-10 py-6 text-center lg:mx-20">
