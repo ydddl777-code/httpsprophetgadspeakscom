@@ -57,8 +57,17 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
               Come sit at the table. Prophet Gad is here to guide you with wisdom from the Scriptures.
             </p>
             
-            {/* Praying Hands Emoji as placeholder for friendly imagery */}
-            <div className="text-6xl mb-6">🙏</div>
+            {/* Embedded Music Player */}
+            <div className="my-6">
+              <audio 
+                src="/music/prophet-gad-track-1.mp3" 
+                controls 
+                loop 
+                autoPlay
+                className="w-full max-w-sm mx-auto rounded-lg"
+                style={{ filter: 'sepia(0.3) hue-rotate(260deg)' }}
+              />
+            </div>
             
             <p className="text-white/80 mb-8">
               Whether you need encouragement, have questions about the Word, or simply want a morning blessing — you are welcome here.
