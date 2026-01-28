@@ -147,22 +147,22 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             </p>
 
             {/* Prophet Gad Images - Tribal flanking Modern */}
-            <div className="my-4 flex items-center justify-center gap-3">
-              {/* Left Tribal Image */}
+            <div className="my-4 flex items-center justify-center gap-4">
+              {/* Left Tribal Image - Circular */}
               <img 
                 src={prophetGadTribal} 
                 alt="Prophet Gad Emblem" 
                 className="w-16 h-16 rounded-full object-cover border-2 border-accent shadow-md"
               />
               
-              {/* Center Modern Image */}
+              {/* Center Modern Image - Rectangular for contrast */}
               <img 
                 src={prophetGadModern} 
                 alt="Prophet Gad" 
-                className="w-28 h-28 rounded-full object-cover border-4 border-accent shadow-lg"
+                className="w-24 h-32 rounded-lg object-cover border-4 border-accent shadow-lg"
               />
               
-              {/* Right Tribal Image */}
+              {/* Right Tribal Image - Circular */}
               <img 
                 src={prophetGadTribal} 
                 alt="Prophet Gad Emblem" 
