@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { LandingHeader } from '@/components/LandingHeader';
 import { TribalBanners } from '@/components/TribalBanners';
 import goldenGateBackground from '@/assets/golden-gate-background.jpg';
-import prophetGadImage from '@/assets/prophet-gad.png';
+import prophetGadTribal from '@/assets/prophet-gad.png';
+import prophetGadModern from '@/assets/prophet-gad-modern.png';
 
 interface WelcomeLandingProps {
   onEnterApp: () => void;
@@ -145,12 +146,27 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
               Come sit at the table. Prophet Gad is here to guide you with wisdom from the Scriptures.
             </p>
 
-            {/* Prophet Gad Image */}
-            <div className="my-4 flex justify-center">
+            {/* Prophet Gad Images - Tribal flanking Modern */}
+            <div className="my-4 flex items-center justify-center gap-3">
+              {/* Left Tribal Image */}
               <img 
-                src={prophetGadImage} 
+                src={prophetGadTribal} 
+                alt="Prophet Gad Emblem" 
+                className="w-16 h-16 rounded-full object-cover border-2 border-accent shadow-md"
+              />
+              
+              {/* Center Modern Image */}
+              <img 
+                src={prophetGadModern} 
                 alt="Prophet Gad" 
-                className="w-32 h-32 rounded-full object-cover border-4 border-accent shadow-lg"
+                className="w-28 h-28 rounded-full object-cover border-4 border-accent shadow-lg"
+              />
+              
+              {/* Right Tribal Image */}
+              <img 
+                src={prophetGadTribal} 
+                alt="Prophet Gad Emblem" 
+                className="w-16 h-16 rounded-full object-cover border-2 border-accent shadow-md"
               />
             </div>
             
