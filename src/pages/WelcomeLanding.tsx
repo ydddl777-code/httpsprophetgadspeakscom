@@ -104,11 +104,18 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
       {/* Linen Texture Overlay */}
       <div className="fixed inset-0 linen-overlay pointer-events-none" />
 
-      {/* Audio Element - No autoPlay */}
+      {/* Music Audio Element - No autoPlay */}
       <audio
         ref={audioRef}
         src={playlist[currentTrackIndex]}
         onEnded={handleTrackEnd}
+      />
+      
+      {/* Prophet Gad Welcome Voice - plays once on load */}
+      <audio
+        src="/audio/prophet-gad-welcome.mp4"
+        autoPlay
+        playsInline
       />
 
       {/* Content */}
