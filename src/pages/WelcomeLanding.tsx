@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Settings } from 'lucide-react';
 import { LandingHeader } from '@/components/LandingHeader';
 import { TribalBanners } from '@/components/TribalBanners';
+import { getEnabledTracks } from '@/components/MusicManager';
 import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 import prophetGadTribal from '@/assets/prophet-gad.png';
 import prophetGadModern from '@/assets/prophet-gad-modern.png';
@@ -9,18 +12,6 @@ interface WelcomeLandingProps {
   onEnterApp: () => void;
   onViewBeliefs: () => void;
 }
-
-// Playlist of all Prophet Gad music tracks
-const MUSIC_PLAYLIST = [
-  '/music/thunder-road-gospel.mp3',
-  '/music/prophets-soil.mp3',
-  '/music/prophets-warning.mp3',
-  '/music/seven-calls-to-fire.mp3',
-  '/music/unchanging-god.mp3',
-  '/music/watchman-on-zions-gate.mp3',
-  '/music/watchmans-call.mp3',
-  '/music/no-shadow-of-turning.mp3',
-];
 
 // Shuffle array helper
 const shuffleArray = <T,>(array: T[]): T[] => {
@@ -33,7 +24,9 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProps) => {
-  const [playlist] = useState(() => shuffleArray(MUSIC_PLAYLIST));
+  const navigate = useNavigate();
+  // Get enabled tracks from managed catalog
+  const [playlist] = useState(() => shuffleArray(getEnabledTracks()));
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false); // Auto-play disabled
   const [volume, setVolume] = useState(0.5);
@@ -239,11 +232,21 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                 {/* Big Red Stop Button */}
                 <button
                   onClick={stopMusic}
-                  className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 border-4 border-red-400 shadow-lg flex items-center justify-center transition-all"
+                  className="w-12 h-12 rounded-full bg-destructive hover:bg-destructive/80 border-4 border-destructive/60 shadow-lg flex items-center justify-center transition-all"
                   title="Stop Music"
                   aria-label="Stop Music"
                 >
                   <span className="text-white text-xl font-bold">■</span>
+                </button>
+
+                {/* Music Settings Gear */}
+                <button
+                  onClick={() => navigate('/music-settings')}
+                  className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 border-2 border-white/30 shadow flex items-center justify-center transition-all"
+                  title="Manage Music Catalog"
+                  aria-label="Music Settings"
+                >
+                  <Settings className="w-5 h-5 text-white" />
                 </button>
               </div>
             </div>
