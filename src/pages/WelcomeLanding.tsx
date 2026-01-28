@@ -38,6 +38,21 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
   const [isPlaying, setIsPlaying] = useState(false); // Auto-play disabled
   const [volume, setVolume] = useState(0.5);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const welcomeAudioRef = useRef<HTMLAudioElement>(null);
+  const [isWelcomePlaying, setIsWelcomePlaying] = useState(false);
+
+  // Play/pause welcome voice
+  const toggleWelcomeVoice = () => {
+    if (welcomeAudioRef.current) {
+      if (isWelcomePlaying) {
+        welcomeAudioRef.current.pause();
+        welcomeAudioRef.current.currentTime = 0;
+      } else {
+        welcomeAudioRef.current.play();
+      }
+      setIsWelcomePlaying(!isWelcomePlaying);
+    }
+  };
 
   // Handle track end - move to next track
   const handleTrackEnd = () => {
@@ -111,11 +126,11 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
         onEnded={handleTrackEnd}
       />
       
-      {/* Prophet Gad Welcome Voice - plays once on load */}
+      {/* Prophet Gad Welcome Voice */}
       <audio
+        ref={welcomeAudioRef}
         src="/audio/prophet-gad-welcome.mp4"
-        autoPlay
-        playsInline
+        onEnded={() => setIsWelcomePlaying(false)}
       />
 
       {/* Content */}
@@ -145,12 +160,21 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
           >
             {/* Welcoming Message */}
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              Welcome, Friend
+              Welcome, Dear Friend
             </h2>
             
-            <p className="text-lg text-white/90 mb-4 leading-relaxed">
-              Come sit at the table. Prophet Gad is here to guide you with wisdom from the Scriptures.
+            <p className="text-lg text-white/90 mb-2 leading-relaxed">
+              Come sit at the table. Prophet Gad is here to guide with wisdom from the Scriptures.
             </p>
+
+            {/* Hear Prophet Gad Button */}
+            <button
+              onClick={toggleWelcomeVoice}
+              className="mb-4 px-4 py-2 rounded-full bg-accent/80 hover:bg-accent border-2 border-white/30 text-white font-bold flex items-center gap-2 mx-auto transition-all"
+            >
+              <span className="text-lg">{isWelcomePlaying ? "🔊" : "🔈"}</span>
+              {isWelcomePlaying ? "Playing..." : "Hear Prophet Gad"}
+            </button>
 
             {/* Prophet Gad Images - Oval Tribal flanking Wide Modern */}
             <div className="my-4 flex items-center justify-center gap-4">
