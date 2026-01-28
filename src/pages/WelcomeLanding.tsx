@@ -57,16 +57,31 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
               Come sit at the table. Prophet Gad is here to guide you with wisdom from the Scriptures.
             </p>
             
-            {/* Embedded Music Player */}
-            <div className="my-6">
+            {/* Compact Music Player with Big Stop Button */}
+            <div className="my-4 flex items-center justify-center gap-3">
               <audio 
+                id="welcome-audio"
                 src="/music/thunder-road-gospel.mp3" 
                 controls 
                 loop 
                 autoPlay
-                className="w-full max-w-sm mx-auto rounded-lg"
+                className="h-8 w-48 rounded"
                 style={{ filter: 'sepia(0.3) hue-rotate(260deg)' }}
               />
+              <button
+                onClick={() => {
+                  const audio = document.getElementById('welcome-audio') as HTMLAudioElement;
+                  if (audio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                  }
+                }}
+                className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 border-4 border-red-400 shadow-lg flex items-center justify-center transition-all"
+                title="Stop Music"
+                aria-label="Stop Music"
+              >
+                <span className="text-white text-xl font-bold">■</span>
+              </button>
             </div>
             
             <p className="text-white/80 mb-8">
