@@ -15,6 +15,7 @@ import WalletPillar from "./pages/WalletPillar";
 import DoctrinePillar from "./pages/DoctrinePillar";
 import CounselChat from "./pages/CounselChat";
 import Settings from "./pages/Settings";
+import MusicSettings from "./pages/MusicSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +51,7 @@ const AppRoutes = () => {
       <Route path="/doctrine" element={<DoctrinePillar profile={profile} onLogout={logout} />} />
       <Route path="/counsel" element={<CounselChat profile={profile} onLogout={logout} />} />
       <Route path="/settings" element={<Settings profile={profile} onUpdateProfile={updateProfile} onLogout={logout} />} />
+      <Route path="/music-settings" element={<MusicSettings />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
