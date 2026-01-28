@@ -73,45 +73,15 @@ export function SanctuaryAmbienceProvider({ children }: { children: ReactNode })
     }, stepDuration);
   }, [clearFadeInterval]);
 
-  const fetchAmbientAudio = useCallback(async (): Promise<string | null> => {
-    // Check if we have a cached blob URL that's still valid
-    if (audioUrlRef.current) {
-      return audioUrlRef.current;
-    }
-
-    try {
-      const projectUrl = import.meta.env.VITE_SUPABASE_URL;
-      const response = await fetch(
-        `${projectUrl}/functions/v1/generate-sanctuary-ambience`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch ambient audio: ${response.status}`);
-      }
-
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-      audioUrlRef.current = audioUrl;
-      return audioUrl;
-    } catch (error) {
-      console.error('Failed to fetch sanctuary ambience:', error);
-      return null;
-    }
+  // Use local Prophet Gad music file
+  const getAudioUrl = useCallback((): string => {
+    return '/music/prophet-gad-track-1.mp3';
   }, []);
 
-  const initAudio = useCallback(async () => {
+  const initAudio = useCallback(() => {
     if (audioRef.current) return audioRef.current;
 
-    const audioUrl = await fetchAmbientAudio();
-    if (!audioUrl) return null;
+    const audioUrl = getAudioUrl();
 
     const audio = new Audio(audioUrl);
     audio.loop = true;
@@ -125,18 +95,14 @@ export function SanctuaryAmbienceProvider({ children }: { children: ReactNode })
     });
 
     return audio;
-  }, [fetchAmbientAudio]);
+  }, [getAudioUrl]);
 
   const play = useCallback(async () => {
     if (!hasInteractedRef.current) return;
     
     setIsLoading(true);
     try {
-      const audio = await initAudio();
-      if (!audio) {
-        setIsLoading(false);
-        return;
-      }
+      const audio = initAudio();
       
       audio.volume = 0;
       
