@@ -1,14 +1,94 @@
+import { useState, useRef, useEffect } from 'react';
 import { LandingHeader } from '@/components/LandingHeader';
 import { TribalBanners } from '@/components/TribalBanners';
-import { SanctuaryAmbienceToggle } from '@/components/SanctuaryAmbienceToggle';
 import goldenGateBackground from '@/assets/golden-gate-background.jpg';
+import prophetGadImage from '@/assets/prophet-gad.png';
 
 interface WelcomeLandingProps {
   onEnterApp: () => void;
   onViewBeliefs: () => void;
 }
 
+// Playlist of all Prophet Gad music tracks
+const MUSIC_PLAYLIST = [
+  '/music/thunder-road-gospel.mp3',
+  '/music/prophets-soil.mp3',
+  '/music/prophets-warning.mp3',
+  '/music/seven-calls-to-fire.mp3',
+  '/music/unchanging-god.mp3',
+  '/music/watchman-on-zions-gate.mp3',
+  '/music/watchmans-call.mp3',
+  '/music/no-shadow-of-turning.mp3',
+];
+
+// Shuffle array helper
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProps) => {
+  const [playlist] = useState(() => shuffleArray(MUSIC_PLAYLIST));
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [volume, setVolume] = useState(0.5);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Handle track end - move to next track
+  const handleTrackEnd = () => {
+    setCurrentTrackIndex((prev) => (prev + 1) % playlist.length);
+  };
+
+  // Play/pause control
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  // Stop music completely
+  const stopMusic = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  };
+
+  // Update volume
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
+  };
+
+  // Set initial volume and autoplay
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, []);
+
+  // When track changes, play the new track
+  useEffect(() => {
+    if (audioRef.current && isPlaying) {
+      audioRef.current.play().catch(() => {
+        // Autoplay blocked, user interaction required
+      });
+    }
+  }, [currentTrackIndex]);
+
   return (
     <div className="min-h-screen relative">
       {/* Background Image */}
@@ -22,6 +102,14 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
       
       {/* Linen Texture Overlay */}
       <div className="fixed inset-0 linen-overlay pointer-events-none" />
+
+      {/* Hidden Audio Element */}
+      <audio
+        ref={audioRef}
+        src={playlist[currentTrackIndex]}
+        autoPlay
+        onEnded={handleTrackEnd}
+      />
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col">
@@ -53,38 +141,68 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
               Welcome, Friend
             </h2>
             
-            <p className="text-lg text-white/90 mb-6 leading-relaxed">
+            <p className="text-lg text-white/90 mb-4 leading-relaxed">
               Come sit at the table. Prophet Gad is here to guide you with wisdom from the Scriptures.
             </p>
-            
-            {/* Compact Music Player with Big Stop Button */}
-            <div className="my-4 flex items-center justify-center gap-3">
-              <audio 
-                id="welcome-audio"
-                src="/music/thunder-road-gospel.mp3" 
-                controls 
-                loop 
-                autoPlay
-                className="h-8 w-48 rounded"
-                style={{ filter: 'sepia(0.3) hue-rotate(260deg)' }}
+
+            {/* Prophet Gad Image */}
+            <div className="my-4 flex justify-center">
+              <img 
+                src={prophetGadImage} 
+                alt="Prophet Gad" 
+                className="w-32 h-32 rounded-full object-cover border-4 border-accent shadow-lg"
               />
-              <button
-                onClick={() => {
-                  const audio = document.getElementById('welcome-audio') as HTMLAudioElement;
-                  if (audio) {
-                    audio.pause();
-                    audio.currentTime = 0;
-                  }
-                }}
-                className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 border-4 border-red-400 shadow-lg flex items-center justify-center transition-all"
-                title="Stop Music"
-                aria-label="Stop Music"
-              >
-                <span className="text-white text-xl font-bold">■</span>
-              </button>
             </div>
             
-            <p className="text-white/80 mb-8">
+            {/* Compact Music Player with Controls */}
+            <div className="my-4 flex flex-col items-center gap-3">
+              {/* Track info */}
+              <p className="text-xs text-white/70">
+                Now Playing: Track {currentTrackIndex + 1} of {playlist.length}
+              </p>
+              
+              {/* Controls Row */}
+              <div className="flex items-center justify-center gap-3 flex-wrap">
+                {/* Play/Pause Button */}
+                <button
+                  onClick={togglePlay}
+                  className="w-10 h-10 rounded-full bg-accent hover:bg-accent/80 border-2 border-white/30 shadow flex items-center justify-center transition-all"
+                  title={isPlaying ? "Pause" : "Play"}
+                  aria-label={isPlaying ? "Pause Music" : "Play Music"}
+                >
+                  <span className="text-white text-lg font-bold">
+                    {isPlaying ? "❚❚" : "▶"}
+                  </span>
+                </button>
+
+                {/* Volume Slider */}
+                <div className="flex items-center gap-2 bg-white/20 rounded-full px-3 py-1">
+                  <span className="text-white text-sm">🔊</span>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.05"
+                    value={volume}
+                    onChange={handleVolumeChange}
+                    className="w-20 h-2 accent-accent cursor-pointer"
+                    title={`Volume: ${Math.round(volume * 100)}%`}
+                  />
+                </div>
+
+                {/* Big Red Stop Button */}
+                <button
+                  onClick={stopMusic}
+                  className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 border-4 border-red-400 shadow-lg flex items-center justify-center transition-all"
+                  title="Stop Music"
+                  aria-label="Stop Music"
+                >
+                  <span className="text-white text-xl font-bold">■</span>
+                </button>
+              </div>
+            </div>
+            
+            <p className="text-white/80 mb-6">
               Whether you need encouragement, have questions about the Word, or simply want a morning blessing — you are welcome here.
             </p>
 
@@ -106,11 +224,6 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             </div>
           </div>
         </main>
-
-        {/* Mini Music Player - Bottom Right Corner */}
-        <div className="fixed bottom-6 right-6 z-30">
-          <SanctuaryAmbienceToggle />
-        </div>
 
         {/* Footer */}
         <footer className="relative z-10 py-6 text-center lg:mx-20">
