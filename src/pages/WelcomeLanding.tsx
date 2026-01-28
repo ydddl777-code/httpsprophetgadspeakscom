@@ -60,7 +60,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             {/* Embedded Music Player */}
             <div className="my-6">
               <audio 
-                src="/music/prophet-gad-track-1.mp3" 
+                src="/music/thunder-road-gospel.mp3" 
                 controls 
                 loop 
                 autoPlay
