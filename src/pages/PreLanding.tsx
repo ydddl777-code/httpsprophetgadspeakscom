@@ -5,7 +5,6 @@ import {
   Music, 
   BookOpen, 
   ShoppingBag, 
-  ChevronRight,
   Volume2,
   Loader2,
   Users,
@@ -13,7 +12,6 @@ import {
   Settings
 } from 'lucide-react';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
-// AGE_GROUP_GREETINGS not currently used
 import { ClockDisplay } from '@/components/ClockDisplay';
 import { getRandomKidAffirmation, isSchoolDay, getDayName, getTimeGreeting } from '@/lib/kidSafeContent';
 import { Profile, ChildProfile } from '@/hooks/useAuth';
@@ -68,6 +66,42 @@ interface PreLandingProps {
   onLogout: () => void;
 }
 
+// Spoke button component for the wheel layout
+interface SpokeButtonProps {
+  icon: React.ReactNode;
+  label: string;
+  sublabel: string;
+  onClick: () => void;
+  position: 'top' | 'right' | 'bottom' | 'left';
+}
+
+const SpokeButton = ({ icon, label, sublabel, onClick, position }: SpokeButtonProps) => {
+  // Position styles for each spoke
+  const positionStyles: Record<string, string> = {
+    top: 'top-0 left-1/2 -translate-x-1/2 -translate-y-1/2',
+    right: 'right-0 top-1/2 translate-x-1/2 -translate-y-1/2',
+    bottom: 'bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2',
+    left: 'left-0 top-1/2 -translate-x-1/2 -translate-y-1/2',
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      className={`absolute ${positionStyles[position]} z-20 group`}
+    >
+      <div 
+        className="w-24 h-16 sm:w-28 sm:h-20 rounded-[50%] border-2 border-accent/60 bg-primary/80 backdrop-blur-md flex flex-col items-center justify-center transition-all hover:scale-110 hover:border-accent hover:bg-primary/90 shadow-lg shadow-black/30"
+      >
+        <div className="text-accent mb-0.5">
+          {icon}
+        </div>
+        <span className="text-primary-foreground font-bold text-xs">{label}</span>
+        <span className="text-primary-foreground/60 text-[10px]">{sublabel}</span>
+      </div>
+    </button>
+  );
+};
+
 export const PreLanding = ({ 
   profile, 
   children = [],
@@ -78,7 +112,6 @@ export const PreLanding = ({
   const navigate = useNavigate();
   const { speak, stop, isSpeaking, isLoading } = useElevenLabsTTS();
   
-  // Use kid-safe affirmations for children, adult affirmations for others
   const [affirmation] = useState(() => {
     if (profile?.age_group === 'child') {
       return getRandomKidAffirmation().message;
@@ -86,28 +119,22 @@ export const PreLanding = ({
     return getAdultAffirmation(profile?.age_group);
   });
   
-  
-  // Build personalized greeting message
   const buildGreetingMessage = (): string => {
     const timeGreeting = getTimeGreeting();
     const name = profile?.name || 'friend';
     
     let message = `${timeGreeting}, ${name}.`;
     
-    // Add school day message for children
     if (profile?.age_group === 'child' && isSchoolDay()) {
-      message += ` Today is ${getDayName()}, a school day. Time to rise and shine! Help your family get ready for the day.`;
+      message += ` Today is ${getDayName()}, a school day. Time to rise and shine!`;
     } else if (profile?.age_group === 'child') {
-      message += ` Today is ${getDayName()}. No school today! Enjoy your day.`;
+      message += ` Today is ${getDayName()}. No school today!`;
     }
     
-    // Add affirmation
     message += ` ${affirmation}`;
-    
     return message;
   };
   
-  // Manual greeting toggle only - no auto-play
   const toggleGreeting = () => {
     if (isSpeaking) {
       stop();
@@ -116,11 +143,10 @@ export const PreLanding = ({
     }
   };
 
-  // Check if this is a parent who can manage children
   const canManageChildren = profile?.age_group === 'parent' || profile?.age_group === 'adult';
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative overflow-hidden">
       {/* Background */}
       <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
@@ -129,24 +155,22 @@ export const PreLanding = ({
       <div className="fixed inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
       
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col p-4 sm:p-6">
-        {/* Header with Clock */}
-        <header className="flex justify-between items-start mb-6">
-          <div className="flex items-center gap-3">
-            <img 
-              src={prophetGadModern} 
-              alt="Prophet Gad" 
-              className="w-12 h-12 rounded-full border-2 border-accent object-cover"
-            />
-            <div>
-              <h1 className="text-lg font-bold text-white">Prophet Gad</h1>
-              <p className="text-xs text-white/70">Family Counseling Hub</p>
-            </div>
-          </div>
-          
-          {/* Header Actions */}
+      <div className="relative z-10 min-h-screen flex flex-col p-4">
+        {/* Compact Header */}
+        <header className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
             <ClockDisplay />
+          </div>
+          <div className="flex items-center gap-2">
+            {canManageChildren && (
+              <button
+                onClick={onManageChildren}
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                title="Manage Children"
+              >
+                <Users className="w-4 h-4" />
+              </button>
+            )}
             <button
               onClick={() => navigate('/settings')}
               className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
@@ -163,129 +187,109 @@ export const PreLanding = ({
             </button>
           </div>
         </header>
-        
-        {/* Main Greeting Card */}
-        <main className="flex-1 flex flex-col items-center justify-center max-w-md mx-auto w-full">
-          <div 
-            className="w-full p-6 rounded-2xl border-2 border-accent/50 text-center mb-6"
-            style={{
-              background: 'rgba(88, 28, 135, 0.85)',
-              backdropFilter: 'blur(12px)'
-            }}
-          >
-            {/* Personalized Greeting */}
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
-              {getTimeGreeting()}, {profile?.name || 'Friend'}!
-            </h2>
-            
-            {/* School Day Indicator (for children) */}
-            {profile?.age_group === 'child' && (
-              <p className="text-sm text-accent mb-2">
-                {isSchoolDay() 
-                  ? `📚 Today is ${getDayName()} — a school day!` 
-                  : `🎉 Today is ${getDayName()} — no school!`
-                }
-              </p>
-            )}
-            
-            {/* Affirmation */}
-            <p className="text-lg text-white/90 italic mb-4">
-              "{affirmation}"
-            </p>
-            
-            {/* Hear Greeting Button */}
-            <button
-              onClick={toggleGreeting}
-              disabled={isLoading}
-              className="px-4 py-2 rounded-full bg-accent/80 hover:bg-accent border border-white/30 text-white text-sm font-medium flex items-center gap-2 mx-auto transition-all disabled:opacity-50"
-            >
-              {isLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Volume2 className="w-4 h-4" />
-              )}
-              {isLoading ? "Loading..." : isSpeaking ? "Stop" : "Hear Your Greeting"}
-            </button>
-          </div>
-          
-          {/* Action Buttons Grid */}
-          <div className="w-full grid grid-cols-2 gap-3 mb-6">
-            {/* Counseling Hub */}
-            <button
-              onClick={() => navigate('/counsel')}
-              className="p-4 rounded-xl border-2 border-accent/50 bg-primary/70 hover:bg-primary/80 backdrop-blur transition-all text-left group"
-            >
-              <MessageCircle className="w-8 h-8 text-accent mb-2" />
-              <h3 className="text-primary-foreground font-bold text-sm">Counseling</h3>
-              <p className="text-primary-foreground/60 text-xs">Ask Prophet Gad</p>
-            </button>
-            
-            {/* Music Store */}
-            <button
-              onClick={() => navigate('/music-store')}
-              className="p-4 rounded-xl border-2 border-accent/50 bg-primary/70 hover:bg-primary/80 backdrop-blur transition-all text-left group"
-            >
-              <Music className="w-8 h-8 text-accent mb-2" />
-              <h3 className="text-primary-foreground font-bold text-sm">Music</h3>
-              <p className="text-primary-foreground/60 text-xs">Prophet Gad Songs</p>
-            </button>
-            
-            {/* Book Store */}
-            <button
-              onClick={() => navigate('/book-store')}
-              className="p-4 rounded-xl border-2 border-accent/50 bg-primary/70 hover:bg-primary/80 backdrop-blur transition-all text-left group"
-            >
-              <BookOpen className="w-8 h-8 text-accent mb-2" />
-              <h3 className="text-primary-foreground font-bold text-sm">Books</h3>
-              <p className="text-primary-foreground/60 text-xs">Wisdom & Teachings</p>
-            </button>
-            
-            {/* Merchandise Store */}
-            <button
-              onClick={() => navigate('/store')}
-              className="p-4 rounded-xl border-2 border-accent/50 bg-primary/70 hover:bg-primary/80 backdrop-blur transition-all text-left group"
-            >
-              <ShoppingBag className="w-8 h-8 text-accent mb-2" />
-              <h3 className="text-primary-foreground font-bold text-sm">Store</h3>
-              <p className="text-primary-foreground/60 text-xs">Merchandise</p>
-            </button>
-          </div>
 
-          {/* Parent Controls - Manage Children */}
-          {canManageChildren && (
-            <button
-              onClick={onManageChildren}
-              className="w-full max-w-md mb-4 p-4 rounded-xl border-2 border-accent/50 bg-primary/50 hover:bg-primary/70 backdrop-blur transition-all flex items-center justify-between"
-            >
-              <div className="flex items-center gap-3">
-                <Users className="w-6 h-6 text-accent" />
-                <div className="text-left">
-                  <h3 className="text-primary-foreground font-bold text-sm">Manage Children</h3>
-                  <p className="text-primary-foreground/60 text-xs">
-                    {children.length === 0 
-                      ? "Add child profiles" 
-                      : `${children.length} child${children.length > 1 ? 'ren' : ''} registered`
-                    }
-                  </p>
+        {/* Minimized Greeting */}
+        <div className="text-center mb-2">
+          <p className="text-white/80 text-sm">
+            {getTimeGreeting()}, {profile?.name || 'Friend'}
+          </p>
+        </div>
+        
+        {/* Main Hub - The Wheel */}
+        <main className="flex-1 flex items-center justify-center">
+          <div className="relative w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96">
+            {/* Connecting Lines (decorative spokes) */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute w-full h-0.5 bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
+              <div className="absolute w-0.5 h-full bg-gradient-to-b from-transparent via-accent/30 to-transparent" />
+            </div>
+
+            {/* Center Hub - Prophet Gad */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div 
+                className="w-44 h-44 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-full border-4 border-accent overflow-hidden shadow-2xl shadow-accent/20"
+                style={{
+                  background: 'rgba(88, 28, 135, 0.9)',
+                }}
+              >
+                <img 
+                  src={prophetGadModern} 
+                  alt="Prophet Gad" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              
+              {/* Inner ring label */}
+              <div className="absolute inset-0 flex items-end justify-center pb-2 pointer-events-none">
+                <div className="bg-primary/90 backdrop-blur-sm px-3 py-1 rounded-full border border-accent/50">
+                  <p className="text-xs text-accent font-semibold">Family Counseling Hub</p>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-primary-foreground/60" />
-            </button>
-          )}
-          
-          {/* Learn More Link */}
-          <button
-            onClick={onLearnMore}
-            className="flex items-center gap-2 text-white/70 hover:text-white transition-colors text-sm"
-          >
-            Learn more about Prophet Gad's Mission
-            <ChevronRight className="w-4 h-4" />
-          </button>
+            </div>
+            
+            {/* Spoke Buttons */}
+            <SpokeButton
+              icon={<MessageCircle className="w-5 h-5" />}
+              label="Counseling"
+              sublabel="Ask Prophet Gad"
+              onClick={() => navigate('/counsel')}
+              position="top"
+            />
+            
+            <SpokeButton
+              icon={<Music className="w-5 h-5" />}
+              label="Music"
+              sublabel="Songs & Hymns"
+              onClick={() => navigate('/music-store')}
+              position="right"
+            />
+            
+            <SpokeButton
+              icon={<BookOpen className="w-5 h-5" />}
+              label="Books"
+              sublabel="Wisdom"
+              onClick={() => navigate('/book-store')}
+              position="bottom"
+            />
+            
+            <SpokeButton
+              icon={<ShoppingBag className="w-5 h-5" />}
+              label="Store"
+              sublabel="Merchandise"
+              onClick={() => navigate('/store')}
+              position="left"
+            />
+          </div>
         </main>
+
+        {/* Hear Greeting Button & Affirmation */}
+        <div className="text-center py-4">
+          <p className="text-white/70 text-xs italic mb-3 max-w-xs mx-auto">
+            "{affirmation}"
+          </p>
+          <button
+            onClick={toggleGreeting}
+            disabled={isLoading}
+            className="px-4 py-2 rounded-full bg-accent/80 hover:bg-accent border border-white/30 text-white text-xs font-medium inline-flex items-center gap-2 transition-all disabled:opacity-50"
+          >
+            {isLoading ? (
+              <Loader2 className="w-3 h-3 animate-spin" />
+            ) : (
+              <Volume2 className="w-3 h-3" />
+            )}
+            {isLoading ? "Loading..." : isSpeaking ? "Stop" : "Hear Greeting"}
+          </button>
+        </div>
         
         {/* Footer */}
-        <footer className="text-center py-4">
-          <p className="text-xs text-white/50">Remnant Seed © 2026</p>
+        <footer className="text-center pb-2">
+          <button
+            onClick={onLearnMore}
+            className="text-white/50 hover:text-white/80 text-xs transition-colors"
+          >
+            Learn about Prophet Gad's Mission →
+          </button>
+          <p className="text-xs text-white/30 mt-1">Remnant Seed © 2026</p>
         </footer>
       </div>
     </div>
