@@ -14,7 +14,104 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      child_profiles: {
+        Row: {
+          age: number | null
+          alarm_enabled: boolean | null
+          alarm_time: string | null
+          counseling_access: boolean | null
+          created_at: string
+          doctrine_access: boolean | null
+          id: string
+          message_tone: string | null
+          name: string
+          parent_id: string
+          school_district: string | null
+          updated_at: string
+        }
+        Insert: {
+          age?: number | null
+          alarm_enabled?: boolean | null
+          alarm_time?: string | null
+          counseling_access?: boolean | null
+          created_at?: string
+          doctrine_access?: boolean | null
+          id?: string
+          message_tone?: string | null
+          name: string
+          parent_id: string
+          school_district?: string | null
+          updated_at?: string
+        }
+        Update: {
+          age?: number | null
+          alarm_enabled?: boolean | null
+          alarm_time?: string | null
+          counseling_access?: boolean | null
+          created_at?: string
+          doctrine_access?: boolean | null
+          id?: string
+          message_tone?: string | null
+          name?: string
+          parent_id?: string
+          school_district?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "child_profiles_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          age_group: string
+          alarm_enabled: boolean | null
+          alarm_time: string | null
+          audio_enabled: boolean | null
+          city: string | null
+          created_at: string
+          id: string
+          name: string
+          school_district: string | null
+          state: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age_group: string
+          alarm_enabled?: boolean | null
+          alarm_time?: string | null
+          audio_enabled?: boolean | null
+          city?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          school_district?: string | null
+          state?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age_group?: string
+          alarm_enabled?: boolean | null
+          alarm_time?: string | null
+          audio_enabled?: boolean | null
+          city?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          school_district?: string | null
+          state?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
