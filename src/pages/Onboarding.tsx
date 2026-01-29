@@ -6,6 +6,7 @@ import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 
 interface OnboardingProps {
   onComplete: (name: string, ageGroup: AgeGroup, city: string, state: string, schoolDistrict?: string) => void;
+  onBack?: () => void;
 }
 
 const US_STATES = [
@@ -19,7 +20,7 @@ const US_STATES = [
   'Wisconsin', 'Wyoming'
 ];
 
-export const Onboarding = ({ onComplete }: OnboardingProps) => {
+export const Onboarding = ({ onComplete, onBack }: OnboardingProps) => {
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
   const [ageGroup, setAgeGroup] = useState<AgeGroup | ''>('');
@@ -36,7 +37,11 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
   };
 
   const handleBack = () => {
-    if (step > 1) setStep(step - 1);
+    if (step > 1) {
+      setStep(step - 1);
+    } else if (onBack) {
+      onBack();
+    }
   };
 
   const canProceed = () => {
@@ -107,8 +112,8 @@ export const Onboarding = ({ onComplete }: OnboardingProps) => {
           )}
 
           <div className="flex items-center justify-between mt-8">
-            <button onClick={handleBack} disabled={step === 1} className={cn('flex items-center gap-2 px-4 py-2 rounded-lg text-primary-foreground', step === 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10')}>
-              <ArrowLeft className="w-4 h-4" /> Back
+            <button onClick={handleBack} disabled={step === 1 && !onBack} className={cn('flex items-center gap-2 px-4 py-2 rounded-lg text-primary-foreground', step === 1 && !onBack ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10')}>
+              <ArrowLeft className="w-4 h-4" /> {step === 1 ? 'Exit' : 'Back'}
             </button>
             <button onClick={handleNext} disabled={!canProceed()} className={cn('flex items-center gap-2 px-6 py-2 rounded-lg font-semibold', canProceed() ? 'tabernacle-button' : 'bg-white/20 text-primary-foreground/50 cursor-not-allowed')}>
               {step === 3 ? 'Get Started' : 'Continue'} <ArrowRight className="w-4 h-4" />

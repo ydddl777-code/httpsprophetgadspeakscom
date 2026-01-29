@@ -5,7 +5,7 @@ import { WhatWeBelieve } from './WhatWeBelieve';
 import { AppHome } from './AppHome';
 import { useState } from 'react';
 
-type ViewState = 'welcome' | 'beliefs' | 'app';
+type ViewState = 'welcome' | 'beliefs' | 'app' | 'onboarding';
 
 const Index = () => {
   const { profile, isLoading, createProfile, logout } = useUserProfile();
@@ -22,9 +22,14 @@ const Index = () => {
     );
   }
 
-  // Not logged in - show onboarding
-  if (!profile) {
-    return <Onboarding onComplete={createProfile} />;
+  // Show onboarding when user explicitly wants to sign up (not logged in)
+  if (!profile && currentView === 'onboarding') {
+    return (
+      <Onboarding 
+        onComplete={createProfile} 
+        onBack={() => setCurrentView('welcome')} 
+      />
+    );
   }
 
   // Logged in - show appropriate view based on state
@@ -36,9 +41,11 @@ const Index = () => {
     return <WhatWeBelieve onBack={() => setCurrentView('welcome')} />;
   }
 
+  // Show WelcomeLanding for both logged-in and non-logged-in users
+  // If logged in, Enter App goes to app; if not, it triggers onboarding
   return (
     <WelcomeLanding 
-      onEnterApp={() => setCurrentView('app')} 
+      onEnterApp={() => profile ? setCurrentView('app') : setCurrentView('onboarding')} 
       onViewBeliefs={() => setCurrentView('beliefs')}
     />
   );
