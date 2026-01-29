@@ -37,6 +37,16 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
   const [volume, setVolume] = useState(0.5);
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  // Get human-readable track name from path
+  const getCurrentTrackName = (): string => {
+    const path = playlist[currentTrackIndex] || '';
+    const filename = path.split('/').pop() || 'Unknown';
+    return filename
+      .replace('.mp3', '')
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+  };
+
   // The welcome message Prophet Gad speaks
   const welcomeMessage = "Welcome, dear friend. Come sit at the table. Prophet Gad is here to guide with wisdom from the Scriptures.";
 
@@ -203,10 +213,15 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             
             {/* Compact Music Player with Controls */}
             <div className="my-4 flex flex-col items-center gap-3">
-              {/* Track info */}
-              <p className="text-xs text-white/70">
-                Now Playing: Track {currentTrackIndex + 1} of {playlist.length}
-              </p>
+              {/* Song name display */}
+              <div className="text-center">
+                <p className="text-sm font-semibold text-white">
+                  🎵 {getCurrentTrackName()}
+                </p>
+                <p className="text-xs text-white/60">
+                  Track {currentTrackIndex + 1} of {playlist.length}
+                </p>
+              </div>
               
               {/* Controls Row */}
               <div className="flex items-center justify-center gap-3 flex-wrap">
@@ -247,14 +262,15 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                   <span className="text-white text-xl font-bold">■</span>
                 </button>
 
-                {/* Music Settings Gear */}
+                {/* Music Catalog Button - More Visible */}
                 <button
                   onClick={() => navigate('/music-settings')}
-                  className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 border-2 border-white/30 shadow flex items-center justify-center transition-all"
+                  className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/20 hover:bg-white/30 border-2 border-white/30 shadow transition-all"
                   title="Manage Music Catalog"
                   aria-label="Music Settings"
                 >
-                  <Settings className="w-5 h-5 text-white" />
+                  <Settings className="w-4 h-4 text-white" />
+                  <span className="text-white text-xs font-medium hidden sm:inline">Catalog</span>
                 </button>
               </div>
             </div>
