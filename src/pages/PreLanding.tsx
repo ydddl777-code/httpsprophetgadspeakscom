@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   MessageCircle, 
@@ -13,7 +13,7 @@ import {
   Settings
 } from 'lucide-react';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
-import { AGE_GROUP_GREETINGS } from '@/lib/types';
+// AGE_GROUP_GREETINGS not currently used
 import { ClockDisplay } from '@/components/ClockDisplay';
 import { getRandomKidAffirmation, isSchoolDay, getDayName, getTimeGreeting } from '@/lib/kidSafeContent';
 import { Profile, ChildProfile } from '@/hooks/useAuth';
@@ -86,7 +86,6 @@ export const PreLanding = ({
     return getAdultAffirmation(profile?.age_group);
   });
   
-  const hasPlayedGreetingRef = useRef(false);
   
   // Build personalized greeting message
   const buildGreetingMessage = (): string => {
@@ -108,26 +107,7 @@ export const PreLanding = ({
     return message;
   };
   
-  // Auto-play personalized greeting on first interaction
-  useEffect(() => {
-    if (!profile) return;
-    
-    const playGreetingOnce = () => {
-      if (!hasPlayedGreetingRef.current && !isSpeaking && !isLoading) {
-        hasPlayedGreetingRef.current = true;
-        speak(buildGreetingMessage());
-      }
-    };
-    
-    document.addEventListener('click', playGreetingOnce, { once: true });
-    document.addEventListener('touchstart', playGreetingOnce, { once: true });
-    
-    return () => {
-      document.removeEventListener('click', playGreetingOnce);
-      document.removeEventListener('touchstart', playGreetingOnce);
-    };
-  }, [profile, speak, isSpeaking, isLoading]);
-  
+  // Manual greeting toggle only - no auto-play
   const toggleGreeting = () => {
     if (isSpeaking) {
       stop();
