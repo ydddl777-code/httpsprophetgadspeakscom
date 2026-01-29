@@ -278,10 +278,20 @@ export const PreLanding = ({
         <header className="flex justify-between items-start mb-4">
           {/* Left - Title & Tagline */}
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-accent drop-shadow-lg">
+            <h1 
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-accent"
+              style={{ 
+                textShadow: '2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 3px 6px rgba(0,0,0,0.5)' 
+              }}
+            >
               Prophet Gad
             </h1>
-            <p className="text-xs text-white/80">Family Counseling Hub</p>
+            <p 
+              className="text-sm sm:text-base text-white font-medium"
+              style={{ textShadow: '1px 1px 2px #000, 0 0 8px rgba(0,0,0,0.7)' }}
+            >
+              Family Counseling Hub
+            </p>
           </div>
           
           {/* Right - Date, Time & Actions */}
