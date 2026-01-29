@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Settings, Volume2, Loader2 } from 'lucide-react';
+import { Settings, Volume2, Loader2, SkipForward } from 'lucide-react';
 import { LandingHeader } from '@/components/LandingHeader';
 import { TribalBanners } from '@/components/TribalBanners';
 import { getEnabledTracks } from '@/components/MusicManager';
@@ -15,14 +15,16 @@ interface WelcomeLandingProps {
   onViewBeliefs: () => void;
 }
 
-// Shuffle array helper
-const shuffleArray = <T,>(array: T[]): T[] => {
-  const shuffled = [...array];
+// Shuffle array helper - keeps first track in place, shuffles the rest
+const shuffleArrayKeepFirst = <T,>(array: T[]): T[] => {
+  if (array.length <= 1) return [...array];
+  const [first, ...rest] = array;
+  const shuffled = [...rest];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
-  return shuffled;
+  return [first, ...shuffled];
 };
 
 export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProps) => {
@@ -31,7 +33,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
   const { stop: stopSanctuaryAmbience } = useSanctuaryAmbienceContext();
   
   // Get enabled tracks from managed catalog
-  const [playlist] = useState(() => shuffleArray(getEnabledTracks()));
+  const [playlist] = useState(() => shuffleArrayKeepFirst(getEnabledTracks()));
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false); // Auto-play disabled
   const [volume, setVolume] = useState(0.5);
@@ -81,6 +83,11 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
 
   // Handle track end - move to next track
   const handleTrackEnd = () => {
+    setCurrentTrackIndex((prev) => (prev + 1) % playlist.length);
+  };
+
+  // Skip to next track
+  const skipToNextTrack = () => {
     setCurrentTrackIndex((prev) => (prev + 1) % playlist.length);
   };
 
@@ -255,6 +262,16 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                   <span className="text-white text-lg font-bold">
                     {isPlaying ? "❚❚" : "▶"}
                   </span>
+                </button>
+
+                {/* Skip/Next Track Button */}
+                <button
+                  onClick={skipToNextTrack}
+                  className="w-10 h-10 rounded-full bg-accent/60 hover:bg-accent border-2 border-white/30 shadow flex items-center justify-center transition-all"
+                  title="Next Track"
+                  aria-label="Skip to Next Track"
+                >
+                  <SkipForward className="w-5 h-5 text-white" />
                 </button>
 
                 {/* Volume Slider */}
