@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Settings } from 'lucide-react';
+import { Settings, Volume2, Loader2 } from 'lucide-react';
 import { LandingHeader } from '@/components/LandingHeader';
 import { TribalBanners } from '@/components/TribalBanners';
 import { getEnabledTracks } from '@/components/MusicManager';
+import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
 import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 import prophetGadTribal from '@/assets/prophet-gad.png';
 import prophetGadModern from '@/assets/prophet-gad-modern.png';
@@ -25,25 +26,24 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProps) => {
   const navigate = useNavigate();
+  const { speak, stop, isSpeaking, isLoading } = useElevenLabsTTS();
+  
   // Get enabled tracks from managed catalog
   const [playlist] = useState(() => shuffleArray(getEnabledTracks()));
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false); // Auto-play disabled
   const [volume, setVolume] = useState(0.5);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const welcomeAudioRef = useRef<HTMLAudioElement>(null);
-  const [isWelcomePlaying, setIsWelcomePlaying] = useState(false);
 
-  // Play/pause welcome voice
+  // The welcome message Prophet Gad speaks
+  const welcomeMessage = "Welcome, dear friend. Come sit at the table. Prophet Gad is here to guide with wisdom from the Scriptures.";
+
+  // Play/pause welcome voice using TTS
   const toggleWelcomeVoice = () => {
-    if (welcomeAudioRef.current) {
-      if (isWelcomePlaying) {
-        welcomeAudioRef.current.pause();
-        welcomeAudioRef.current.currentTime = 0;
-      } else {
-        welcomeAudioRef.current.play();
-      }
-      setIsWelcomePlaying(!isWelcomePlaying);
+    if (isSpeaking) {
+      stop();
+    } else {
+      speak(welcomeMessage);
     }
   };
 
@@ -119,12 +119,6 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
         onEnded={handleTrackEnd}
       />
       
-      {/* Prophet Gad Welcome Voice */}
-      <audio
-        ref={welcomeAudioRef}
-        src="/audio/prophet-gad-welcome.mp4"
-        onEnded={() => setIsWelcomePlaying(false)}
-      />
 
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col">
@@ -163,10 +157,15 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             {/* Hear Prophet Gad Button */}
             <button
               onClick={toggleWelcomeVoice}
-              className="mb-4 px-4 py-2 rounded-full bg-accent/80 hover:bg-accent border-2 border-white/30 text-white font-bold flex items-center gap-2 mx-auto transition-all"
+              disabled={isLoading}
+              className="mb-4 px-4 py-2 rounded-full bg-accent/80 hover:bg-accent border-2 border-white/30 text-white font-bold flex items-center gap-2 mx-auto transition-all disabled:opacity-50"
             >
-              <span className="text-lg">{isWelcomePlaying ? "🔊" : "🔈"}</span>
-              {isWelcomePlaying ? "Playing..." : "Hear Prophet Gad"}
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <Volume2 className="w-5 h-5" />
+              )}
+              {isLoading ? "Loading..." : isSpeaking ? "Stop" : "Hear Prophet Gad"}
             </button>
 
             {/* Prophet Gad Images - Oval Tribal flanking Wide Modern */}
