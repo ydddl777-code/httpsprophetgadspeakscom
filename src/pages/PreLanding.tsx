@@ -288,7 +288,7 @@ export const PreLanding = ({
               Prophet Gad
             </h1>
             <p 
-              className="text-sm sm:text-base font-semibold"
+              className="text-xl sm:text-2xl md:text-3xl font-semibold"
               style={{ 
                 color: 'rgb(220, 38, 38)',
                 textShadow: '1px 1px 2px #000, 0 0 8px rgba(0,0,0,0.7)' 
@@ -300,8 +300,18 @@ export const PreLanding = ({
           
           {/* Right - Date, Time & Actions */}
           <div className="flex flex-col items-end gap-1">
-            <p className="text-xs text-white/70">{dateString}</p>
-            <ClockDisplay />
+            <p 
+              className="text-sm sm:text-base font-semibold"
+              style={{ 
+                color: 'rgb(220, 38, 38)',
+                textShadow: '1px 1px 2px #000, 0 0 8px rgba(0,0,0,0.7)' 
+              }}
+            >
+              {dateString}
+            </p>
+            <div style={{ filter: 'drop-shadow(1px 1px 2px #000)' }}>
+              <ClockDisplay />
+            </div>
             <div className="flex items-center gap-1 mt-1">
               {isSignedIn && canManageChildren && (
                 <button
