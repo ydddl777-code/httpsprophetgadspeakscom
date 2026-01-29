@@ -1,15 +1,23 @@
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { Onboarding } from './Onboarding';
 import { WelcomeLanding } from './WelcomeLanding';
+import { PreLanding } from './PreLanding';
 import { WhatWeBelieve } from './WhatWeBelieve';
-import { AppHome } from './AppHome';
 import { useState } from 'react';
 
-type ViewState = 'welcome' | 'beliefs' | 'app' | 'onboarding';
+// Flow: 
+// - Not logged in: WelcomeLanding (intro/music) → Onboarding → PreLanding (personalized home)
+// - Logged in: PreLanding (personalized home) with access to WelcomeLanding via "Learn More"
+
+type ViewState = 'intro' | 'home' | 'beliefs' | 'onboarding';
 
 const Index = () => {
-  const { profile, isLoading, createProfile, logout } = useUserProfile();
-  const [currentView, setCurrentView] = useState<ViewState>('welcome');
+  const { profile, isLoading, createProfile } = useUserProfile();
+  
+  // Default view: logged in users go to home, others see intro
+  const [currentView, setCurrentView] = useState<ViewState>(() => 
+    profile ? 'home' : 'intro'
+  );
 
   if (isLoading) {
     return (
@@ -26,26 +34,34 @@ const Index = () => {
   if (!profile && currentView === 'onboarding') {
     return (
       <Onboarding 
-        onComplete={createProfile} 
-        onBack={() => setCurrentView('welcome')} 
+        onComplete={(name, ageGroup, city, state, schoolDistrict) => {
+          createProfile(name, ageGroup, city, state, schoolDistrict);
+          setCurrentView('home'); // Go to personalized home after signup
+        }} 
+        onBack={() => setCurrentView('intro')} 
       />
     );
   }
 
-  // Logged in - show appropriate view based on state
-  if (currentView === 'app') {
-    return <AppHome profile={profile} onLogout={logout} />;
-  }
-
+  // What We Believe (heavy doctrine page)
   if (currentView === 'beliefs') {
-    return <WhatWeBelieve onBack={() => setCurrentView('welcome')} />;
+    return <WhatWeBelieve onBack={() => setCurrentView(profile ? 'home' : 'intro')} />;
   }
 
-  // Show WelcomeLanding for both logged-in and non-logged-in users
-  // If logged in, Enter App goes to app; if not, it triggers onboarding
+  // Logged-in users: PreLanding is their personalized home
+  if (profile && currentView === 'home') {
+    return (
+      <PreLanding 
+        onEnterApp={() => {}} // Already home
+        onLearnMore={() => setCurrentView('beliefs')}
+      />
+    );
+  }
+
+  // Not logged in: WelcomeLanding is the intro page with music/Prophet Gad greeting
   return (
     <WelcomeLanding 
-      onEnterApp={() => profile ? setCurrentView('app') : setCurrentView('onboarding')} 
+      onEnterApp={() => setCurrentView('onboarding')} 
       onViewBeliefs={() => setCurrentView('beliefs')}
     />
   );
