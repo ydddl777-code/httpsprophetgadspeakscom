@@ -20,7 +20,7 @@ import { ClockDisplay } from '@/components/ClockDisplay';
 import { getRandomKidAffirmation, isSchoolDay, getDayName, getTimeGreeting } from '@/lib/kidSafeContent';
 import { Profile, ChildProfile } from '@/hooks/useAuth';
 import { getEnabledTracks } from '@/components/MusicManager';
-import gardenBackground from '@/assets/garden-of-eden-background.jpg';
+import heavenGardenBackground from '@/assets/heaven-garden-background.jpg';
 import prophetGadModern from '@/assets/prophet-gad-modern.png';
 
 // Age-appropriate affirmations for adults
@@ -265,10 +265,10 @@ export const PreLanding = ({
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Garden of Eden Background */}
+      {/* Heaven with Garden Background */}
       <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${gardenBackground})` }}
+        style={{ backgroundImage: `url(${heavenGardenBackground})` }}
       />
       <div className="fixed inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
       
