@@ -90,7 +90,7 @@ const SpokeButton = ({ icon, label, sublabel, onClick, position }: SpokeButtonPr
       className={`absolute ${positionStyles[position]} z-20 group`}
     >
       <div 
-        className="w-24 h-16 sm:w-28 sm:h-20 rounded-[50%] border-2 border-accent/60 bg-primary/80 backdrop-blur-md flex flex-col items-center justify-center transition-all hover:scale-110 hover:border-accent hover:bg-primary/90 shadow-lg shadow-black/30"
+        className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-accent/60 bg-primary/80 backdrop-blur-md flex flex-col items-center justify-center transition-all hover:scale-110 hover:border-accent hover:bg-primary/90 shadow-lg shadow-black/30"
       >
         <div className="text-accent mb-0.5">
           {icon}
