@@ -20,7 +20,7 @@ import { ClockDisplay } from '@/components/ClockDisplay';
 import { getRandomKidAffirmation, isSchoolDay, getDayName, getTimeGreeting } from '@/lib/kidSafeContent';
 import { Profile, ChildProfile } from '@/hooks/useAuth';
 import { getEnabledTracks } from '@/components/MusicManager';
-import goldenGateBackground from '@/assets/golden-gate-background.jpg';
+import gardenBackground from '@/assets/garden-of-eden-background.jpg';
 import prophetGadModern from '@/assets/prophet-gad-modern.png';
 
 // Age-appropriate affirmations for adults
@@ -116,7 +116,6 @@ const MiniMusicPlayer = () => {
 
   useEffect(() => {
     const tracks = getEnabledTracks();
-    // Shuffle but keep first track as Thunder Road Gospel if available
     const thunderIndex = tracks.findIndex(t => t.includes('thunder-road'));
     let shuffled: string[];
     if (thunderIndex >= 0) {
@@ -173,17 +172,17 @@ const MiniMusicPlayer = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-2 bg-primary/60 backdrop-blur-sm rounded-xl px-4 py-3 border border-accent/30">
       <audio ref={audioRef} onEnded={handleTrackEnd} />
       
-      {currentTrackName && isPlaying && (
-        <p className="text-xs text-accent font-medium">♪ {currentTrackName}</p>
-      )}
+      <p className="text-xs text-white/80 font-medium">
+        {isPlaying ? `♪ ${currentTrackName}` : '🎵 Music Player'}
+      </p>
       
       <div className="flex items-center gap-2">
         <button
           onClick={togglePlay}
-          className="p-2 rounded-full bg-accent/80 hover:bg-accent text-white transition-colors"
+          className="p-2.5 rounded-full bg-accent hover:bg-accent/90 text-white transition-colors shadow-md"
           title={isPlaying ? 'Pause' : 'Play Music'}
         >
           {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
@@ -191,7 +190,7 @@ const MiniMusicPlayer = () => {
         
         <button
           onClick={skipTrack}
-          className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+          className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors"
           title="Next Track"
         >
           <SkipForward className="w-4 h-4" />
@@ -200,7 +199,7 @@ const MiniMusicPlayer = () => {
         {isPlaying && (
           <button
             onClick={stopMusic}
-            className="p-2 rounded-full bg-red-500/80 hover:bg-red-500 text-white transition-colors"
+            className="p-2 rounded-full bg-destructive/80 hover:bg-destructive text-white transition-colors"
             title="Stop"
           >
             <Square className="w-3 h-3" />
@@ -253,70 +252,81 @@ export const PreLanding = ({
   };
 
   const canManageChildren = profile?.age_group === 'parent' || profile?.age_group === 'adult';
-
-  // Check if user is signed in
   const isSignedIn = !!profile;
+
+  // Get current date
+  const now = new Date();
+  const dateString = now.toLocaleDateString('en-US', { 
+    weekday: 'long', 
+    month: 'long', 
+    day: 'numeric',
+    year: 'numeric'
+  });
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Background */}
+      {/* Garden of Eden Background */}
       <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${goldenGateBackground})` }}
+        style={{ backgroundImage: `url(${gardenBackground})` }}
       />
-      <div className="fixed inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+      <div className="fixed inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
       
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col p-4">
-        {/* Top Header - Prophet Gad Family Counseling Hub */}
-        <header className="text-center mb-2">
-          <h1 className="text-xl sm:text-2xl font-bold text-accent drop-shadow-lg">
-            Prophet Gad Family Counseling Hub
-          </h1>
-          <p className="text-xs text-white/70">Wisdom • Guidance • Community</p>
-        </header>
-
-        {/* Secondary Header - Clock & Actions */}
-        <div className="flex justify-between items-center mb-2">
-          <ClockDisplay />
-          <div className="flex items-center gap-2">
-            {isSignedIn && canManageChildren && (
-              <button
-                onClick={onManageChildren}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-                title="Manage Children"
-              >
-                <Users className="w-4 h-4" />
-              </button>
-            )}
-            <button
-              onClick={() => navigate('/settings')}
-              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-              title="Settings"
-            >
-              <Settings className="w-4 h-4" />
-            </button>
-            {isSignedIn && (
-              <button
-                onClick={onLogout}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-                title="Sign Out"
-              >
-                <LogOut className="w-4 h-4" />
-              </button>
-            )}
+        {/* Header Row - Title Left, Clock Right */}
+        <header className="flex justify-between items-start mb-4">
+          {/* Left - Title & Tagline */}
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-accent drop-shadow-lg">
+              Prophet Gad
+            </h1>
+            <p className="text-xs text-white/80">Family Counseling Hub</p>
           </div>
-        </div>
+          
+          {/* Right - Date, Time & Actions */}
+          <div className="flex flex-col items-end gap-1">
+            <p className="text-xs text-white/70">{dateString}</p>
+            <ClockDisplay />
+            <div className="flex items-center gap-1 mt-1">
+              {isSignedIn && canManageChildren && (
+                <button
+                  onClick={onManageChildren}
+                  className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  title="Manage Children"
+                >
+                  <Users className="w-3.5 h-3.5" />
+                </button>
+              )}
+              <button
+                onClick={() => navigate('/settings')}
+                className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                title="Settings"
+              >
+                <Settings className="w-3.5 h-3.5" />
+              </button>
+              {isSignedIn && (
+                <button
+                  onClick={onLogout}
+                  className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  title="Sign Out"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+          </div>
+        </header>
 
         {/* Personalized Greeting or Sign Up CTA */}
         <div className="text-center mb-2">
           {isSignedIn ? (
-            <p className="text-white/80 text-sm">
+            <p className="text-white text-sm font-medium drop-shadow-md">
               {getTimeGreeting()}, {profile?.name || 'Friend'}
             </p>
           ) : (
-            <div className="bg-primary/60 backdrop-blur-sm rounded-lg px-4 py-2 inline-block border border-accent/30">
-              <p className="text-white text-sm mb-1">Sign up for personalized greetings from the Prophet</p>
+            <div className="bg-primary/70 backdrop-blur-sm rounded-lg px-4 py-2 inline-block border border-accent/40">
+              <p className="text-white text-sm mb-1">Sign up for personalized greetings</p>
               <button
                 onClick={() => navigate('/')}
                 className="text-accent text-xs font-medium hover:underline"
@@ -332,14 +342,14 @@ export const PreLanding = ({
           <div className="relative w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96">
             {/* Connecting Lines (decorative spokes) */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="absolute w-full h-0.5 bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
-              <div className="absolute w-0.5 h-full bg-gradient-to-b from-transparent via-accent/30 to-transparent" />
+              <div className="absolute w-full h-0.5 bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+              <div className="absolute w-0.5 h-full bg-gradient-to-b from-transparent via-accent/40 to-transparent" />
             </div>
 
             {/* Center Hub - Prophet Gad */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div 
-                className="w-44 h-44 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-full border-4 border-accent overflow-hidden shadow-2xl shadow-accent/20"
+                className="w-44 h-44 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-full border-4 border-accent overflow-hidden shadow-2xl shadow-accent/30"
                 style={{
                   background: 'rgba(88, 28, 135, 0.9)',
                 }}
@@ -352,7 +362,7 @@ export const PreLanding = ({
               </div>
             </div>
             
-            {/* Spoke Buttons - Rearranged */}
+            {/* Spoke Buttons */}
             <SpokeButton
               icon={<MessageCircle className="w-5 h-5" />}
               label="Counseling"
@@ -387,59 +397,56 @@ export const PreLanding = ({
           </div>
         </main>
 
-        {/* Bottom Section - Spread Out */}
-        <div className="space-y-4 py-4">
-          {/* Mini Music Player */}
+        {/* Bottom Section - Clean Layout */}
+        <div className="py-4 space-y-4">
+          {/* Music Player - Centered */}
           <div className="flex justify-center">
             <MiniMusicPlayer />
           </div>
 
-          {/* Morning Greeting Section */}
+          {/* Morning Greeting - Only for signed in users */}
           {isSignedIn && (
-            <div className="text-center">
-              <p className="text-white/70 text-xs italic mb-2 max-w-xs mx-auto">
-                "{affirmation}"
-              </p>
+            <div className="flex justify-center">
               <button
                 onClick={toggleGreeting}
                 disabled={isLoading}
-                className="px-4 py-2 rounded-full bg-accent/80 hover:bg-accent border border-white/30 text-white text-xs font-medium inline-flex items-center gap-2 transition-all disabled:opacity-50"
+                className="px-5 py-2.5 rounded-full bg-primary/70 backdrop-blur-sm hover:bg-primary/80 border border-accent/40 text-white text-sm font-medium inline-flex items-center gap-2 transition-all disabled:opacity-50 shadow-md"
               >
                 {isLoading ? (
-                  <Loader2 className="w-3 h-3 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
-                  <Volume2 className="w-3 h-3" />
+                  <Volume2 className="w-4 h-4" />
                 )}
-                {isLoading ? "Loading..." : isSpeaking ? "Stop" : "Hear Morning Greeting"}
+                {isLoading ? "Loading..." : isSpeaking ? "Stop Greeting" : "Hear Your Greeting"}
               </button>
             </div>
           )}
           
-          {/* Footer Links */}
-          <div className="flex flex-wrap justify-center gap-4 text-xs text-white/50">
+          {/* Footer Links - Spread Out */}
+          <div className="flex justify-between items-center px-4 max-w-md mx-auto w-full">
             <button
               onClick={onLearnMore}
-              className="hover:text-white/80 transition-colors"
+              className="text-xs text-white/60 hover:text-white transition-colors"
             >
-              About Prophet Gad
+              About
             </button>
-            <span>•</span>
+            
             <button
               onClick={() => navigate('/settings')}
-              className="hover:text-white/80 transition-colors"
+              className="text-xs text-white/60 hover:text-white transition-colors"
             >
-              Set Alarm Time
+              Alarm
             </button>
-            <span>•</span>
+            
             <button
               onClick={() => navigate('/music-settings')}
-              className="hover:text-white/80 transition-colors"
+              className="text-xs text-white/60 hover:text-white transition-colors"
             >
               Manage Music
             </button>
+            
+            <span className="text-xs text-white/40">© 2026</span>
           </div>
-          
-          <p className="text-center text-xs text-white/30">Remnant Seed © 2026</p>
         </div>
       </div>
     </div>
