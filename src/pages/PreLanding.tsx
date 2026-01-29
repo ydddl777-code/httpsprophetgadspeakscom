@@ -279,7 +279,7 @@ export const PreLanding = ({
           {/* Left - Title & Tagline */}
           <div>
             <h1 
-              className="text-5xl sm:text-6xl md:text-7xl font-bold text-accent"
+              className="text-5xl sm:text-6xl md:text-7xl font-bold text-primary"
               style={{ 
                 textShadow: '2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 3px 6px rgba(0,0,0,0.5)' 
               }}
