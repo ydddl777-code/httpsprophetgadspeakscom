@@ -290,7 +290,7 @@ export const PreLanding = ({
             <p 
               className="text-sm sm:text-base font-semibold"
               style={{ 
-                color: 'rgb(147, 51, 234)',
+                color: 'rgb(220, 38, 38)',
                 textShadow: '1px 1px 2px #000, 0 0 8px rgba(0,0,0,0.7)' 
               }}
             >
