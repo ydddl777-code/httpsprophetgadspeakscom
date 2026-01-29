@@ -1,12 +1,13 @@
-// Kid-safe affirmations - simple virtues only
-// No heavy doctrine, no condemnation, just positive encouragement
+// Kid-safe affirmations - simple platitudes only
+// No religious content, no doctrine, no condemnation
+// Just sweet, kind, loving encouragement
 
 export interface KidAffirmation {
   message: string;
   category: 'kindness' | 'honesty' | 'family' | 'friendship' | 'courage' | 'gratitude';
 }
 
-// Simple virtue-based affirmations for children
+// Simple platitude-based affirmations for children
 export const KID_AFFIRMATIONS: KidAffirmation[] = [
   // Kindness
   { message: "Be kind to everyone you meet today.", category: 'kindness' },
@@ -14,6 +15,8 @@ export const KID_AFFIRMATIONS: KidAffirmation[] = [
   { message: "Share with others and you'll feel happy inside.", category: 'kindness' },
   { message: "Help someone who needs it today.", category: 'kindness' },
   { message: "Being gentle makes you strong.", category: 'kindness' },
+  { message: "Smile at someone today.", category: 'kindness' },
+  { message: "You make the world better by being kind.", category: 'kindness' },
   
   // Honesty
   { message: "Always tell the truth, even when it's hard.", category: 'honesty' },
@@ -21,6 +24,7 @@ export const KID_AFFIRMATIONS: KidAffirmation[] = [
   { message: "Don't take what isn't yours.", category: 'honesty' },
   { message: "Being honest makes you someone others can count on.", category: 'honesty' },
   { message: "Your word is your promise.", category: 'honesty' },
+  { message: "Telling the truth feels good.", category: 'honesty' },
   
   // Family
   { message: "Be a good helper to your family today.", category: 'family' },
@@ -28,6 +32,8 @@ export const KID_AFFIRMATIONS: KidAffirmation[] = [
   { message: "Your family believes in you.", category: 'family' },
   { message: "Give your family a hug today.", category: 'family' },
   { message: "Be patient with your brothers and sisters.", category: 'family' },
+  { message: "You are loved.", category: 'family' },
+  { message: "Your family is proud of you.", category: 'family' },
   
   // Friendship
   { message: "Be a good friend to others.", category: 'friendship' },
@@ -35,6 +41,7 @@ export const KID_AFFIRMATIONS: KidAffirmation[] = [
   { message: "Friends share and take turns.", category: 'friendship' },
   { message: "Stand up for your friends.", category: 'friendship' },
   { message: "Forgive your friends when they make mistakes.", category: 'friendship' },
+  { message: "A good friend listens.", category: 'friendship' },
   
   // Courage
   { message: "You can do hard things.", category: 'courage' },
@@ -42,13 +49,15 @@ export const KID_AFFIRMATIONS: KidAffirmation[] = [
   { message: "Be brave, even when you feel scared.", category: 'courage' },
   { message: "Mistakes help you learn and grow.", category: 'courage' },
   { message: "Believe in yourself today.", category: 'courage' },
+  { message: "You are stronger than you think.", category: 'courage' },
   
   // Gratitude
   { message: "Say thank you to someone who helps you.", category: 'gratitude' },
   { message: "Be thankful for your food and home.", category: 'gratitude' },
   { message: "Notice the good things in your day.", category: 'gratitude' },
-  { message: "A grateful heart is a happy heart.", category: 'gratitude' },
+  { message: "A thankful heart is a happy heart.", category: 'gratitude' },
   { message: "Thank your teachers for helping you learn.", category: 'gratitude' },
+  { message: "Today is a good day.", category: 'gratitude' },
 ];
 
 // Get a random kid-safe affirmation

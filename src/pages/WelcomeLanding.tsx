@@ -51,28 +51,8 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
 
   // The welcome message Prophet Gad speaks
   const welcomeMessage = "Welcome, dear friend. Come sit at the table. Prophet Gad is here to guide with wisdom from the Scriptures.";
-  const hasPlayedGreetingRef = useRef(false);
 
-  // Auto-play Prophet Gad greeting on first user interaction (browser policy requires interaction)
-  useEffect(() => {
-    const playGreetingOnce = () => {
-      if (!hasPlayedGreetingRef.current && !isSpeaking && !isLoading) {
-        hasPlayedGreetingRef.current = true;
-        speak(welcomeMessage);
-      }
-    };
-
-    // Listen for first interaction to trigger greeting
-    document.addEventListener('click', playGreetingOnce, { once: true });
-    document.addEventListener('touchstart', playGreetingOnce, { once: true });
-
-    return () => {
-      document.removeEventListener('click', playGreetingOnce);
-      document.removeEventListener('touchstart', playGreetingOnce);
-    };
-  }, [speak, isSpeaking, isLoading]);
-
-  // Play/pause welcome voice using TTS (manual toggle)
+  // Play/pause welcome voice using TTS (manual only - no auto-play)
   const toggleWelcomeVoice = () => {
     if (isSpeaking) {
       stopTts();
