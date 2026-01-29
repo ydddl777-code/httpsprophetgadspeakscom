@@ -279,16 +279,20 @@ export const PreLanding = ({
           {/* Left - Title & Tagline */}
           <div>
             <h1 
-              className="text-5xl sm:text-6xl md:text-7xl font-bold text-primary"
+              className="text-5xl sm:text-6xl md:text-7xl font-bold"
               style={{ 
+                color: 'rgb(88, 28, 135)',
                 textShadow: '2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 3px 6px rgba(0,0,0,0.5)' 
               }}
             >
               Prophet Gad
             </h1>
             <p 
-              className="text-sm sm:text-base text-white font-medium"
-              style={{ textShadow: '1px 1px 2px #000, 0 0 8px rgba(0,0,0,0.7)' }}
+              className="text-sm sm:text-base font-semibold"
+              style={{ 
+                color: 'rgb(147, 51, 234)',
+                textShadow: '1px 1px 2px #000, 0 0 8px rgba(0,0,0,0.7)' 
+              }}
             >
               Family Counseling Hub
             </p>
