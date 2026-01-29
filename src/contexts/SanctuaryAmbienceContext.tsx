@@ -15,6 +15,7 @@ interface SanctuaryAmbienceContextValue {
   minVolume: number;
   maxVolume: number;
   toggle: () => void;
+  stop: () => void;
   setVolume: (volume: number) => void;
 }
 
@@ -195,6 +196,7 @@ export function SanctuaryAmbienceProvider({ children }: { children: ReactNode })
       minVolume: MIN_VOLUME, 
       maxVolume: MAX_VOLUME, 
       toggle, 
+      stop,
       setVolume 
     }}>
       {children}

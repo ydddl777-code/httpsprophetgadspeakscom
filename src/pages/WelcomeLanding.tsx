@@ -5,6 +5,7 @@ import { LandingHeader } from '@/components/LandingHeader';
 import { TribalBanners } from '@/components/TribalBanners';
 import { getEnabledTracks } from '@/components/MusicManager';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
+import { useSanctuaryAmbienceContext } from '@/contexts/SanctuaryAmbienceContext';
 import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 import prophetGadTribal from '@/assets/prophet-gad.png';
 import prophetGadModern from '@/assets/prophet-gad-modern.png';
@@ -26,7 +27,8 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProps) => {
   const navigate = useNavigate();
-  const { speak, stop, isSpeaking, isLoading } = useElevenLabsTTS();
+  const { speak, stop: stopTts, isSpeaking, isLoading } = useElevenLabsTTS();
+  const { stop: stopSanctuaryAmbience } = useSanctuaryAmbienceContext();
   
   // Get enabled tracks from managed catalog
   const [playlist] = useState(() => shuffleArray(getEnabledTracks()));
@@ -41,7 +43,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
   // Play/pause welcome voice using TTS
   const toggleWelcomeVoice = () => {
     if (isSpeaking) {
-      stop();
+      stopTts();
     } else {
       speak(welcomeMessage);
     }
@@ -71,6 +73,13 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
       audioRef.current.currentTime = 0;
       setIsPlaying(false);
     }
+  };
+
+  // Stop *all* audio sources (landing playlist + sanctuary ambience + TTS)
+  const stopAllAudio = () => {
+    stopMusic();
+    stopSanctuaryAmbience();
+    stopTts();
   };
 
   // Update volume
@@ -230,10 +239,10 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
 
                 {/* Big Red Stop Button */}
                 <button
-                  onClick={stopMusic}
+                  onClick={stopAllAudio}
                   className="w-12 h-12 rounded-full bg-destructive hover:bg-destructive/80 border-4 border-destructive/60 shadow-lg flex items-center justify-center transition-all"
-                  title="Stop Music"
-                  aria-label="Stop Music"
+                  title="Stop All Audio"
+                  aria-label="Stop All Audio"
                 >
                   <span className="text-white text-xl font-bold">■</span>
                 </button>
