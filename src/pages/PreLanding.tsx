@@ -7,43 +7,22 @@ import {
   ShoppingBag, 
   ChevronRight,
   Volume2,
-  Loader2
+  Loader2,
+  Users,
+  LogOut,
+  Settings
 } from 'lucide-react';
-import { useUserProfile } from '@/hooks/useUserProfile';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
 import { AGE_GROUP_GREETINGS } from '@/lib/types';
 import { ClockDisplay } from '@/components/ClockDisplay';
+import { getRandomKidAffirmation, isSchoolDay, getDayName, getTimeGreeting } from '@/lib/kidSafeContent';
+import { Profile, ChildProfile } from '@/hooks/useAuth';
 import goldenGateBackground from '@/assets/golden-gate-background.jpg';
 import prophetGadModern from '@/assets/prophet-gad-modern.png';
 
-// Get time-appropriate greeting
-const getTimeGreeting = (): string => {
-  const hour = new Date().getHours();
-  if (hour < 12) return 'Good morning';
-  if (hour < 17) return 'Good afternoon';
-  return 'Good evening';
-};
-
-// Check if today is a school day (Monday-Friday)
-const isSchoolDay = (): boolean => {
-  const day = new Date().getDay();
-  return day >= 1 && day <= 5;
-};
-
-// Get day name
-const getDayName = (): string => {
-  return new Date().toLocaleDateString('en-US', { weekday: 'long' });
-};
-
-// Age-appropriate affirmations
-const getAffirmation = (ageGroup?: string): string => {
+// Age-appropriate affirmations for adults
+const getAdultAffirmation = (ageGroup?: string): string => {
   const affirmations: Record<string, string[]> = {
-    child: [
-      "The Lord loves you and watches over you!",
-      "You are fearfully and wonderfully made!",
-      "God has big plans for you today!",
-      "You are a blessing to your family!"
-    ],
     teen: [
       "The Lord is your strength and shield.",
       "You are chosen for a purpose.",
@@ -82,31 +61,45 @@ const getAffirmation = (ageGroup?: string): string => {
 };
 
 interface PreLandingProps {
-  onEnterApp: () => void;
+  profile: Profile | null;
+  children?: ChildProfile[];
   onLearnMore: () => void;
+  onManageChildren: () => void;
+  onLogout: () => void;
 }
 
-export const PreLanding = ({ onEnterApp, onLearnMore }: PreLandingProps) => {
+export const PreLanding = ({ 
+  profile, 
+  children = [],
+  onLearnMore, 
+  onManageChildren,
+  onLogout 
+}: PreLandingProps) => {
   const navigate = useNavigate();
-  const { profile } = useUserProfile();
   const { speak, stop, isSpeaking, isLoading } = useElevenLabsTTS();
   
-  const [affirmation] = useState(() => getAffirmation(profile?.ageGroup));
+  // Use kid-safe affirmations for children, adult affirmations for others
+  const [affirmation] = useState(() => {
+    if (profile?.age_group === 'child') {
+      return getRandomKidAffirmation().message;
+    }
+    return getAdultAffirmation(profile?.age_group);
+  });
+  
   const hasPlayedGreetingRef = useRef(false);
   
   // Build personalized greeting message
   const buildGreetingMessage = (): string => {
     const timeGreeting = getTimeGreeting();
     const name = profile?.name || 'friend';
-    const ageTitle = profile?.ageGroup ? AGE_GROUP_GREETINGS[profile.ageGroup] : '';
     
     let message = `${timeGreeting}, ${name}.`;
     
     // Add school day message for children
-    if (profile?.ageGroup === 'child' && isSchoolDay()) {
-      message += ` Today is ${getDayName()}, a school day. Time to rise and shine!`;
-    } else if (profile?.ageGroup === 'child') {
-      message += ` Today is ${getDayName()}. No school today!`;
+    if (profile?.age_group === 'child' && isSchoolDay()) {
+      message += ` Today is ${getDayName()}, a school day. Time to rise and shine! Help your family get ready for the day.`;
+    } else if (profile?.age_group === 'child') {
+      message += ` Today is ${getDayName()}. No school today! Enjoy your day.`;
     }
     
     // Add affirmation
@@ -117,7 +110,7 @@ export const PreLanding = ({ onEnterApp, onLearnMore }: PreLandingProps) => {
   
   // Auto-play personalized greeting on first interaction
   useEffect(() => {
-    if (!profile) return; // Only for logged-in users
+    if (!profile) return;
     
     const playGreetingOnce = () => {
       if (!hasPlayedGreetingRef.current && !isSpeaking && !isLoading) {
@@ -142,6 +135,9 @@ export const PreLanding = ({ onEnterApp, onLearnMore }: PreLandingProps) => {
       speak(buildGreetingMessage());
     }
   };
+
+  // Check if this is a parent who can manage children
+  const canManageChildren = profile?.age_group === 'parent' || profile?.age_group === 'adult';
 
   return (
     <div className="min-h-screen relative">
@@ -168,9 +164,23 @@ export const PreLanding = ({ onEnterApp, onLearnMore }: PreLandingProps) => {
             </div>
           </div>
           
-          {/* Subtle Clock Display */}
-          <div className="text-right">
+          {/* Header Actions */}
+          <div className="flex items-center gap-2">
             <ClockDisplay />
+            <button
+              onClick={() => navigate('/settings')}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              title="Settings"
+            >
+              <Settings className="w-4 h-4" />
+            </button>
+            <button
+              onClick={onLogout}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              title="Sign Out"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
         </header>
         
@@ -189,7 +199,7 @@ export const PreLanding = ({ onEnterApp, onLearnMore }: PreLandingProps) => {
             </h2>
             
             {/* School Day Indicator (for children) */}
-            {profile?.ageGroup === 'child' && (
+            {profile?.age_group === 'child' && (
               <p className="text-sm text-accent mb-2">
                 {isSchoolDay() 
                   ? `📚 Today is ${getDayName()} — a school day!` 
@@ -260,6 +270,28 @@ export const PreLanding = ({ onEnterApp, onLearnMore }: PreLandingProps) => {
               <p className="text-primary-foreground/60 text-xs">Merchandise</p>
             </button>
           </div>
+
+          {/* Parent Controls - Manage Children */}
+          {canManageChildren && (
+            <button
+              onClick={onManageChildren}
+              className="w-full max-w-md mb-4 p-4 rounded-xl border-2 border-accent/50 bg-primary/50 hover:bg-primary/70 backdrop-blur transition-all flex items-center justify-between"
+            >
+              <div className="flex items-center gap-3">
+                <Users className="w-6 h-6 text-accent" />
+                <div className="text-left">
+                  <h3 className="text-primary-foreground font-bold text-sm">Manage Children</h3>
+                  <p className="text-primary-foreground/60 text-xs">
+                    {children.length === 0 
+                      ? "Add child profiles" 
+                      : `${children.length} child${children.length > 1 ? 'ren' : ''} registered`
+                    }
+                  </p>
+                </div>
+              </div>
+              <ChevronRight className="w-5 h-5 text-primary-foreground/60" />
+            </button>
+          )}
           
           {/* Learn More Link */}
           <button
