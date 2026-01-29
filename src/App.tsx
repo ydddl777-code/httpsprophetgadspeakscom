@@ -16,6 +16,7 @@ import DoctrinePillar from "./pages/DoctrinePillar";
 import CounselChat from "./pages/CounselChat";
 import Settings from "./pages/Settings";
 import MusicSettings from "./pages/MusicSettings";
+import BookStore from "./pages/BookStore";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -52,6 +53,7 @@ const AppRoutes = () => {
       <Route path="/counsel" element={<CounselChat profile={profile} onLogout={logout} />} />
       <Route path="/settings" element={<Settings profile={profile} onUpdateProfile={updateProfile} onLogout={logout} />} />
       <Route path="/music-settings" element={<MusicSettings />} />
+      <Route path="/book-store" element={<BookStore />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
