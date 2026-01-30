@@ -106,8 +106,8 @@ const SpokeButton = ({ icon, label, sublabel, onClick, position }: SpokeButtonPr
   );
 };
 
-// Mini Music Player Component
-const MiniMusicPlayer = () => {
+// Horizontal Music Bar Component
+const MusicBar = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [currentTrackName, setCurrentTrackName] = useState('');
@@ -172,39 +172,44 @@ const MiniMusicPlayer = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-2 bg-primary/60 backdrop-blur-sm rounded-xl px-4 py-3 border border-accent/30">
+    <div className="w-full max-w-md mx-auto">
       <audio ref={audioRef} onEnded={handleTrackEnd} />
       
-      <p className="text-xs text-white/80 font-medium">
-        {isPlaying ? `♪ ${currentTrackName}` : '🎵 Music Player'}
-      </p>
-      
-      <div className="flex items-center gap-2">
+      {/* Horizontal flat bar */}
+      <div className="flex items-center gap-3 bg-black/60 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+        {/* Large Red Stop Button - Always visible for elderly */}
+        <button
+          onClick={stopMusic}
+          className="w-12 h-12 flex-shrink-0 rounded-full bg-destructive hover:bg-destructive/90 border-4 border-white flex items-center justify-center transition-colors shadow-lg"
+          title="Stop All Music"
+        >
+          <Square className="w-5 h-5 text-white fill-white" />
+        </button>
+        
+        {/* Play/Pause Button */}
         <button
           onClick={togglePlay}
-          className="p-2.5 rounded-full bg-accent hover:bg-accent/90 text-white transition-colors shadow-md"
+          className="w-10 h-10 flex-shrink-0 rounded-full bg-accent hover:bg-accent/90 flex items-center justify-center transition-colors shadow-md"
           title={isPlaying ? 'Pause' : 'Play Music'}
         >
-          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+          {isPlaying ? <Pause className="w-5 h-5 text-white" /> : <Play className="w-5 h-5 text-white" />}
         </button>
         
+        {/* Skip Button */}
         <button
           onClick={skipTrack}
-          className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors"
+          className="w-8 h-8 flex-shrink-0 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
           title="Next Track"
         >
-          <SkipForward className="w-4 h-4" />
+          <SkipForward className="w-4 h-4 text-white" />
         </button>
         
-        {isPlaying && (
-          <button
-            onClick={stopMusic}
-            className="p-2 rounded-full bg-destructive/80 hover:bg-destructive text-white transition-colors"
-            title="Stop"
-          >
-            <Square className="w-3 h-3" />
-          </button>
-        )}
+        {/* Track Name */}
+        <div className="flex-1 min-w-0 text-left">
+          <p className="text-white text-sm font-medium truncate">
+            {isPlaying ? `♪ ${currentTrackName}` : '🎵 Tap Play'}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -372,17 +377,36 @@ export const PreLanding = ({
 
             {/* Center Hub - Prophet Gad */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div 
-                className="w-44 h-44 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-full border-4 border-accent overflow-hidden shadow-2xl shadow-accent/30"
-                style={{
-                  background: 'rgba(88, 28, 135, 0.9)',
-                }}
-              >
-                <img 
-                  src={prophetGadModern} 
-                  alt="Prophet Gad" 
-                  className="w-full h-full object-cover"
-                />
+              <div className="flex flex-col items-center">
+                {/* Greeting Button - Above Prophet Gad */}
+                {isSignedIn && (
+                  <button
+                    onClick={toggleGreeting}
+                    disabled={isLoading}
+                    className="mb-2 px-4 py-1.5 rounded-full bg-primary/80 backdrop-blur-sm hover:bg-primary/90 border border-accent/50 text-white text-xs font-medium inline-flex items-center gap-1.5 transition-all disabled:opacity-50 shadow-md"
+                  >
+                    {isLoading ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Volume2 className="w-3 h-3" />
+                    )}
+                    {isLoading ? "..." : isSpeaking ? "Stop" : "Hear Greeting"}
+                  </button>
+                )}
+                
+                {/* Prophet Gad Image */}
+                <div 
+                  className="w-44 h-44 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-full border-4 border-accent overflow-hidden shadow-2xl shadow-accent/30"
+                  style={{
+                    background: 'rgba(88, 28, 135, 0.9)',
+                  }}
+                >
+                  <img 
+                    src={prophetGadModern} 
+                    alt="Prophet Gad" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
             </div>
             
@@ -423,28 +447,8 @@ export const PreLanding = ({
 
         {/* Bottom Section - Clean Layout */}
         <div className="py-4 space-y-4">
-          {/* Music Player - Centered */}
-          <div className="flex justify-center">
-            <MiniMusicPlayer />
-          </div>
-
-          {/* Morning Greeting - Only for signed in users */}
-          {isSignedIn && (
-            <div className="flex justify-center">
-              <button
-                onClick={toggleGreeting}
-                disabled={isLoading}
-                className="px-5 py-2.5 rounded-full bg-primary/70 backdrop-blur-sm hover:bg-primary/80 border border-accent/40 text-white text-sm font-medium inline-flex items-center gap-2 transition-all disabled:opacity-50 shadow-md"
-              >
-                {isLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Volume2 className="w-4 h-4" />
-                )}
-                {isLoading ? "Loading..." : isSpeaking ? "Stop Greeting" : "Hear Your Greeting"}
-              </button>
-            </div>
-          )}
+          {/* Music Bar - Horizontal flat design */}
+          <MusicBar />
           
           {/* Footer Links - Spread Out */}
           <div className="flex justify-between items-center px-4 max-w-md mx-auto w-full">
