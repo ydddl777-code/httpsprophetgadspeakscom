@@ -1,13 +1,19 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-};
+const ALLOWED_ORIGINS = [
+  'https://httpsprophetgadspeakscom.lovable.app',
+  'https://id-preview--e8e7cee6-b4f3-4ad6-8680-e6fd0c2465f5.lovable.app',
+  'http://localhost:5173',
+  'http://localhost:8080',
+];
 
-// Generate a small, looping ambient track directly (no external fetches).
-// This avoids 3rd-party CDNs blocking edge runtimes (403/500) and keeps the app reliable.
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get('Origin') || '';
+  return {
+    'Access-Control-Allow-Origin': ALLOWED_ORIGINS.some(o => origin.startsWith(o)) ? origin : '',
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
+  };
+}
 
 type WavOptions = {
   sampleRate: number;
@@ -32,26 +38,22 @@ function buildWavPcm16Mono(samples: Int16Array, sampleRate: number): Uint8Array 
   const buffer = new ArrayBuffer(44 + dataSize);
   const view = new DataView(buffer);
 
-  // RIFF header
   writeAscii(view, 0, "RIFF");
   view.setUint32(4, 36 + dataSize, true);
   writeAscii(view, 8, "WAVE");
 
-  // fmt chunk
   writeAscii(view, 12, "fmt ");
-  view.setUint32(16, 16, true); // PCM
-  view.setUint16(20, 1, true); // audio format = PCM
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
   view.setUint16(22, numChannels, true);
   view.setUint32(24, sampleRate, true);
   view.setUint32(28, byteRate, true);
   view.setUint16(32, blockAlign, true);
-  view.setUint16(34, 16, true); // bits per sample
+  view.setUint16(34, 16, true);
 
-  // data chunk
   writeAscii(view, 36, "data");
   view.setUint32(40, dataSize, true);
 
-  // PCM data
   let o = 44;
   for (let i = 0; i < samples.length; i++) {
     view.setInt16(o, samples[i], true);
@@ -65,11 +67,9 @@ function generateAmbientOrgan({ sampleRate, seconds }: WavOptions): Uint8Array {
   const totalSamples = Math.max(1, Math.floor(sampleRate * seconds));
   const out = new Int16Array(totalSamples);
 
-  // A soft, slow chord (G major) to match the “sanctuary” vibe.
   const freqs = [196.0, 246.94, 293.66];
   const twoPi = Math.PI * 2;
 
-  // Envelope: slow fade-in/out within the clip to prevent clicks on loop.
   const fadeSeconds = Math.min(1.5, seconds / 6);
   const fadeSamples = Math.max(1, Math.floor(sampleRate * fadeSeconds));
 
@@ -78,28 +78,23 @@ function generateAmbientOrgan({ sampleRate, seconds }: WavOptions): Uint8Array {
 
     let s = 0;
     for (let f = 0; f < freqs.length; f++) {
-      // Slight detune and 2nd harmonic for warmth
       const base = freqs[f];
-      const detune = (f - 1) * 0.12; // small cents-ish
+      const detune = (f - 1) * 0.12;
       const w = twoPi * (base + detune);
       s += Math.sin(w * t) * 0.22;
       s += Math.sin(w * 2 * t) * 0.06;
     }
 
-    // Very subtle tremolo to keep it alive (still “sedate”)
     const trem = 0.92 + 0.08 * Math.sin(twoPi * 0.09 * t);
     s *= trem;
 
-    // fade-in/out envelope
     let env = 1;
     if (i < fadeSamples) env = clamp01(i / fadeSamples);
     else if (i > totalSamples - fadeSamples) env = clamp01((totalSamples - i) / fadeSamples);
 
-    // overall amplitude (kept low; client controls volume 5%–30%)
     const amp = 0.55;
     const v = s * env * amp;
 
-    // Convert to 16-bit PCM
     const pcm = Math.max(-1, Math.min(1, v));
     out[i] = (pcm * 32767) | 0;
   }
@@ -108,6 +103,8 @@ function generateAmbientOrgan({ sampleRate, seconds }: WavOptions): Uint8Array {
 }
 
 serve(async (req) => {
+  const corsHeaders = getCorsHeaders(req);
+
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -115,8 +112,6 @@ serve(async (req) => {
   try {
     const wavBytes = generateAmbientOrgan({ sampleRate: 22050, seconds: 12 });
 
-    // Some Deno/TS lib typings treat Uint8Array.buffer as ArrayBufferLike (can be SharedArrayBuffer).
-    // Create a fresh ArrayBuffer-backed copy to satisfy BlobPart typing.
     const bytes = new Uint8Array(wavBytes.length);
     bytes.set(wavBytes);
     const body = new Blob([bytes.buffer], { type: "audio/wav" });
@@ -124,14 +119,13 @@ serve(async (req) => {
       headers: {
         ...corsHeaders,
         "Content-Type": "audio/wav",
-        // cache for an hour to reduce repeated loads
         "Cache-Control": "public, max-age=3600",
       },
     });
   } catch (error) {
-    console.error("Error fetching sanctuary ambience:", error);
+    console.error("Error generating sanctuary ambience:", error);
     return new Response(
-      JSON.stringify({ error: "Failed to load ambient audio" }),
+      JSON.stringify({ error: "Unable to process request" }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

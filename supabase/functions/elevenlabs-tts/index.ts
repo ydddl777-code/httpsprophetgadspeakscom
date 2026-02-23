@@ -1,12 +1,32 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+const ALLOWED_ORIGINS = [
+  'https://httpsprophetgadspeakscom.lovable.app',
+  'https://id-preview--e8e7cee6-b4f3-4ad6-8680-e6fd0c2465f5.lovable.app',
+  'http://localhost:5173',
+  'http://localhost:8080',
+];
+
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get('Origin') || '';
+  return {
+    'Access-Control-Allow-Origin': ALLOWED_ORIGINS.some(o => origin.startsWith(o)) ? origin : '',
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
+  };
+}
+
+const VALID_VOICE_IDS = [
+  'JBFqnCBsd6RMkjVDRZzb', 'EXAVITQu4vr4xnSDxMaL', 'onwK4e9ZLuTAKqWW03F9',
+  'pFZP5JQG7iQjIQuC4Bku', 'nPczCjzI2devNBz1zQrb', 'CwhRBWXzGAHq8TQ4Fs17',
+  'FGY2WhTYpPnrIDTdsKH5', 'IKne3meq5aSn9XLyUdCD', 'N2lVS1w4EtoT3dr4eOWO',
+  'SAz9YHcvj6GT2YYXdXww', 'TX3LPaxmHKxFdv7VOQHJ', 'Xb7hH8MSUJpSbSDYk0k2',
+  'XrExE9yKIg1WjnnlVkGX', 'bIHbv24MWmeRgasZH58o', 'cgSgspJ2msm6clMCkdW9',
+  'cjVigY5qzO86Huf0OWal', 'iP95p4xoKVk53GoZ742B',
+];
 
 serve(async (req) => {
-  // Handle CORS preflight requests
+  const corsHeaders = getCorsHeaders(req);
+
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -16,15 +36,30 @@ serve(async (req) => {
     const ELEVENLABS_API_KEY = Deno.env.get("ELEVENLABS_API_KEY");
 
     if (!ELEVENLABS_API_KEY) {
-      throw new Error("ElevenLabs API key not configured");
+      console.error("ELEVENLABS_API_KEY not configured");
+      return new Response(
+        JSON.stringify({ error: "Service temporarily unavailable" }),
+        { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
-    if (!text) {
-      throw new Error("Text is required");
+    // Input validation
+    if (!text || typeof text !== 'string') {
+      return new Response(
+        JSON.stringify({ error: "Text is required and must be a string" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
-    // Default to "George" voice - warm, mature male voice good for scripture
-    const selectedVoiceId = voiceId || "JBFqnCBsd6RMkjVDRZzb";
+    if (text.length > 5000) {
+      return new Response(
+        JSON.stringify({ error: "Text exceeds maximum length of 5000 characters" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Validate voiceId
+    const selectedVoiceId = (voiceId && VALID_VOICE_IDS.includes(voiceId)) ? voiceId : "JBFqnCBsd6RMkjVDRZzb";
 
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${selectedVoiceId}?output_format=mp3_44100_128`,
@@ -50,16 +85,10 @@ serve(async (req) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("ElevenLabs API error:", errorText);
+      console.error("ElevenLabs API error:", response.status, errorText);
 
-      // IMPORTANT: Return 200 so the web app doesn't treat this as a hard runtime failure.
-      // The client detects JSON (not audio/mpeg) and falls back to browser TTS.
       return new Response(
-        JSON.stringify({
-          error: `ElevenLabs API error: ${response.status}`,
-          details: errorText,
-          status: response.status,
-        }),
+        JSON.stringify({ error: "Unable to generate speech" }),
         {
           status: 200,
           headers: {
@@ -81,9 +110,8 @@ serve(async (req) => {
     });
   } catch (err) {
     console.error("TTS Error:", err);
-    const errorMessage = err instanceof Error ? err.message : "Unknown error";
     return new Response(
-      JSON.stringify({ error: errorMessage }),
+      JSON.stringify({ error: "Unable to process request" }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

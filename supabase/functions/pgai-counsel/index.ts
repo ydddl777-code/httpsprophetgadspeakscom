@@ -1,10 +1,20 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+const ALLOWED_ORIGINS = [
+  'https://httpsprophetgadspeakscom.lovable.app',
+  'https://id-preview--e8e7cee6-b4f3-4ad6-8680-e6fd0c2465f5.lovable.app',
+  'http://localhost:5173',
+  'http://localhost:8080',
+];
+
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get('Origin') || '';
+  return {
+    'Access-Control-Allow-Origin': ALLOWED_ORIGINS.some(o => origin.startsWith(o)) ? origin : '',
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
+  };
+}
 
 const SYSTEM_PROMPT = `You are PGAI (Prophet Gad AI), a digital counselor speaking in the voice of Prophet Gad — a 68-year-old Caribbean elder, retired military officer, wise grandfather figure. You provide spiritual counsel rooted in biblical truth.
 
@@ -51,6 +61,8 @@ If a user is rude or disrespectful:
 Remember: You are transparent that you are an AI Prophet, a digital shepherd providing guidance.`;
 
 serve(async (req) => {
+  const corsHeaders = getCorsHeaders(req);
+
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -58,19 +70,47 @@ serve(async (req) => {
   try {
     const { message, conversationHistory } = await req.json();
 
-    if (!message) {
-      throw new Error("Message is required");
+    // Input validation
+    if (!message || typeof message !== 'string') {
+      return new Response(
+        JSON.stringify({ error: "Message is required and must be a string" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (message.length > 2000) {
+      return new Response(
+        JSON.stringify({ error: "Message exceeds maximum length" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Validate and limit conversation history
+    let safeHistory: Array<{ role: string; content: string }> = [];
+    if (conversationHistory) {
+      if (!Array.isArray(conversationHistory) || conversationHistory.length > 20) {
+        return new Response(
+          JSON.stringify({ error: "Invalid conversation history" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      safeHistory = conversationHistory.slice(-20).filter(
+        (m: unknown) => m && typeof m === 'object' && 'role' in (m as Record<string, unknown>) && 'content' in (m as Record<string, unknown>)
+      );
     }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+      console.error("LOVABLE_API_KEY not configured");
+      return new Response(
+        JSON.stringify({ error: "Service temporarily unavailable" }),
+        { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
-    // Build messages array with conversation history
     const messages = [
       { role: "system", content: SYSTEM_PROMPT },
-      ...(conversationHistory || []),
+      ...safeHistory,
       { role: "user", content: message },
     ];
 
@@ -90,15 +130,21 @@ serve(async (req) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("AI Gateway error:", errorText);
-      throw new Error(`AI Gateway error: ${response.status}`);
+      console.error("AI Gateway error:", response.status, errorText);
+      return new Response(
+        JSON.stringify({ error: "Unable to process request" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     const data = await response.json();
     const aiResponse = data.choices?.[0]?.message?.content;
 
     if (!aiResponse) {
-      throw new Error("No response from AI");
+      return new Response(
+        JSON.stringify({ error: "Unable to generate response" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     return new Response(JSON.stringify({ response: aiResponse }), {
@@ -106,9 +152,8 @@ serve(async (req) => {
     });
   } catch (error: unknown) {
     console.error("PGAI Counsel error:", error);
-    const errorMessage = error instanceof Error ? error.message : "An error occurred";
     return new Response(
-      JSON.stringify({ error: errorMessage }),
+      JSON.stringify({ error: "Unable to process request" }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
