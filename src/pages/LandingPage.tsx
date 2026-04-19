@@ -64,7 +64,10 @@ export const LandingPage = ({ onEnterApp }: LandingPageProps) => {
             }}
           >
             <p className="text-sm text-primary drop-shadow-text font-bold">
-              Remnant Seed © 2026
+              Hand in Hand — A Remnant Seed LLC Product · © 2026
+            </p>
+            <p className="text-xs text-primary/90 drop-shadow-text italic mt-1">
+              This sanctuary is still being built — some doors are not yet open. Thank you for walking with us.
             </p>
           </div>
         </footer>

@@ -82,9 +82,12 @@ const Index = () => {
           className="relative z-10 w-full max-w-md p-6 rounded-2xl border-2 border-accent/50"
           style={{ background: 'rgba(88, 28, 135, 0.9)', backdropFilter: 'blur(12px)' }}
         >
-          <h1 className="text-2xl font-bold text-white text-center mb-6">
-            Welcome to Prophet Gad
+          <h1 className="font-display text-2xl font-bold text-white text-center mb-1 tracking-wide">
+            HAND IN HAND
           </h1>
+          <p className="text-center text-white/80 text-sm italic mb-6">
+            As Enoch walked and talked with You
+          </p>
           <AuthForm
             onSignUp={signUp}
             onSignIn={signIn}

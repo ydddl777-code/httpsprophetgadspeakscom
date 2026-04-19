@@ -1,6 +1,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const ALLOWED_ORIGINS = [
+  'https://theprophetgad.com',
+  'https://www.theprophetgad.com',
   'https://httpsprophetgadspeakscom.lovable.app',
   'https://id-preview--e8e7cee6-b4f3-4ad6-8680-e6fd0c2465f5.lovable.app',
   'http://localhost:5173',

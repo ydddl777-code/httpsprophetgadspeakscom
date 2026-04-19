@@ -130,13 +130,14 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12pt;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 700;
+    letter-spacing: 0.02em;
   }
 }
 
@@ -192,7 +193,7 @@
     @apply text-lg md:text-xl leading-relaxed text-center p-6;
     @apply bg-card/80 backdrop-blur-sm rounded-lg;
     @apply border border-accent/30;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Cormorant Garamond', Georgia, serif;
     font-style: italic;
     text-shadow: 1px 1px 2px hsl(20 15% 50% / 0.2);
   }
@@ -273,8 +274,9 @@
   }
 
   .font-display {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
+    font-family: 'Cinzel', Georgia, serif;
+    font-weight: 700;
+    letter-spacing: 0.03em;
   }
 
   .drop-shadow-text {

@@ -14,6 +14,8 @@ import MouthPillar from "./pages/MouthPillar";
 import WalletPillar from "./pages/WalletPillar";
 import DoctrinePillar from "./pages/DoctrinePillar";
 import CounselChat from "./pages/CounselChat";
+import DecreeHistory from "./pages/DecreeHistory";
+import DecreeView from "./pages/DecreeView";
 import Settings from "./pages/Settings";
 import MusicSettings from "./pages/MusicSettings";
 import BookStore from "./pages/BookStore";
@@ -51,6 +53,8 @@ const AppRoutes = () => {
       <Route path="/wallet" element={<WalletPillar profile={profile} onLogout={logout} />} />
       <Route path="/doctrine" element={<DoctrinePillar profile={profile} onLogout={logout} />} />
       <Route path="/counsel" element={<CounselChat profile={profile} onLogout={logout} />} />
+      <Route path="/decrees" element={<DecreeHistory />} />
+      <Route path="/decrees/:id" element={<DecreeView userName={profile.name} />} />
       <Route path="/settings" element={<Settings profile={profile} onUpdateProfile={updateProfile} onLogout={logout} />} />
       <Route path="/music-settings" element={<MusicSettings />} />
       <Route path="/book-store" element={<BookStore />} />

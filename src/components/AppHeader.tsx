@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import { Settings, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { BetaBadge } from './BetaBadge';
 
 interface AppHeaderProps {
   userName?: string;
@@ -15,8 +16,11 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(
       <header ref={ref} className="w-full bg-primary text-primary-foreground py-4 px-6 shadow-lg">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold tracking-wide">THE PILLAR</h1>
-            <p className="text-xs text-primary-foreground/70">Prophet Gad Speaks</p>
+            <div className="flex items-center gap-2">
+              <h1 className="font-display text-xl font-bold tracking-wide">HAND IN HAND</h1>
+              <BetaBadge />
+            </div>
+            <p className="text-xs text-primary-foreground/70 italic">As Enoch walked and talked with You</p>
           </div>
 
           <div className="flex items-center gap-2">

@@ -325,7 +325,10 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             }}
           >
             <p className="text-sm text-white font-bold">
-              Remnant Seed © 2026
+              Hand in Hand — A Remnant Seed LLC Product · © 2026
+            </p>
+            <p className="text-xs text-white/80 italic mt-1">
+              This sanctuary is still being built — some doors are not yet open. Thank you for walking with us.
             </p>
           </div>
         </footer>
