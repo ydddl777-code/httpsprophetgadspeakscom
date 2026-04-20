@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
 import { ClockDisplay } from '@/components/ClockDisplay';
+import { BetaBadge } from '@/components/BetaBadge';
+import { toast } from 'sonner';
 import { getRandomKidAffirmation, isSchoolDay, getDayName, getTimeGreeting } from '@/lib/kidSafeContent';
 import { Profile, ChildProfile } from '@/hooks/useAuth';
 import { getEnabledTracks } from '@/components/MusicManager';
@@ -81,11 +83,13 @@ interface SpokeButtonProps {
 }
 
 const SpokeButton = ({ icon, label, sublabel, onClick, position }: SpokeButtonProps) => {
+  // Buttons sit JUST INSIDE the wheel bounds (no overflow) so they don't
+  // overlap the greeting text above or the music bar below.
   const positionStyles: Record<string, string> = {
-    top: 'top-0 left-1/2 -translate-x-1/2 -translate-y-1/2',
-    right: 'right-0 top-1/2 translate-x-1/2 -translate-y-1/2',
-    bottom: 'bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2',
-    left: 'left-0 top-1/2 -translate-x-1/2 -translate-y-1/2',
+    top: 'top-0 left-1/2 -translate-x-1/2',
+    right: 'right-0 top-1/2 -translate-y-1/2',
+    bottom: 'bottom-0 left-1/2 -translate-x-1/2',
+    left: 'left-0 top-1/2 -translate-y-1/2',
   };
 
   return (
@@ -280,38 +284,26 @@ export const PreLanding = ({
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col p-4">
         {/* Header Row - Title Left, Clock Right */}
-        <header className="flex justify-between items-start mb-4">
+        <header className="flex justify-between items-start mb-8">
           {/* Left - Title & Tagline */}
           <div>
-            <h1 
-              className="text-5xl sm:text-6xl md:text-7xl font-bold"
-              style={{ 
-                color: 'rgb(88, 28, 135)',
-                textShadow: '2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 3px 6px rgba(0,0,0,0.5)' 
-              }}
-            >
-              Prophet Gad
-            </h1>
-            <p 
-              className="text-xl sm:text-2xl md:text-3xl font-semibold"
-              style={{ 
-                color: 'rgb(220, 38, 38)',
-                textShadow: '1px 1px 2px #000, 0 0 8px rgba(0,0,0,0.7)' 
-              }}
-            >
-              Family Counseling Hub
+            <div className="flex items-center gap-3 flex-wrap">
+              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-gradient-gold drop-shadow-text tracking-wide">
+                HAND IN HAND
+              </h1>
+              <BetaBadge size="md" className="mt-1" />
+            </div>
+            <p className="font-serif italic text-base sm:text-lg md:text-xl text-white/95 drop-shadow-text mt-1">
+              As Enoch walked and talked with You
+            </p>
+            <p className="font-serif text-xs sm:text-sm text-white/75 drop-shadow-text mt-0.5">
+              A family devotional companion · by Remnant Seed LLC
             </p>
           </div>
-          
+
           {/* Right - Date, Time & Actions */}
           <div className="flex flex-col items-end gap-1">
-            <p 
-              className="text-sm sm:text-base font-semibold"
-              style={{ 
-                color: 'rgb(220, 38, 38)',
-                textShadow: '1px 1px 2px #000, 0 0 8px rgba(0,0,0,0.7)' 
-              }}
-            >
+            <p className="text-xs sm:text-sm font-semibold text-white/90 drop-shadow-text">
               {dateString}
             </p>
             <div style={{ filter: 'drop-shadow(1px 1px 2px #000)' }}>
@@ -348,9 +340,9 @@ export const PreLanding = ({
         </header>
 
         {/* Personalized Greeting or Sign Up CTA */}
-        <div className="text-center mb-2">
+        <div className="text-center mb-6">
           {isSignedIn ? (
-            <p className="text-white text-sm font-medium drop-shadow-md">
+            <p className="font-serif italic text-white text-base sm:text-lg font-medium drop-shadow-md">
               {getTimeGreeting()}, {profile?.name || 'Friend'}
             </p>
           ) : (
@@ -423,15 +415,20 @@ export const PreLanding = ({
               icon={<Music className="w-5 h-5" />}
               label="Music"
               sublabel="Songs & Hymns"
-              onClick={() => navigate('/music-store')}
+              onClick={() => navigate('/music-settings')}
               position="right"
             />
-            
+
             <SpokeButton
               icon={<ShoppingBag className="w-5 h-5" />}
               label="Store"
-              sublabel="Merchandise"
-              onClick={() => navigate('/store')}
+              sublabel="Coming Soon"
+              onClick={() =>
+                toast('Store is still being built.', {
+                  description:
+                    'This sanctuary is still being built — some doors are not yet open. Thank you for walking with us.',
+                })
+              }
               position="bottom"
             />
             

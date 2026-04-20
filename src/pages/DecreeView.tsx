@@ -16,6 +16,7 @@ interface Decree {
   reference_no: string;
   audio_url: string | null;
   created_at: string;
+  type?: string; // 'decree' | 'prayer' — defaults to decree on old rows
 }
 
 interface DecreeViewProps {
@@ -117,10 +118,12 @@ export const DecreeView = ({ userName }: DecreeViewProps) => {
           </Button>
           <div className="flex-1">
             <h1 className="font-display text-xl font-bold text-gradient-gold tracking-wide">
-              PROPHETIC DECREE
+              {decree?.type === 'prayer' ? 'INTERCESSORY PRAYER' : 'PROPHETIC DECREE'}
             </h1>
             <p className="text-xs text-white/80 italic">
-              A sealed word of counsel
+              {decree?.type === 'prayer'
+                ? 'PGAI stood in the gap for you'
+                : 'A sealed word of counsel'}
             </p>
           </div>
           <Button
@@ -179,7 +182,7 @@ export const DecreeView = ({ userName }: DecreeViewProps) => {
                     className="font-display text-3xl md:text-4xl font-bold tracking-wide"
                     style={{ color: '#7a5514' }}
                   >
-                    PROPHETIC DECREE
+                    {decree.type === 'prayer' ? 'INTERCESSORY PRAYER' : 'PROPHETIC DECREE'}
                   </h2>
                   <p
                     className="mt-1 italic text-sm"
@@ -188,7 +191,9 @@ export const DecreeView = ({ userName }: DecreeViewProps) => {
                       fontFamily: "'Cormorant Garamond', Georgia, serif",
                     }}
                   >
-                    A sealed word of counsel
+                    {decree.type === 'prayer'
+                      ? 'PGAI stood in the gap — a prayer lifted on your behalf'
+                      : 'A sealed word of counsel'}
                   </p>
                 </div>
 
@@ -233,7 +238,9 @@ export const DecreeView = ({ userName }: DecreeViewProps) => {
                     }}
                   >
                     <p className="text-xs uppercase tracking-widest font-bold mb-1 not-italic text-[#7a5514]">
-                      The question placed before the Prophet
+                      {decree.type === 'prayer'
+                        ? 'The burden lifted before the Father'
+                        : 'The question placed before the Prophet'}
                     </p>
                     <p className="text-lg">&ldquo;{decree.user_question}&rdquo;</p>
                   </div>

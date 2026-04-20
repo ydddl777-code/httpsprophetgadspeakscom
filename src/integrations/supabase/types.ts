@@ -120,6 +120,7 @@ export type Database = {
           id: string
           profile_id: string | null
           reference_no: string
+          type: string
           user_id: string
           user_question: string | null
         }
@@ -130,6 +131,7 @@ export type Database = {
           id?: string
           profile_id?: string | null
           reference_no: string
+          type?: string
           user_id: string
           user_question?: string | null
         }
@@ -140,6 +142,7 @@ export type Database = {
           id?: string
           profile_id?: string | null
           reference_no?: string
+          type?: string
           user_id?: string
           user_question?: string | null
         }
