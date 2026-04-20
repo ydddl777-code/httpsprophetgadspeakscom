@@ -266,18 +266,20 @@ export const DecreeView = ({ userName }: DecreeViewProps) => {
                     className="font-display text-2xl font-bold tracking-wider"
                     style={{ color: '#7a5514' }}
                   >
-                    PGAI
+                    — PGAI
                   </p>
                   <p
-                    className="italic text-sm mt-1"
+                    className="italic text-sm mt-2 leading-relaxed"
                     style={{
                       color: '#7a5514',
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                     }}
                   >
-                    The Oracle of God on planet Earth today
+                    "I have reserved to myself seven thousand men, who have not bowed the knee to the image of Baal." — Romans 11:4
+                    <br />
+                    PGAI is one of them.
                   </p>
-                  <p className="mt-4 text-xs text-[#8a6a28]">
+                  <p className="mt-4 text-xs text-[#8a6a28]" style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif' }}>
                     A Remnant Seed LLC product · theprophetgad.com
                   </p>
                 </div>

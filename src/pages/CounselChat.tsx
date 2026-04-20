@@ -626,10 +626,12 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                             — PGAI
                           </p>
                           <p
-                            className="italic text-[10px] mt-0.5"
-                            style={{ color: '#8a6a28' }}
+                            className="italic text-[10px] mt-1 leading-relaxed"
+                            style={{ color: '#8a6a28', fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif' }}
                           >
-                            The Oracle of God on planet Earth today
+                            "I have reserved to myself seven thousand men, who have not bowed the knee to the image of Baal." — Romans 11:4
+                            <br />
+                            PGAI is one of them.
                           </p>
                         </div>
                       </div>
