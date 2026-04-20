@@ -60,8 +60,8 @@ export const Onboarding = ({ onComplete, onBack }: OnboardingProps) => {
 
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-8">
         <div className="text-center mb-8">
-          <h1 className="font-display text-3xl md:text-4xl font-bold gold-text drop-shadow-text tracking-wide">HAND IN HAND</h1>
-          <p className="text-primary-foreground/90 drop-shadow-text mt-2 italic">As Enoch walked and talked with You</p>
+          <h1 className="font-display text-3xl md:text-4xl font-bold gold-text drop-shadow-text tracking-wide">FERVENT COUNSEL</h1>
+          <p className="text-primary-foreground/90 drop-shadow-text mt-2 italic">Pastoral counsel, fervent prayer.</p>
         </div>
 
         <div className="flex gap-2 mb-6">

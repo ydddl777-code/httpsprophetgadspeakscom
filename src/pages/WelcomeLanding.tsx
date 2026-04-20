@@ -1,338 +1,267 @@
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Settings, Volume2, Loader2, SkipForward } from 'lucide-react';
+import { DoorOpen, Play, Pause } from 'lucide-react';
 import { LandingHeader } from '@/components/LandingHeader';
-import { TribalBanners } from '@/components/TribalBanners';
-import { getEnabledTracks } from '@/components/MusicManager';
-import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
-import { useSanctuaryAmbienceContext } from '@/contexts/SanctuaryAmbienceContext';
-import goldenGateBackground from '@/assets/golden-gate-background.jpg';
-import prophetGadTribal from '@/assets/prophet-gad.png';
+import landingBackground from '@/assets/heaven-garden-background.jpg';
 import prophetGadModern from '@/assets/prophet-gad-modern.png';
 
 interface WelcomeLandingProps {
+  // Kept for the existing Index.tsx flow — the tiny "Sign in to save"
+  // link below calls this. Everyone else bypasses it via the main button.
   onEnterApp: () => void;
   onViewBeliefs: () => void;
 }
 
-// Shuffle array helper - keeps first track in place, shuffles the rest
-const shuffleArrayKeepFirst = <T,>(array: T[]): T[] => {
-  if (array.length <= 1) return [...array];
-  const [first, ...rest] = array;
-  const shuffled = [...rest];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return [first, ...shuffled];
-};
+const HYMN_TRACK = '/music/thunder-road-gospel.mp3';
 
 export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProps) => {
   const navigate = useNavigate();
-  const { speak, stop: stopTts, isSpeaking, isLoading } = useElevenLabsTTS();
-  const { stop: stopSanctuaryAmbience } = useSanctuaryAmbienceContext();
-  
-  // Get enabled tracks from managed catalog
-  const [playlist] = useState(() => shuffleArrayKeepFirst(getEnabledTracks()));
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false); // Auto-play disabled
-  const [volume, setVolume] = useState(0.5);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [autoPlayTried, setAutoPlayTried] = useState(false);
 
-  // Get human-readable track name from path
-  const getCurrentTrackName = (): string => {
-    const path = playlist[currentTrackIndex] || '';
-    const filename = path.split('/').pop() || 'Unknown';
-    return filename
-      .replace('.mp3', '')
-      .replace(/-/g, ' ')
-      .replace(/\b\w/g, (c) => c.toUpperCase());
-  };
-
-  // The welcome message Prophet Gad speaks
-  const welcomeMessage = "Welcome, dear friend. Come sit at the table. Prophet Gad is here to guide with wisdom from the Scriptures.";
-
-  // Play/pause welcome voice using TTS (manual only - no auto-play)
-  const toggleWelcomeVoice = () => {
-    if (isSpeaking) {
-      stopTts();
-    } else {
-      speak(welcomeMessage);
-    }
-  };
-
-  // Handle track end - move to next track
-  const handleTrackEnd = () => {
-    setCurrentTrackIndex((prev) => (prev + 1) % playlist.length);
-  };
-
-  // Skip to next track
-  const skipToNextTrack = () => {
-    setCurrentTrackIndex((prev) => (prev + 1) % playlist.length);
-  };
-
-  // Play/pause control
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  // Stop music completely
-  const stopMusic = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      setIsPlaying(false);
-    }
-  };
-
-  // Stop *all* audio sources (landing playlist + sanctuary ambience + TTS)
-  const stopAllAudio = () => {
-    stopMusic();
-    stopSanctuaryAmbience();
-    stopTts();
-  };
-
-  // Update volume
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newVolume = parseFloat(e.target.value);
-    setVolume(newVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
-    }
-  };
-
-  // Set initial volume and autoplay
+  // Try to start soft background music. Most browsers will block auto-play
+  // until the user interacts; the "Play" button handles the manual case.
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, []);
-
-  // When track changes, play the new track
-  useEffect(() => {
-    if (audioRef.current && isPlaying) {
-      audioRef.current.play().catch(() => {
-        // Autoplay blocked, user interaction required
+    if (autoPlayTried) return;
+    setAutoPlayTried(true);
+    const a = audioRef.current;
+    if (!a) return;
+    a.volume = 0.35;
+    a.play()
+      .then(() => setIsPlaying(true))
+      .catch(() => {
+        // Autoplay blocked — user will click play
       });
+  }, [autoPlayTried]);
+
+  const togglePlay = () => {
+    const a = audioRef.current;
+    if (!a) return;
+    if (isPlaying) {
+      a.pause();
+      setIsPlaying(false);
+    } else {
+      a.volume = 0.35;
+      a.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
     }
-  }, [currentTrackIndex]);
+  };
+
+  const enterSanctuary = () => {
+    if (audioRef.current) audioRef.current.pause();
+    navigate('/counsel');
+  };
 
   return (
-    <div className="min-h-screen relative">
-      {/* Background Image */}
-      <div 
+    <div className="min-h-screen relative overflow-x-hidden">
+      {/* Hidden audio element for the ambient hymn */}
+      <audio ref={audioRef} src={HYMN_TRACK} loop preload="auto" />
+
+      {/* The garden of heaven — flowers framing the archway of light.
+          Warm and welcoming on first breath. Slightly tilted like a
+          hung artwork so it reads as vision, not stock photo. */}
+      <div
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${goldenGateBackground})` }}
+        style={{
+          backgroundImage: `url(${landingBackground})`,
+          transform: 'scale(1.04) rotate(-0.6deg)',
+          transformOrigin: 'center center',
+        }}
       />
-      
-      {/* Dark Overlay for readability */}
-      <div className="fixed inset-0 dark-overlay" />
-      
-      {/* Linen Texture Overlay */}
-      <div className="fixed inset-0 linen-overlay pointer-events-none" />
-
-      {/* Music Audio Element - No autoPlay */}
-      <audio
-        ref={audioRef}
-        src={playlist[currentTrackIndex]}
-        onEnded={handleTrackEnd}
+      {/* Soft warm wash so header text reads without dimming the painting */}
+      <div
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(ellipse at center, rgba(255,245,210,0.08) 0%, rgba(150,90,20,0.18) 75%, rgba(50,25,5,0.35) 100%)',
+        }}
       />
-      
+      {/* Soft breathing light exactly on the archway in the painting —
+          positioned by the natural center where the doorway sits. */}
+      <div
+        className="fixed pointer-events-none"
+        style={{
+          left: '50%',
+          top: '52%',
+          transform: 'translate(-50%, -50%)',
+          width: '20vw',
+          height: '30vh',
+          maxWidth: '340px',
+          maxHeight: '400px',
+          background:
+            'radial-gradient(ellipse, rgba(255,255,225,0.75) 0%, rgba(255,230,150,0.40) 40%, transparent 75%)',
+          filter: 'blur(8px)',
+          mixBlendMode: 'screen',
+          animation: 'doorBreath 4.5s ease-in-out infinite',
+        }}
+      />
 
-      {/* Content */}
+      {/* River of life shimmer — a subtle flowing light band at the
+          base of the painting. Three layered gradients drift at different
+          speeds so the effect reads as gently moving water, not a static
+          highlight. "A pure river of water of life, clear as crystal." */}
+      <div className="fixed inset-x-0 bottom-0 h-[22vh] pointer-events-none overflow-hidden">
+        {/* Base glow — warmest, closest to the painting's path */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(to top, rgba(255,240,190,0.55) 0%, rgba(255,220,150,0.25) 40%, transparent 100%)',
+            mixBlendMode: 'screen',
+          }}
+        />
+        {/* First shimmer layer — moves left */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(100deg, transparent 0%, rgba(255,255,235,0.5) 30%, rgba(255,250,220,0.75) 50%, rgba(255,255,235,0.5) 70%, transparent 100%)',
+            backgroundSize: '200% 100%',
+            mixBlendMode: 'screen',
+            animation: 'riverShimmer 7s ease-in-out infinite',
+          }}
+        />
+        {/* Second shimmer layer — moves right, slower, offset */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(80deg, transparent 0%, rgba(225,240,255,0.35) 35%, rgba(200,230,255,0.55) 50%, rgba(225,240,255,0.35) 65%, transparent 100%)',
+            backgroundSize: '220% 100%',
+            mixBlendMode: 'screen',
+            animation: 'riverShimmerReverse 11s ease-in-out infinite',
+            opacity: 0.85,
+          }}
+        />
+      </div>
+
       <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Tribal Banners - positioned at extreme top left and right */}
-        <div className="hidden lg:block fixed left-1 top-4 bottom-4 w-16 z-20">
-          <TribalBanners side="left" />
-        </div>
-        <div className="hidden lg:block fixed right-1 top-4 bottom-4 w-16 z-20">
-          <TribalBanners side="right" />
-        </div>
-
-        {/* Header - Indented to make room for tribes */}
-        <header className="relative z-10 px-4 py-6 lg:mx-20">
-          <LandingHeader onEnterApp={onEnterApp} />
+        {/* Header — small wordmark + date/time. That's it. */}
+        <header className="relative z-10 px-5 md:px-8 pt-5 pb-2">
+          <LandingHeader />
         </header>
 
-        {/* Main Content - Centered friendly greeting */}
-        <main className="flex-1 flex flex-col items-center justify-center py-8 px-4 lg:px-24">
-          {/* Friendly Welcome Card */}
-          <div 
-            className="w-full max-w-xl p-8 rounded-xl border-2 border-accent text-center"
-            style={{
-              background: 'rgba(88, 28, 135, 0.85)',
-              backdropFilter: 'blur(8px)'
-            }}
-          >
-            {/* Welcoming Message */}
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              Welcome, Dear Friend
-            </h2>
-            
-            <p className="text-lg text-white/90 mb-2 leading-relaxed">
-              Come sit at the table. Prophet Gad is here to guide with wisdom from the Scriptures.
-            </p>
+        {/* Spacer so the painting's doorway shows through */}
+        <div className="flex-1" />
 
-            {/* Hear Prophet Gad Button */}
-            <button
-              onClick={toggleWelcomeVoice}
-              disabled={isLoading}
-              className="mb-4 px-4 py-2 rounded-full bg-accent/80 hover:bg-accent border-2 border-white/30 text-white font-bold flex items-center gap-2 mx-auto transition-all disabled:opacity-50"
+        {/* Welcome area — sits low so it doesn't cover the door.
+            Very translucent; the painting shows through. */}
+        <main className="relative z-10 px-4 pb-4">
+          <div className="w-full max-w-3xl mx-auto">
+            <div
+              className="rounded-2xl border border-accent/40 shadow-2xl backdrop-blur-md overflow-hidden"
+              style={{
+                background:
+                  'linear-gradient(180deg, rgba(40,20,5,0.35) 0%, rgba(60,30,10,0.55) 100%)',
+              }}
             >
-              {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Volume2 className="w-5 h-5" />
-              )}
-              {isLoading ? "Loading..." : isSpeaking ? "Stop" : "Hear Prophet Gad"}
-            </button>
+              <div className="p-5 md:p-6 flex items-center gap-4 md:gap-6">
+                {/* Prophet Gad — the city-skyline / arms-open portrait */}
+                <img
+                  src={prophetGadModern}
+                  alt="Prophet Gad"
+                  className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover object-top border-2 border-accent shadow-xl shrink-0"
+                />
 
-            {/* Prophet Gad Images - Oval Tribal flanking Wide Modern */}
-            <div className="my-4 flex items-center justify-center gap-4">
-              {/* Left Tribal Image - Oval */}
-              <img 
-                src={prophetGadTribal} 
-                alt="Prophet Gad Emblem" 
-                className="w-20 h-24 md:w-24 md:h-28 rounded-full object-cover border-3 border-accent shadow-xl"
-              />
-              
-              {/* Center Modern Image - 16:9 Wide to show background */}
-              <img 
-                src={prophetGadModern} 
-                alt="Prophet Gad" 
-                className="w-40 h-24 md:w-48 md:h-28 rounded-lg object-cover object-top border-4 border-accent shadow-lg"
-              />
-              
-              {/* Right Tribal Image - Oval */}
-              <img 
-                src={prophetGadTribal} 
-                alt="Prophet Gad Emblem" 
-                className="w-20 h-24 md:w-24 md:h-28 rounded-full object-cover border-3 border-accent shadow-xl"
-              />
-            </div>
-            
-            {/* Compact Music Player with Controls */}
-            <div className="my-4 flex flex-col items-center gap-3">
-              {/* Song name display */}
-              <div className="text-center">
-                <p className="text-sm font-semibold text-white">
-                  🎵 {getCurrentTrackName()}
-                </p>
-                <p className="text-xs text-white/60">
-                  Track {currentTrackIndex + 1} of {playlist.length}
-                </p>
-              </div>
-              
-              {/* Controls Row */}
-              <div className="flex items-center justify-center gap-3 flex-wrap">
-                {/* Play/Pause Button */}
-                <button
-                  onClick={togglePlay}
-                  className="w-10 h-10 rounded-full bg-accent hover:bg-accent/80 border-2 border-white/30 shadow flex items-center justify-center transition-all"
-                  title={isPlaying ? "Pause" : "Play"}
-                  aria-label={isPlaying ? "Pause Music" : "Play Music"}
-                >
-                  <span className="text-white text-lg font-bold">
-                    {isPlaying ? "❚❚" : "▶"}
-                  </span>
-                </button>
-
-                {/* Skip/Next Track Button */}
-                <button
-                  onClick={skipToNextTrack}
-                  className="w-10 h-10 rounded-full bg-accent/60 hover:bg-accent border-2 border-white/30 shadow flex items-center justify-center transition-all"
-                  title="Next Track"
-                  aria-label="Skip to Next Track"
-                >
-                  <SkipForward className="w-5 h-5 text-white" />
-                </button>
-
-                {/* Volume Slider */}
-                <div className="flex items-center gap-2 bg-white/20 rounded-full px-3 py-1">
-                  <span className="text-white text-sm">🔊</span>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.05"
-                    value={volume}
-                    onChange={handleVolumeChange}
-                    className="w-20 h-2 accent-accent cursor-pointer"
-                    title={`Volume: ${Math.round(volume * 100)}%`}
-                  />
+                {/* Welcome line — no repeat of Fervent Counsel, just the invite */}
+                <div className="flex-1 min-w-0 text-left">
+                  <p
+                    className="text-white/95 text-base md:text-xl leading-snug"
+                    style={{
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontStyle: 'italic',
+                      textShadow: '0 2px 6px rgba(0,0,0,0.6)',
+                    }}
+                  >
+                    Come, sit at the table. Let's see what the Lord can do for
+                    you today.
+                  </p>
                 </div>
+              </div>
 
-                {/* Big Red Stop Button */}
+              {/* The one door in — direct to counseling, no password */}
+              <div className="px-5 md:px-6 pb-5 md:pb-6">
                 <button
-                  onClick={stopAllAudio}
-                  className="w-12 h-12 rounded-full bg-destructive hover:bg-destructive/80 border-4 border-destructive/60 shadow-lg flex items-center justify-center transition-all"
-                  title="Stop All Audio"
-                  aria-label="Stop All Audio"
+                  onClick={enterSanctuary}
+                  className="w-full px-6 py-3.5 rounded-full bg-accent hover:bg-accent/90 border-2 border-white/30 text-white font-bold text-lg tracking-wide shadow-2xl transition-all hover:scale-[1.01] flex items-center justify-center gap-3"
+                  style={{
+                    fontFamily: "'Cinzel', Georgia, serif",
+                    boxShadow: '0 6px 24px rgba(212,165,63,0.55)',
+                  }}
                 >
-                  <span className="text-white text-xl font-bold">■</span>
+                  <DoorOpen className="w-5 h-5" />
+                  Enter the Sanctuary
                 </button>
 
-                {/* Music Catalog Button - More Visible */}
-                <button
-                  onClick={() => navigate('/music-settings')}
-                  className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/20 hover:bg-white/30 border-2 border-white/30 shadow transition-all"
-                  title="Manage Music Catalog"
-                  aria-label="Music Settings"
-                >
-                  <Settings className="w-4 h-4 text-white" />
-                  <span className="text-white text-xs font-medium hidden sm:inline">Catalog</span>
-                </button>
+                {/* One-line quiet sign-in option */}
+                <div className="mt-3 flex items-center justify-between text-[11px] text-white/70 gap-2 flex-wrap">
+                  <button
+                    onClick={onEnterApp}
+                    className="hover:text-white hover:underline underline-offset-4 transition-colors"
+                  >
+                    Returning? Sign in to save your counsel
+                  </button>
+                  <button
+                    onClick={onViewBeliefs}
+                    className="hover:text-white hover:underline underline-offset-4 transition-colors"
+                  >
+                    What we believe
+                  </button>
+                </div>
               </div>
             </div>
-            
-            <p className="text-white/80 mb-6">
-              Whether you need encouragement, have questions about the Word, or simply want a morning blessing — you are welcome here.
-            </p>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* Tiny music bar — ambient hymn control */}
+            <div
+              className="mt-3 mx-auto max-w-xs flex items-center justify-center gap-3 px-4 py-2 rounded-full border border-accent/40 backdrop-blur-sm"
+              style={{ background: 'rgba(40,20,5,0.5)' }}
+            >
               <button
-                onClick={onEnterApp}
-                className="tabernacle-button px-6 py-3 text-lg font-bold"
+                onClick={togglePlay}
+                className="w-8 h-8 rounded-full bg-accent/90 hover:bg-accent text-accent-foreground flex items-center justify-center transition-all"
+                title={isPlaying ? 'Pause hymn' : 'Play hymn'}
+                aria-label={isPlaying ? 'Pause hymn' : 'Play hymn'}
               >
-                Enter & Receive Your Blessing
+                {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
               </button>
-              
-              <button
-                onClick={onViewBeliefs}
-                className="px-6 py-3 text-lg font-bold rounded border-2 border-accent text-white hover:bg-accent/20 transition-colors"
+              <p
+                className="text-[11px] text-white/80 italic truncate"
+                style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
               >
-                What We Believe
-              </button>
+                ♪ Thunder Road Gospel · softly
+              </p>
             </div>
           </div>
         </main>
 
         {/* Footer */}
-        <footer className="relative z-10 py-6 text-center lg:mx-20">
-          <div 
-            className="inline-block py-2 px-6 rounded border border-accent mx-auto"
-            style={{
-              background: 'rgba(88, 28, 135, 0.85)',
-              backdropFilter: 'blur(4px)'
-            }}
-          >
-            <p className="text-sm text-white font-bold">
-              Hand in Hand — A Remnant Seed LLC Product · © 2026
-            </p>
-            <p className="text-xs text-white/80 italic mt-1">
-              This sanctuary is still being built — some doors are not yet open. Thank you for walking with us.
-            </p>
-          </div>
+        <footer className="relative z-10 py-3 text-center px-4">
+          <p className="text-[10px] text-white/60 italic">
+            Fervent Counsel — A Remnant Seed LLC Product · © 2026 · Still in beta
+          </p>
         </footer>
       </div>
+
+      <style>{`
+        @keyframes doorBreath {
+          0%, 100% {
+            opacity: 0.55;
+            transform: translate(-50%, -50%) scale(0.92);
+          }
+          50% {
+            opacity: 0.95;
+            transform: translate(-50%, -50%) scale(1.08);
+          }
+        }
+        @keyframes riverShimmer {
+          0%, 100% { background-position: 100% 50%; }
+          50%      { background-position: 0% 50%; }
+        }
+        @keyframes riverShimmerReverse {
+          0%, 100% { background-position: 0% 50%; }
+          50%      { background-position: 100% 50%; }
+        }
+      `}</style>
     </div>
   );
 };

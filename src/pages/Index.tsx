@@ -83,10 +83,10 @@ const Index = () => {
           style={{ background: 'rgba(88, 28, 135, 0.9)', backdropFilter: 'blur(12px)' }}
         >
           <h1 className="font-display text-2xl font-bold text-white text-center mb-1 tracking-wide">
-            HAND IN HAND
+            FERVENT COUNSEL
           </h1>
           <p className="text-center text-white/80 text-sm italic mb-6">
-            As Enoch walked and talked with You
+            Pastoral counsel, fervent prayer. By God's prophet.
           </p>
           <AuthForm
             onSignUp={signUp}

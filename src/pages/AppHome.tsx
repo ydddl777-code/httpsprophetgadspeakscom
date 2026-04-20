@@ -63,7 +63,7 @@ export const AppHome = ({ profile, onLogout }: AppHomeProps) => {
           <div className="max-w-4xl mx-auto flex items-start justify-between">
             <div>
               <h1 className="font-display text-2xl md:text-3xl font-bold gold-text drop-shadow-text tracking-wide">
-                HAND IN HAND
+                FERVENT COUNSEL
               </h1>
               <p className="text-sm text-primary-foreground/90 drop-shadow-text">
                 Welcome back, {firstName}

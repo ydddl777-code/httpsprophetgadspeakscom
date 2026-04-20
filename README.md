@@ -1,8 +1,12 @@
-# Hand in Hand
+# Fervent Counsel
 
-*As Enoch walked and talked with You.*
+*Pastoral counsel, fervent prayer. By God's prophet.*
 
-A family devotional companion app — KJV Scripture, counsel, and wisdom for every age (child, teen, parent, elder).
+> *"The effectual fervent prayer of a righteous man availeth much." — James 5:16*
+
+A pastoral counseling and intercessory prayer app. Visitors share their burden with Prophet Gad (PGAI), receive Scripture-grounded counsel, and can ask PGAI to pray aloud for their specific situation — to the Father, by name. Prayers and counsels can optionally be sealed as Prophetic Decrees and archived.
+
+Hand in Hand — the daily devotional walk — is a feature inside Fervent Counsel.
 
 **A Remnant Seed LLC product.** Deployed at [theprophetgad.com](https://theprophetgad.com).
 

@@ -1,6 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Send, Volume2, Loader2, ScrollText, Flower2, HandHeart } from 'lucide-react';
+import {
+  ArrowLeft,
+  Send,
+  Volume2,
+  Loader2,
+  ScrollText,
+  Flower2,
+  HandHeart,
+  Mic,
+  MicOff,
+  Settings,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -9,12 +20,20 @@ import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import type { UserProfile } from '@/lib/types';
-import heavenGardenBackground from '@/assets/heaven-garden-background.jpg';
+// Sanctuary uses the golden-gate Jerusalem scene — the threshold of the
+// City, a more architectural / sacred-chamber feel appropriate for the
+// weight of intercessory prayer. (The garden-of-flowers image lives on
+// the welcome landing where visitors first arrive.)
+import sanctuaryBackground from '@/assets/golden-gate-background.jpg';
 import prophetGadAvatar from '@/assets/prophet-gad-modern.png';
 import { generateReferenceNo } from '@/lib/decreeUtils';
 
 interface CounselChatProps {
-  profile: UserProfile;
+  // Profile is optional — anonymous visitors can enter the sanctuary
+  // directly from the welcome page without signing up. They get counsel
+  // and prayer; they just can't archive decrees/prayers until they save
+  // an account.
+  profile: UserProfile | null;
   onLogout: () => void;
 }
 
@@ -32,16 +51,27 @@ interface ChatMessage {
   sealed?: boolean;   // sealed-as-decree (for counsel) or saved (for prayer)
 }
 
-const INITIAL_GREETING =
-  'Peace be with you, beloved. Come, sit a while. I am here to listen. What weighs upon your heart today?';
+const buildInitialGreeting = (name: string): string => {
+  const who = name && name.toLowerCase() !== 'friend' ? name : '';
+  const opener = who ? `Peace be with you, ${who}.` : 'Peace be with you.';
+  return `${opener} How can I help you today? Tell me what brings you here — whatever weighs upon your heart. You can type it, or tap the microphone and speak to me.`;
+};
 
 export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
   const navigate = useNavigate();
-  const [messages, setMessages] = useState<ChatMessage[]>([
+
+  // Fall back to the name an anonymous visitor may have typed earlier
+  // (stored in localStorage) before finally settling on "Friend".
+  const anonName = typeof window !== 'undefined' ? localStorage.getItem('hih_name') : null;
+  const firstName =
+    profile?.name?.split(' ')[0] ??
+    (anonName && anonName.trim() ? anonName.trim().split(' ')[0] : 'Friend');
+
+  const [messages, setMessages] = useState<ChatMessage[]>(() => [
     {
       id: '1',
       role: 'prophet',
-      content: INITIAL_GREETING,
+      content: buildInitialGreeting(firstName),
       timestamp: new Date(),
     },
   ]);
@@ -49,10 +79,91 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [sealingId, setSealingId] = useState<string | null>(null);
   const [prayingForId, setPrayingForId] = useState<string | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
+  const greetingSpokenRef = useRef(false);
   const { speak, stop: stopSpeak, isSpeaking } = useElevenLabsTTS();
 
-  const firstName = profile.name.split(' ')[0];
+  // Initialise the browser's native speech recognition for voice input.
+  // Supported in Chrome, Edge, Safari (partial); falls back to text-only
+  // on other browsers.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setSpeechSupported(false);
+      return;
+    }
+    setSpeechSupported(true);
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    let finalTranscript = '';
+    recognition.onresult = (event: any) => {
+      let interim = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const res = event.results[i];
+        if (res.isFinal) finalTranscript += res[0].transcript;
+        else interim += res[0].transcript;
+      }
+      setInputValue((finalTranscript + interim).trim());
+    };
+    recognition.onend = () => setIsRecording(false);
+    recognition.onerror = () => setIsRecording(false);
+    recognitionRef.current = recognition;
+
+    return () => {
+      try {
+        recognition.abort();
+      } catch {
+        // ignore
+      }
+    };
+  }, []);
+
+  const toggleRecording = () => {
+    if (!recognitionRef.current) return;
+    if (isRecording) {
+      try {
+        recognitionRef.current.stop();
+      } catch {
+        // ignore
+      }
+      setIsRecording(false);
+    } else {
+      try {
+        // Stop any audio playing so the mic doesn't pick up Prophet Gad
+        if (isSpeaking) stopSpeak();
+        setInputValue('');
+        recognitionRef.current.start();
+        setIsRecording(true);
+      } catch {
+        setIsRecording(false);
+      }
+    }
+  };
+
+  // Auto-play the opening greeting once so the visitor HEARS Prophet Gad
+  // ask "How can I help you today?" the moment they land. Browsers may
+  // still block this until first user gesture; if so, the Listen button
+  // on the greeting falls back to manual playback.
+  useEffect(() => {
+    if (greetingSpokenRef.current) return;
+    greetingSpokenRef.current = true;
+    const t = setTimeout(() => {
+      if (messages[0]?.role === 'prophet') {
+        speak(messages[0].content);
+      }
+    }, 500);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     // Auto-scroll to bottom when new messages arrive
@@ -168,7 +279,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         .from('prophetic_decrees')
         .insert({
           user_id: user.id,
-          profile_id: profile.id ?? null,
+          profile_id: profile?.id ?? null,
           user_question: userQuestion,
           decree_content: prophetMsg.content,
           reference_no: referenceNo,
@@ -300,7 +411,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         .from('prophetic_decrees')
         .insert({
           user_id: user.id,
-          profile_id: profile.id ?? null,
+          profile_id: profile?.id ?? null,
           user_question: situation,
           decree_content: prayerMsg.content,
           reference_no: referenceNo,
@@ -331,7 +442,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
       {/* Heaven Garden Background */}
       <div
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heavenGardenBackground})` }}
+        style={{ backgroundImage: `url(${sanctuaryBackground})` }}
       />
       {/* Soft gold wash over the garden so text remains readable */}
       <div
@@ -342,44 +453,50 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         }}
       />
 
-      {/* Header */}
-      <header className="relative z-10 w-full py-4 px-4 border-b border-accent/40 backdrop-blur-sm bg-black/30">
-        <div className="max-w-2xl mx-auto flex items-center gap-4">
+      {/* Header — minimal. The counseling chat IS the landing page, so the
+          FERVENT COUNSEL wordmark lives here. Tiny gear icon in the corner for
+          returning users who want to sign in to save their counsel. */}
+      <header className="relative z-10 w-full py-3 px-4 border-b border-accent/40 backdrop-blur-sm bg-black/30">
+        <div className="max-w-2xl mx-auto flex items-center gap-3">
+          <Avatar className="w-11 h-11 border-2 border-accent ring-2 ring-accent/30 shrink-0">
+            <AvatarImage src={prophetGadAvatar} alt="Prophet Gad" />
+            <AvatarFallback className="bg-accent text-accent-foreground font-bold">
+              PG
+            </AvatarFallback>
+          </Avatar>
+
+          <div className="flex-1 min-w-0">
+            <h1 className="font-display text-sm md:text-base font-bold text-gradient-gold tracking-[0.2em] leading-tight">
+              FERVENT COUNSEL
+            </h1>
+            <p className="text-[11px] text-white/80 italic leading-tight">
+              Prophet Gad is here — how can I help you today?
+            </p>
+          </div>
+
+          {/* Saved decrees (only shown if the visitor has a profile) */}
+          {profile && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/decrees')}
+              className="text-white/80 hover:text-white hover:bg-white/10 gap-1.5 px-2"
+              title="View your sealed decrees"
+            >
+              <ScrollText className="w-4 h-4" />
+              <span className="hidden sm:inline text-xs">Decrees</span>
+            </Button>
+          )}
+
+          {/* Tiny gear = the ONLY reference to sign-in on the whole page */}
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate(-1)}
-            className="text-white/90 hover:text-white hover:bg-white/10"
+            onClick={() => navigate(profile ? '/settings' : '/sign-in')}
+            className="text-white/60 hover:text-white hover:bg-white/10 w-8 h-8"
+            title={profile ? 'Settings' : 'Sign in to save your counsel'}
           >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-
-          <div className="flex items-center gap-3 flex-1">
-            <Avatar className="w-12 h-12 border-2 border-accent ring-2 ring-accent/30">
-              <AvatarImage src={prophetGadAvatar} alt="Prophet Gad" />
-              <AvatarFallback className="bg-accent text-accent-foreground font-bold">
-                PG
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <h1 className="font-display text-lg font-bold text-gradient-gold tracking-wide">
-                PROPHET GAD
-              </h1>
-              <p className="text-xs text-white/80 italic">
-                The Shepherd is Listening
-              </p>
-            </div>
-          </div>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/decrees')}
-            className="text-white/80 hover:text-white hover:bg-white/10 gap-2"
-            title="View your sealed decrees"
-          >
-            <ScrollText className="w-4 h-4" />
-            <span className="hidden sm:inline text-xs">Decrees</span>
+            <Settings className="w-4 h-4" />
           </Button>
         </div>
       </header>
@@ -675,15 +792,39 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                 'linear-gradient(180deg, rgba(252,244,220,0.95) 0%, rgba(248,238,208,0.95) 100%)',
             }}
           >
-            <div className="flex gap-3">
+            <div className="flex gap-2">
               <Input
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyPress}
-                placeholder="Share your burden, beloved..."
-                className="flex-1 border-accent/50 bg-white/90 text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-accent italic"
+                placeholder={
+                  isRecording
+                    ? 'Listening… speak your concern'
+                    : 'Type, or tap the microphone to speak…'
+                }
+                className={cn(
+                  'flex-1 border-accent/50 bg-white/90 text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-accent italic',
+                  isRecording && 'border-destructive ring-2 ring-destructive/40'
+                )}
                 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.05rem' }}
               />
+              {/* Microphone — talk to Prophet Gad instead of typing */}
+              {speechSupported && (
+                <Button
+                  type="button"
+                  onClick={toggleRecording}
+                  disabled={isLoading}
+                  className={cn(
+                    'px-3 border shadow-md transition-colors',
+                    isRecording
+                      ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground border-destructive/70 animate-pulse'
+                      : 'bg-accent/15 hover:bg-accent/25 text-accent-foreground border-accent/40'
+                  )}
+                  title={isRecording ? 'Stop listening' : 'Speak to Prophet Gad'}
+                >
+                  {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                </Button>
+              )}
               <Button
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim() || isLoading}
@@ -696,9 +837,15 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                 )}
               </Button>
             </div>
-            <p className="mt-2 text-center text-[11px] italic text-[#5C4A3D]/70">
-              Every counsel you choose to seal becomes a Prophetic Decree — archived with your name.
-            </p>
+            {isRecording ? (
+              <p className="mt-2 text-center text-[11px] italic text-destructive font-semibold">
+                ● Listening — speak clearly, then tap the microphone again to finish.
+              </p>
+            ) : (
+              <p className="mt-2 text-center text-[11px] italic text-[#5C4A3D]/70">
+                Everything you share stays between you and Prophet Gad.
+              </p>
+            )}
           </div>
         </div>
       </div>

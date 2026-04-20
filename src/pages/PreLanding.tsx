@@ -289,7 +289,7 @@ export const PreLanding = ({
           <div>
             <div className="flex items-center gap-3 flex-wrap">
               <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-gradient-gold drop-shadow-text tracking-wide">
-                HAND IN HAND
+                FERVENT COUNSEL
               </h1>
               <BetaBadge size="md" className="mt-1" />
             </div>

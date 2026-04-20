@@ -62,7 +62,7 @@ export const downloadDecreePdf = (data: DecreePdfData): void => {
   doc.setFontSize(11);
   doc.setTextColor(122, 85, 20);
   doc.text(
-    'Hand in Hand — as Enoch walked and talked with You',
+    'Fervent Counsel — pastoral counsel, fervent prayer',
     pageWidth / 2,
     margin + 40,
     { align: 'center' }

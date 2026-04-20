@@ -17,10 +17,10 @@ export const AppHeader = forwardRef<HTMLElement, AppHeaderProps>(
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-display text-xl font-bold tracking-wide">HAND IN HAND</h1>
+              <h1 className="font-display text-xl font-bold tracking-wide">FERVENT COUNSEL</h1>
               <BetaBadge />
             </div>
-            <p className="text-xs text-primary-foreground/70 italic">As Enoch walked and talked with You</p>
+            <p className="text-xs text-primary-foreground/70 italic">Pastoral counsel, fervent prayer.</p>
           </div>
 
           <div className="flex items-center gap-2">

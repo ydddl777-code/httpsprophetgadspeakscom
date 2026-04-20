@@ -174,7 +174,7 @@ export const DecreeView = ({ userName }: DecreeViewProps) => {
                   <div className="flex items-center justify-center gap-3 mb-2">
                     <Flower2 className="w-5 h-5 text-accent" />
                     <span className="font-display text-xs tracking-[0.4em] text-[#7a5514]">
-                      HAND IN HAND
+                      FERVENT COUNSEL
                     </span>
                     <Flower2 className="w-5 h-5 text-accent" />
                   </div>

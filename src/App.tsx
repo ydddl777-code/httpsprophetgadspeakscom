@@ -34,11 +34,19 @@ const AppRoutes = () => {
     );
   }
 
-  // If no profile, show onboarding via Index
+  // If no profile, the user is anonymous. The landing page is a small
+  // honest crossroads: continue as guest (no password, straight to
+  // Prophet Gad) OR sign in for personalized, persistent service. No
+  // visitor is ever forced through a password prompt.
   if (!profile) {
     return (
       <Routes>
-        <Route path="*" element={<Index />} />
+        <Route path="/" element={<Index />} />
+        <Route path="/counsel" element={<CounselChat profile={null} onLogout={logout} />} />
+        <Route path="/sign-in" element={<Index />} />
+        <Route path="/welcome" element={<Index />} />
+        <Route path="/beliefs" element={<Index />} />
+        <Route path="*" element={<CounselChat profile={null} onLogout={logout} />} />
       </Routes>
     );
   }
