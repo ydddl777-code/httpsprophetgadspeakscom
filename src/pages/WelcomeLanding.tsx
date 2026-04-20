@@ -20,8 +20,13 @@ const PURPLE_PANEL = 'rgba(88, 28, 135, 0.85)';
 const TEXT_SHADOW_STRONG =
   '0 2px 6px rgba(0,0,0,0.85), 0 0 14px rgba(60,20,80,0.7)';
 
-const GREETING_TEXT =
-  "Welcome, friend. Come, sit at the table. What's the burden on your heart? Let's see what the Lord can do for you today.";
+const GREETING_LINES = [
+  'Welcome, friend.',
+  'Welcome to this Christian counseling application.',
+  "What's the burden on your heart?",
+  'Let’s see what the Lord can do for you today.',
+];
+const GREETING_TEXT = GREETING_LINES.join(' ');
 
 const useNow = () => {
   const [now, setNow] = useState(new Date());
