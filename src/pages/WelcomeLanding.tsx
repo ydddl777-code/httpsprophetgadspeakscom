@@ -162,97 +162,97 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
         {/* MIDDLE — let the gate of heaven breathe */}
         <div className="flex-1" />
 
-        {/* BOTTOM — compact prophet card on the right, music bar centered */}
+        {/* BOTTOM — compact prophet card on the right, music bar tucked under it */}
         <main className="relative z-10 px-4 pb-4">
           <div className="w-full max-w-5xl mx-auto flex justify-end">
-            {/* Compact square card — to the right of Heaven's gate */}
-            <div
-              className="rounded-xl border border-accent/60 backdrop-blur-md shadow-2xl overflow-hidden w-full max-w-xs"
-              style={{ background: PURPLE_PANEL }}
-            >
-              <div className="p-4 flex flex-col items-center text-center gap-2">
-                <img
-                  src={prophetGadModern}
-                  alt="Prophet Gad"
-                  className="w-20 h-20 rounded-lg object-cover object-top border-2 border-accent shadow-lg"
-                />
-                <p
-                  className="text-white/90 text-xs italic leading-snug"
-                  style={{ fontFamily: ARIAL }}
-                >
-                  [Come, sit at the table. Let's see what the Lord can do for you today.]
-                </p>
-
-                {/* Audible greeting button */}
-                <button
-                  onClick={speakInvitation}
-                  disabled={isLoading}
-                  className="mt-1 px-3 py-1 rounded-full bg-white/15 hover:bg-white/25 border border-accent/50 text-white text-xs inline-flex items-center gap-1.5 transition-all disabled:opacity-50"
-                  style={{ fontFamily: ARIAL }}
-                >
-                  {isLoading ? (
-                    <Loader2 className="w-3 h-3 animate-spin" />
-                  ) : (
-                    <Volume2 className="w-3 h-3" />
-                  )}
-                  {isLoading ? '...' : isSpeaking ? 'Stop' : 'Hear it'}
-                </button>
-
-                {/* Small Enter Sanctuary button */}
-                <button
-                  onClick={enterSanctuary}
-                  className="mt-2 px-4 py-2 rounded-full bg-accent hover:bg-accent/90 border border-white/30 text-white font-bold text-sm shadow-lg inline-flex items-center justify-center gap-2 transition-all"
-                  style={{ fontFamily: ARIAL }}
-                >
-                  <DoorOpen className="w-4 h-4" />
-                  Enter the Sanctuary
-                </button>
-
-                <div className="mt-2 flex flex-col gap-1 text-xs text-white/80" style={{ fontFamily: ARIAL }}>
-                  <button
-                    onClick={onEnterApp}
-                    className="hover:text-white hover:underline underline-offset-4"
+            <div className="w-full max-w-xs flex flex-col gap-2">
+              {/* Translucent square card — lets the rose on the right show through */}
+              <div
+                className="rounded-xl border border-accent/60 backdrop-blur-md shadow-2xl overflow-hidden"
+                style={{ background: 'rgba(88, 28, 135, 0.55)' }}
+              >
+                <div className="p-4 flex flex-col items-center text-center gap-2">
+                  <img
+                    src={prophetGadModern}
+                    alt="Prophet Gad"
+                    className="w-20 h-20 rounded-lg object-cover object-top border-2 border-accent shadow-lg"
+                  />
+                  <p
+                    className="text-white text-xs italic leading-snug"
+                    style={{ fontFamily: ARIAL, textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
                   >
-                    Returning? Sign in to save your counsel
-                  </button>
+                    [Come, sit at the table. Let's see what the Lord can do for you today.]
+                  </p>
+
                   <button
-                    onClick={onViewBeliefs}
-                    className="hover:text-white hover:underline underline-offset-4"
+                    onClick={speakInvitation}
+                    disabled={isLoading}
+                    className="mt-1 px-3 py-1 rounded-full bg-white/15 hover:bg-white/25 border border-accent/50 text-white text-xs inline-flex items-center gap-1.5 transition-all disabled:opacity-50"
+                    style={{ fontFamily: ARIAL }}
                   >
-                    What we believe
+                    {isLoading ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Volume2 className="w-3 h-3" />
+                    )}
+                    {isLoading ? '...' : isSpeaking ? 'Stop' : 'Hear it'}
                   </button>
+
+                  <button
+                    onClick={enterSanctuary}
+                    className="mt-2 px-4 py-2 rounded-full bg-accent hover:bg-accent/90 border border-white/30 text-white font-bold text-sm shadow-lg inline-flex items-center justify-center gap-2 transition-all"
+                    style={{ fontFamily: ARIAL }}
+                  >
+                    <DoorOpen className="w-4 h-4" />
+                    Enter the Sanctuary
+                  </button>
+
+                  <div className="mt-2 flex flex-col gap-1 text-xs text-white/85" style={{ fontFamily: ARIAL }}>
+                    <button
+                      onClick={onEnterApp}
+                      className="hover:text-white hover:underline underline-offset-4"
+                    >
+                      Returning? Sign in to save your counsel
+                    </button>
+                    <button
+                      onClick={onViewBeliefs}
+                      className="hover:text-white hover:underline underline-offset-4"
+                    >
+                      What we believe
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Music bar — centered, smaller play button, larger song title */}
-          <div
-            className="mt-3 mx-auto max-w-md flex items-center gap-3 px-4 py-2 rounded-full border border-accent/50 backdrop-blur-md"
-            style={{ background: PURPLE_PANEL }}
-          >
-            <button
-              onClick={stopMusic}
-              className="w-9 h-9 flex-shrink-0 rounded-full bg-destructive hover:bg-destructive/90 border-2 border-white flex items-center justify-center shadow-md"
-              title="Stop music"
-              aria-label="Stop music"
-            >
-              <Square className="w-3.5 h-3.5 text-white fill-white" />
-            </button>
-            <button
-              onClick={togglePlay}
-              className="w-7 h-7 flex-shrink-0 rounded-full bg-accent hover:bg-accent/90 text-white flex items-center justify-center"
-              title={isPlaying ? 'Pause' : 'Play'}
-              aria-label={isPlaying ? 'Pause hymn' : 'Play hymn'}
-            >
-              {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-            </button>
-            <p
-              className="flex-1 text-white text-sm font-semibold truncate"
-              style={{ fontFamily: ARIAL }}
-            >
-              Thunder Road Gospel · softly
-            </p>
+              {/* Music bar — directly under the prophet card, same width */}
+              <div
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/50 backdrop-blur-md"
+                style={{ background: 'rgba(88, 28, 135, 0.55)' }}
+              >
+                <button
+                  onClick={stopMusic}
+                  className="w-8 h-8 flex-shrink-0 rounded-full bg-destructive hover:bg-destructive/90 border-2 border-white flex items-center justify-center shadow-md"
+                  title="Stop music"
+                  aria-label="Stop music"
+                >
+                  <Square className="w-3 h-3 text-white fill-white" />
+                </button>
+                <button
+                  onClick={togglePlay}
+                  className="w-6 h-6 flex-shrink-0 rounded-full bg-accent hover:bg-accent/90 text-white flex items-center justify-center"
+                  title={isPlaying ? 'Pause' : 'Play'}
+                  aria-label={isPlaying ? 'Pause hymn' : 'Play hymn'}
+                >
+                  {isPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
+                </button>
+                <p
+                  className="flex-1 text-white text-sm font-semibold truncate"
+                  style={{ fontFamily: ARIAL, textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
+                >
+                  Thunder Road Gospel
+                </p>
+              </div>
+            </div>
           </div>
         </main>
 
