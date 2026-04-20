@@ -184,7 +184,7 @@ serve(async (req) => {
     const pcmBytes = new Uint8Array(binary.length);
     for (let i = 0; i < binary.length; i++) pcmBytes[i] = binary.charCodeAt(i);
     const wavBytes = wrapPcmAsWav(pcmBytes, 24000);
-    const wavBase64 = base64Encode(wavBytes);
+    const wavBase64 = base64Encode(wavBytes.buffer as ArrayBuffer);
 
     return new Response(
       JSON.stringify({

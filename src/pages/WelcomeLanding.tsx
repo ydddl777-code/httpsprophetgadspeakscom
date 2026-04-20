@@ -27,7 +27,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
     setAutoPlayTried(true);
     const a = audioRef.current;
     if (!a) return;
-    a.volume = 0.35;
+    a.volume = 0.30;
     a.play()
       .then(() => setIsPlaying(true))
       .catch(() => {
@@ -42,7 +42,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
       a.pause();
       setIsPlaying(false);
     } else {
-      a.volume = 0.35;
+      a.volume = 0.30;
       a.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
     }
   };
