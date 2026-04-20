@@ -188,7 +188,7 @@ export const DecreeView = ({ userName }: DecreeViewProps) => {
                     className="mt-1 italic text-sm"
                     style={{
                       color: '#7a5514',
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                     }}
                   >
                     {decree.type === 'prayer'
@@ -208,7 +208,7 @@ export const DecreeView = ({ userName }: DecreeViewProps) => {
                   className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm mb-8"
                   style={{
                     color: '#3c2814',
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                   }}
                 >
                   <dt className="font-bold">Reference No.</dt>
@@ -234,7 +234,7 @@ export const DecreeView = ({ userName }: DecreeViewProps) => {
                     className="mb-6 pl-4 border-l-4 border-accent/60 italic"
                     style={{
                       color: '#3c2814',
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                     }}
                   >
                     <p className="text-xs uppercase tracking-widest font-bold mb-1 not-italic text-[#7a5514]">
@@ -253,7 +253,7 @@ export const DecreeView = ({ userName }: DecreeViewProps) => {
                 <div
                   className="text-[#2a1a08] whitespace-pre-wrap leading-relaxed"
                   style={{
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                     fontSize: '1.15rem',
                   }}
                 >

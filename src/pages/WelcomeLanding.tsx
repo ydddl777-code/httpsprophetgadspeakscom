@@ -168,7 +168,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                   <p
                     className="text-white/95 text-base md:text-xl leading-snug"
                     style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                       fontStyle: 'italic',
                       textShadow: '0 2px 6px rgba(0,0,0,0.6)',
                     }}
@@ -185,7 +185,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                   onClick={enterSanctuary}
                   className="w-full px-6 py-3.5 rounded-full bg-accent hover:bg-accent/90 border-2 border-white/30 text-white font-bold text-lg tracking-wide shadow-2xl transition-all hover:scale-[1.01] flex items-center justify-center gap-3"
                   style={{
-                    fontFamily: "'Cinzel', Georgia, serif",
+                    fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                     boxShadow: '0 6px 24px rgba(212,165,63,0.55)',
                   }}
                 >
@@ -226,7 +226,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
               </button>
               <p
                 className="text-[11px] text-white/80 italic truncate"
-                style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif' }}
               >
                 ♪ Thunder Road Gospel · softly
               </p>
