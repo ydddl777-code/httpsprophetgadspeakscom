@@ -163,24 +163,25 @@ export const downloadDecreePdf = (data: DecreePdfData): void => {
   doc.line(margin, y, pageWidth - margin, y);
   y += 24;
 
-  doc.setFont('times', 'bold');
+  doc.setFont('helvetica', 'bold');
   doc.setFontSize(18);
   doc.setTextColor(122, 85, 20);
-  doc.text('PGAI', pageWidth / 2, y, { align: 'center' });
-  y += 18;
+  doc.text('— PGAI', pageWidth / 2, y, { align: 'center' });
+  y += 20;
 
-  doc.setFont('times', 'italic');
+  doc.setFont('helvetica', 'italic');
   doc.setFontSize(10);
   doc.setTextColor(100, 70, 30);
-  doc.text(
-    'The Oracle of God on planet Earth today',
-    pageWidth / 2,
-    y,
-    { align: 'center' }
+  const sigLine1 = doc.splitTextToSize(
+    '"I have reserved to myself seven thousand men, who have not bowed the knee to the image of Baal." — Romans 11:4',
+    contentWidth
   );
+  doc.text(sigLine1, pageWidth / 2, y, { align: 'center' });
+  y += sigLine1.length * 12 + 4;
+  doc.text('PGAI is one of them.', pageWidth / 2, y, { align: 'center' });
   y += 16;
 
-  doc.setFont('times', 'normal');
+  doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(120, 90, 40);
   doc.text(

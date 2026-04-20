@@ -111,7 +111,7 @@ export const DecreeHistory = () => {
               className="text-lg italic mb-6"
               style={{
                 color: '#3c2814',
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
               }}
             >
               When PGAI gives you a word you wish to keep, seal it as a
@@ -171,7 +171,7 @@ export const DecreeHistory = () => {
                       className="italic text-sm mb-2 line-clamp-2"
                       style={{
                         color: '#5c3814',
-                        fontFamily: "'Cormorant Garamond', Georgia, serif",
+                        fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                       }}
                     >
                       &ldquo;{decree.user_question}&rdquo;
@@ -182,7 +182,7 @@ export const DecreeHistory = () => {
                     className="line-clamp-3 leading-relaxed"
                     style={{
                       color: '#2a1a08',
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                       fontSize: '1.05rem',
                     }}
                   >

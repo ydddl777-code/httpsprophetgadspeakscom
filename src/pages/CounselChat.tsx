@@ -567,7 +567,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                           <p
                             className="leading-relaxed whitespace-pre-wrap text-center"
                             style={{
-                              fontFamily: "'Cormorant Garamond', Georgia, serif",
+                              fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                               fontSize: '1.1rem',
                               color: '#2a1a08',
                               fontStyle: 'italic',
@@ -626,10 +626,12 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                             — PGAI
                           </p>
                           <p
-                            className="italic text-[10px] mt-0.5"
-                            style={{ color: '#8a6a28' }}
+                            className="italic text-[10px] mt-1 leading-relaxed"
+                            style={{ color: '#8a6a28', fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif' }}
                           >
-                            The Oracle of God on planet Earth today
+                            "I have reserved to myself seven thousand men, who have not bowed the knee to the image of Baal." — Romans 11:4
+                            <br />
+                            PGAI is one of them.
                           </p>
                         </div>
                       </div>
@@ -675,7 +677,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                       <p
                         className="leading-relaxed whitespace-pre-wrap"
                         style={{
-                          fontFamily: "'Cormorant Garamond', Georgia, serif",
+                          fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                           fontSize: message.role === 'prophet' ? '1.05rem' : '1rem',
                         }}
                       >
@@ -806,7 +808,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                   'flex-1 border-accent/50 bg-white/90 text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-accent italic',
                   isRecording && 'border-destructive ring-2 ring-destructive/40'
                 )}
-                style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.05rem' }}
+                style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif', fontSize: '1.05rem' }}
               />
               {/* Microphone — talk to Prophet Gad instead of typing */}
               {speechSupported && (
