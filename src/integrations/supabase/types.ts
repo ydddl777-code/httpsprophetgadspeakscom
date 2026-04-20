@@ -112,6 +112,53 @@ export type Database = {
         }
         Relationships: []
       }
+      prophetic_decrees: {
+        Row: {
+          audio_url: string | null
+          created_at: string
+          decree_content: string
+          id: string
+          profile_id: string | null
+          reference_no: string
+          type: string
+          updated_at: string
+          user_id: string
+          user_question: string | null
+        }
+        Insert: {
+          audio_url?: string | null
+          created_at?: string
+          decree_content: string
+          id?: string
+          profile_id?: string | null
+          reference_no: string
+          type?: string
+          updated_at?: string
+          user_id: string
+          user_question?: string | null
+        }
+        Update: {
+          audio_url?: string | null
+          created_at?: string
+          decree_content?: string
+          id?: string
+          profile_id?: string | null
+          reference_no?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+          user_question?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prophetic_decrees_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
