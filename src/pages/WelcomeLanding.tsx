@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DoorOpen, Play, Pause, Volume2, Square, Loader2 } from 'lucide-react';
+import { Play, Pause, Volume2, Loader2 } from 'lucide-react';
 import { BetaBadge } from '@/components/BetaBadge';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
 import landingBackground from '@/assets/heaven-garden-background.jpg';
@@ -15,7 +15,14 @@ const HYMN_TRACK = '/music/thunder-road-gospel.mp3';
 const ARIAL = 'Arial, "Helvetica Neue", Helvetica, sans-serif';
 const PURPLE_PANEL = 'rgba(88, 28, 135, 0.85)';
 
-// Live clock + date — needed because we no longer render LandingHeader.
+// Strong text shadow used to make translucent text readable against the
+// flower garden background — replaces the solid purple panels.
+const TEXT_SHADOW_STRONG =
+  '0 2px 6px rgba(0,0,0,0.85), 0 0 14px rgba(60,20,80,0.7)';
+
+const GREETING_TEXT =
+  "Welcome, friend. Come, sit at the table. What's the burden on your heart? Let's see what the Lord can do for you today.";
+
 const useNow = () => {
   const [now, setNow] = useState(new Date());
   useEffect(() => {
@@ -66,14 +73,6 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
     }
   };
 
-  const stopMusic = () => {
-    const a = audioRef.current;
-    if (!a) return;
-    a.pause();
-    a.currentTime = 0;
-    setIsPlaying(false);
-  };
-
   const enterSanctuary = () => {
     if (audioRef.current) audioRef.current.pause();
     navigate('/counsel');
@@ -83,7 +82,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
     if (isSpeaking) {
       stop();
     } else {
-      speak("Come, sit at the table. Let's see what the Lord can do for you today.");
+      speak(GREETING_TEXT);
     }
   };
 
@@ -91,13 +90,11 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
     <div className="min-h-screen relative overflow-x-hidden" style={{ fontFamily: ARIAL }}>
       <audio ref={audioRef} src={HYMN_TRACK} loop preload="auto" />
 
-      {/* Garden of heaven background — flowers and the gate */}
+      {/* Garden of heaven background */}
       <div
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${landingBackground})` }}
       />
-      {/* Gentle warm wash — no white veil along the bottom anymore so the
-          flowers in bloom show through clearly */}
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
@@ -124,49 +121,55 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
       />
 
       <div className="relative z-10 min-h-screen flex flex-col">
-        {/* TOP — centered title on a purple panel so it pops */}
-        <header className="relative z-10 px-4 pt-5 pb-3 flex justify-center">
-          <div
-            className="rounded-xl border border-accent/60 backdrop-blur-md px-6 py-3 shadow-2xl text-center max-w-2xl w-full"
-            style={{ background: PURPLE_PANEL }}
-          >
-            <div className="flex items-center justify-center gap-3 flex-wrap">
-              <h1
-                className="font-bold tracking-wide text-2xl md:text-4xl"
-                style={{ fontFamily: ARIAL, color: '#F5D87A' }}
-              >
-                FERVENT COUNSEL
-              </h1>
-              <BetaBadge size="md" />
-            </div>
+        {/* TOP — translucent text only, no panel. Date/time on the right. */}
+        <header className="relative z-10 px-6 pt-5 pb-3 flex items-start justify-between gap-4">
+          <div className="text-left flex-1 min-w-0">
+            <h1
+              className="font-bold tracking-wide text-2xl md:text-4xl"
+              style={{
+                fontFamily: ARIAL,
+                color: '#F5D87A',
+                textShadow: TEXT_SHADOW_STRONG,
+              }}
+            >
+              FERVENT COUNSEL
+            </h1>
             <p
-              className="italic text-sm md:text-base mt-1 text-white/95"
-              style={{ fontFamily: ARIAL }}
+              className="italic text-sm md:text-base mt-1 text-white"
+              style={{ fontFamily: ARIAL, textShadow: TEXT_SHADOW_STRONG }}
             >
-              Pastoral counsel, fervent prayer. By God's prophet.
+              Pastoral Counsel, Fervent Prayer. By God's Prophet.
             </p>
-            {/* Date + time on the same purple panel — no more gold-on-gold */}
-            <div
-              className="mt-2 flex items-center justify-center gap-3 text-white"
-              style={{ fontFamily: ARIAL }}
+          </div>
+
+          <div className="text-right flex-shrink-0 flex flex-col items-end gap-1">
+            <span
+              className="text-sm md:text-base font-semibold text-white"
+              style={{ fontFamily: ARIAL, textShadow: TEXT_SHADOW_STRONG }}
             >
-              <span className="text-sm md:text-base font-semibold">{dateString}</span>
-              <span className="text-white/50">·</span>
-              <span className="text-base md:text-lg font-bold" style={{ color: '#F5D87A' }}>
-                {timeString}
-              </span>
-            </div>
+              {dateString}
+            </span>
+            <span
+              className="text-base md:text-lg font-bold"
+              style={{
+                fontFamily: ARIAL,
+                color: '#F5D87A',
+                textShadow: TEXT_SHADOW_STRONG,
+              }}
+            >
+              {timeString}
+            </span>
           </div>
         </header>
 
         {/* MIDDLE — let the gate of heaven breathe */}
         <div className="flex-1" />
 
-        {/* BOTTOM — compact prophet card on the right, music bar tucked under it */}
+        {/* BOTTOM — only the prophet card keeps a translucent box. Music
+            controls below it are bare buttons over the garden. */}
         <main className="relative z-10 px-4 pb-4">
           <div className="w-full max-w-5xl mx-auto flex justify-end">
             <div className="w-full max-w-xs flex flex-col gap-2">
-              {/* Translucent square card — lets the rose on the right show through */}
               <div
                 className="rounded-xl border border-accent/60 backdrop-blur-md shadow-2xl overflow-hidden"
                 style={{ background: 'rgba(88, 28, 135, 0.55)' }}
@@ -181,7 +184,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                     className="text-white text-xs italic leading-snug"
                     style={{ fontFamily: ARIAL, textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
                   >
-                    [Come, sit at the table. Let's see what the Lord can do for you today.]
+                    [Welcome, friend. Come, sit at the table. What's the burden on your heart? Let's see what the Lord can do for you today.]
                   </p>
 
                   <button
@@ -200,11 +203,10 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
 
                   <button
                     onClick={enterSanctuary}
-                    className="mt-2 px-4 py-2 rounded-full bg-accent hover:bg-accent/90 border border-white/30 text-white font-bold text-sm shadow-lg inline-flex items-center justify-center gap-2 transition-all"
+                    className="mt-2 px-5 py-2 rounded-full bg-accent hover:bg-accent/90 border border-white/30 text-white font-bold text-sm shadow-lg transition-all"
                     style={{ fontFamily: ARIAL }}
                   >
-                    <DoorOpen className="w-4 h-4" />
-                    Enter the Sanctuary
+                    Enter
                   </button>
 
                   <div className="mt-2 flex flex-col gap-1 text-xs text-white/85" style={{ fontFamily: ARIAL }}>
@@ -224,30 +226,24 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                 </div>
               </div>
 
-              {/* Music bar — directly under the prophet card, same width */}
-              <div
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/50 backdrop-blur-md"
-                style={{ background: 'rgba(88, 28, 135, 0.55)' }}
-              >
-                <button
-                  onClick={stopMusic}
-                  className="w-8 h-8 flex-shrink-0 rounded-full bg-destructive hover:bg-destructive/90 border-2 border-white flex items-center justify-center shadow-md"
-                  title="Stop music"
-                  aria-label="Stop music"
-                >
-                  <Square className="w-3 h-3 text-white fill-white" />
-                </button>
+              {/* Music controls — bare, no box, just translucent text + a
+                  pause/play button. No red. */}
+              <div className="flex items-center gap-2 px-1 py-1">
                 <button
                   onClick={togglePlay}
-                  className="w-6 h-6 flex-shrink-0 rounded-full bg-accent hover:bg-accent/90 text-white flex items-center justify-center"
+                  className="w-8 h-8 flex-shrink-0 rounded-full bg-accent/80 hover:bg-accent border border-white/40 text-white flex items-center justify-center backdrop-blur-sm shadow-md"
                   title={isPlaying ? 'Pause' : 'Play'}
                   aria-label={isPlaying ? 'Pause hymn' : 'Play hymn'}
                 >
-                  {isPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
+                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                 </button>
                 <p
-                  className="flex-1 text-white text-sm font-semibold truncate"
-                  style={{ fontFamily: ARIAL, textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
+                  className="flex-1 text-white font-semibold truncate"
+                  style={{
+                    fontFamily: ARIAL,
+                    fontSize: '13px',
+                    textShadow: TEXT_SHADOW_STRONG,
+                  }}
                 >
                   Thunder Road Gospel
                 </p>
@@ -256,13 +252,21 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
           </div>
         </main>
 
+        {/* FOOTER — translucent purple highlight behind the wordmark, with
+            the gold BETA chip beside it (replaces the top BETA). */}
         <footer className="relative z-10 py-3 text-center px-4">
-          <p
-            className="text-xs text-white/85 italic"
-            style={{ fontFamily: ARIAL, textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
+          <span
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full backdrop-blur-md border border-accent/50"
+            style={{ background: PURPLE_PANEL }}
           >
-            Fervent Counsel — A Remnant Seed LLC Product · © 2026 · Still in beta
-          </p>
+            <span
+              className="text-xs italic text-white"
+              style={{ fontFamily: ARIAL }}
+            >
+              Fervent Counsel by Remnant Seed LLC · © 2026 · Still in beta
+            </span>
+            <BetaBadge size="sm" />
+          </span>
         </footer>
       </div>
     </div>
