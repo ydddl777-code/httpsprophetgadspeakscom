@@ -126,28 +126,26 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
       />
 
       <div className="relative z-10 min-h-screen flex flex-col">
-        {/* TOP — translucent text only, no panel. Date/time on the right. */}
-        <header className="relative z-10 px-6 pt-5 pb-3 flex items-start justify-between gap-4">
-          <div className="text-left flex-1 min-w-0">
-            <h1
-              className="font-bold tracking-wide text-2xl md:text-4xl"
-              style={{
-                fontFamily: ARIAL,
-                color: '#F5D87A',
-                textShadow: TEXT_SHADOW_STRONG,
-              }}
-            >
-              FERVENT COUNSEL
-            </h1>
-            <p
-              className="italic text-sm md:text-base mt-1 text-white"
-              style={{ fontFamily: ARIAL, textShadow: TEXT_SHADOW_STRONG }}
-            >
-              Pastoral Counsel, Fervent Prayer. By God's Prophet.
-            </p>
-          </div>
-
-          <div className="text-right flex-shrink-0 flex flex-col items-end gap-1">
+        {/* TOP — centered wordmark above the gate, with date/time stacked
+            beneath the tagline. No side-pinned clock. */}
+        <header className="relative z-10 px-6 pt-5 pb-3 text-center">
+          <h1
+            className="font-bold tracking-wide text-3xl md:text-5xl"
+            style={{
+              fontFamily: ARIAL,
+              color: '#F5D87A',
+              textShadow: TEXT_SHADOW_STRONG,
+            }}
+          >
+            FERVENT COUNSEL
+          </h1>
+          <p
+            className="italic text-sm md:text-base mt-1 text-white"
+            style={{ fontFamily: ARIAL, textShadow: TEXT_SHADOW_STRONG }}
+          >
+            Pastoral Counsel, Fervent Prayer. By God's Prophet.
+          </p>
+          <div className="mt-2 flex flex-col items-center gap-0.5">
             <span
               className="text-sm md:text-base font-semibold text-white"
               style={{ fontFamily: ARIAL, textShadow: TEXT_SHADOW_STRONG }}
