@@ -270,7 +270,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
               className="text-xs italic text-white"
               style={{ fontFamily: ARIAL }}
             >
-              Fervent Counsel by Remnant Seed LLC · © 2026 · Still in beta
+              Fervent Counsel by Remnant Seed LLC · © 2026
             </span>
             <BetaBadge size="sm" />
           </span>
