@@ -20,8 +20,13 @@ const PURPLE_PANEL = 'rgba(88, 28, 135, 0.85)';
 const TEXT_SHADOW_STRONG =
   '0 2px 6px rgba(0,0,0,0.85), 0 0 14px rgba(60,20,80,0.7)';
 
-const GREETING_TEXT =
-  "Welcome, friend. Come, sit at the table. What's the burden on your heart? Let's see what the Lord can do for you today.";
+const GREETING_LINES = [
+  'Welcome, friend.',
+  'Welcome to this Christian counseling application.',
+  "What's the burden on your heart?",
+  'Let’s see what the Lord can do for you today.',
+];
+const GREETING_TEXT = GREETING_LINES.join(' ');
 
 const useNow = () => {
   const [now, setNow] = useState(new Date());
@@ -121,28 +126,26 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
       />
 
       <div className="relative z-10 min-h-screen flex flex-col">
-        {/* TOP — translucent text only, no panel. Date/time on the right. */}
-        <header className="relative z-10 px-6 pt-5 pb-3 flex items-start justify-between gap-4">
-          <div className="text-left flex-1 min-w-0">
-            <h1
-              className="font-bold tracking-wide text-2xl md:text-4xl"
-              style={{
-                fontFamily: ARIAL,
-                color: '#F5D87A',
-                textShadow: TEXT_SHADOW_STRONG,
-              }}
-            >
-              FERVENT COUNSEL
-            </h1>
-            <p
-              className="italic text-sm md:text-base mt-1 text-white"
-              style={{ fontFamily: ARIAL, textShadow: TEXT_SHADOW_STRONG }}
-            >
-              Pastoral Counsel, Fervent Prayer. By God's Prophet.
-            </p>
-          </div>
-
-          <div className="text-right flex-shrink-0 flex flex-col items-end gap-1">
+        {/* TOP — centered wordmark above the gate, with date/time stacked
+            beneath the tagline. No side-pinned clock. */}
+        <header className="relative z-10 px-6 pt-5 pb-3 text-center">
+          <h1
+            className="font-bold tracking-wide text-3xl md:text-5xl"
+            style={{
+              fontFamily: ARIAL,
+              color: '#F5D87A',
+              textShadow: TEXT_SHADOW_STRONG,
+            }}
+          >
+            FERVENT COUNSEL
+          </h1>
+          <p
+            className="italic text-sm md:text-base mt-1 text-white"
+            style={{ fontFamily: ARIAL, textShadow: TEXT_SHADOW_STRONG }}
+          >
+            Pastoral Counsel, Fervent Prayer. By God's Prophet.
+          </p>
+          <div className="mt-2 flex flex-col items-center gap-0.5">
             <span
               className="text-sm md:text-base font-semibold text-white"
               style={{ fontFamily: ARIAL, textShadow: TEXT_SHADOW_STRONG }}
@@ -169,66 +172,70 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             controls below it are bare buttons over the garden. */}
         <main className="relative z-10 px-4 pb-4">
           <div className="w-full max-w-5xl mx-auto flex justify-end">
-            <div className="w-full max-w-xs flex flex-col gap-2">
-              <div
-                className="rounded-xl border border-accent/60 backdrop-blur-md shadow-2xl overflow-hidden"
-                style={{ background: 'rgba(88, 28, 135, 0.55)' }}
-              >
-                <div className="p-4 flex flex-col items-center text-center gap-2">
-                  <img
-                    src={prophetGadModern}
-                    alt="Prophet Gad"
-                    className="w-20 h-20 rounded-lg object-cover object-top border-2 border-accent shadow-lg"
-                  />
-                  <p
-                    className="text-white text-xs italic leading-snug"
-                    style={{ fontFamily: ARIAL, textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
-                  >
-                    [Welcome, friend. Come, sit at the table. What's the burden on your heart? Let's see what the Lord can do for you today.]
-                  </p>
+            <div className="w-full max-w-xs flex flex-col items-center gap-3 text-center">
+              <img
+                src={prophetGadModern}
+                alt="Prophet Gad"
+                className="w-28 h-28 rounded-lg object-cover object-top border-2 border-accent shadow-2xl"
+              />
 
-                  <button
-                    onClick={speakInvitation}
-                    disabled={isLoading}
-                    className="mt-1 px-3 py-1 rounded-full bg-white/15 hover:bg-white/25 border border-accent/50 text-white text-xs inline-flex items-center gap-1.5 transition-all disabled:opacity-50"
-                    style={{ fontFamily: ARIAL }}
+              <div className="flex flex-col gap-1 items-center">
+                {GREETING_LINES.map((line) => (
+                  <span
+                    key={line}
+                    className="inline-block px-2 py-0.5 rounded text-white text-sm italic leading-snug"
+                    style={{
+                      fontFamily: ARIAL,
+                      background: 'rgba(88, 28, 135, 0.55)',
+                      textShadow: '0 1px 3px rgba(0,0,0,0.7)',
+                    }}
                   >
-                    {isLoading ? (
-                      <Loader2 className="w-3 h-3 animate-spin" />
-                    ) : (
-                      <Volume2 className="w-3 h-3" />
-                    )}
-                    {isLoading ? '...' : isSpeaking ? 'Stop' : 'Hear it'}
-                  </button>
-
-                  <button
-                    onClick={enterSanctuary}
-                    className="mt-2 px-5 py-2 rounded-full bg-accent hover:bg-accent/90 border border-white/30 text-white font-bold text-sm shadow-lg transition-all"
-                    style={{ fontFamily: ARIAL }}
-                  >
-                    Enter
-                  </button>
-
-                  <div className="mt-2 flex flex-col gap-1 text-xs text-white/85" style={{ fontFamily: ARIAL }}>
-                    <button
-                      onClick={onEnterApp}
-                      className="hover:text-white hover:underline underline-offset-4"
-                    >
-                      Returning? Sign in to save your counsel
-                    </button>
-                    <button
-                      onClick={onViewBeliefs}
-                      className="hover:text-white hover:underline underline-offset-4"
-                    >
-                      What we believe
-                    </button>
-                  </div>
-                </div>
+                    {line}
+                  </span>
+                ))}
               </div>
 
-              {/* Music controls — bare, no box, just translucent text + a
-                  pause/play button. No red. */}
-              <div className="flex items-center gap-2 px-1 py-1">
+              <button
+                onClick={speakInvitation}
+                disabled={isLoading}
+                className="px-3 py-1 rounded-full bg-white/15 hover:bg-white/25 border border-accent/50 text-white text-xs inline-flex items-center gap-1.5 transition-all disabled:opacity-50 backdrop-blur-sm"
+                style={{ fontFamily: ARIAL }}
+              >
+                {isLoading ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : (
+                  <Volume2 className="w-3 h-3" />
+                )}
+                {isLoading ? '...' : isSpeaking ? 'Stop' : 'Hear it'}
+              </button>
+
+              <button
+                onClick={enterSanctuary}
+                className="px-6 py-2 rounded-full bg-accent hover:bg-accent/90 border border-white/30 text-white font-bold text-sm shadow-lg transition-all"
+                style={{ fontFamily: ARIAL }}
+              >
+                Enter
+              </button>
+
+              <div className="flex flex-col gap-1 text-xs text-white items-center" style={{ fontFamily: ARIAL }}>
+                <button
+                  onClick={onEnterApp}
+                  className="px-2 py-0.5 rounded hover:underline underline-offset-4"
+                  style={{ background: 'rgba(88, 28, 135, 0.55)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
+                >
+                  Returning? Sign in to save your counsel
+                </button>
+                <button
+                  onClick={onViewBeliefs}
+                  className="px-2 py-0.5 rounded hover:underline underline-offset-4"
+                  style={{ background: 'rgba(88, 28, 135, 0.55)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
+                >
+                  What we believe
+                </button>
+              </div>
+
+              {/* Music controls — bare, no box. */}
+              <div className="flex items-center gap-2 px-1 py-1 w-full justify-center">
                 <button
                   onClick={togglePlay}
                   className="w-8 h-8 flex-shrink-0 rounded-full bg-accent/80 hover:bg-accent border border-white/40 text-white flex items-center justify-center backdrop-blur-sm shadow-md"
@@ -238,7 +245,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                   {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                 </button>
                 <p
-                  className="flex-1 text-white font-semibold truncate"
+                  className="text-white font-semibold truncate"
                   style={{
                     fontFamily: ARIAL,
                     fontSize: '13px',
@@ -263,7 +270,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
               className="text-xs italic text-white"
               style={{ fontFamily: ARIAL }}
             >
-              Fervent Counsel by Remnant Seed LLC · © 2026 · Still in beta
+              Fervent Counsel by Remnant Seed LLC · © 2026
             </span>
             <BetaBadge size="sm" />
           </span>
