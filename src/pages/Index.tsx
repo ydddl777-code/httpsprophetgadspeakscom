@@ -200,8 +200,8 @@ const Index = () => {
   // Not logged in: WelcomeLanding is the intro page with music/Prophet Gad greeting
   return (
     <WelcomeLanding
-      onGetStarted={() => setCurrentView('auth')}
-      onLearnMore={() => setCurrentView('beliefs')}
+      onEnterApp={() => setCurrentView('auth')}
+      onViewBeliefs={() => setCurrentView('beliefs')}
     />
   );
 };
