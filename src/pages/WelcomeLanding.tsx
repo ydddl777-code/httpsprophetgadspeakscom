@@ -4,7 +4,7 @@ import { Play, Pause, Volume2, Loader2 } from 'lucide-react';
 import { BetaBadge } from '@/components/BetaBadge';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
 import landingBackground from '@/assets/heaven-garden-background.jpg';
-import prophetGadModern from '@/assets/prophet-gad-modern.png';
+import prophetGadWarrior from '@/assets/prophet-gad-warrior-portrait.png';
 
 interface WelcomeLandingProps {
   onEnterApp: () => void;
