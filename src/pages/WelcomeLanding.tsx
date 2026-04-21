@@ -186,7 +186,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
           <div className="w-full max-w-5xl mx-auto flex justify-end items-end">
             <div className="w-full max-w-xs flex flex-col items-center gap-3 text-center">
               <img
-                src={prophetGadModern}
+                src={prophetGadWarrior}
                 alt="Prophet Gad"
                 className="w-28 h-28 rounded-lg object-cover object-top border-2 border-accent shadow-2xl"
               />
