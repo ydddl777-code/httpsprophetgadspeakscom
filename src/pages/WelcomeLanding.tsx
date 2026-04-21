@@ -183,7 +183,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
         {/* BOTTOM — only the prophet card keeps a translucent box. Music
             controls below it are bare buttons over the garden. */}
         <main className="relative z-10 px-4 pb-4">
-          <div className="w-full max-w-5xl mx-auto flex justify-end">
+          <div className="w-full max-w-5xl mx-auto flex justify-end items-end">
             <div className="w-full max-w-xs flex flex-col items-center gap-3 text-center">
               <img
                 src={prophetGadModern}
