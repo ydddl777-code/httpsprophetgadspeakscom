@@ -21,8 +21,7 @@ const TEXT_SHADOW_STRONG =
   '0 2px 6px rgba(0,0,0,0.85), 0 0 14px rgba(60,20,80,0.7)';
 
 const GREETING_LINES = [
-  'Welcome, Friend.',
-  'Welcome To This Christian Counseling Application.',
+  'Welcome, Friend, To This Christian Counseling Application.',
   "What's The Burden On Your Heart?",
   'Let’s See What The Lord Can Do For You Today.',
 ];
@@ -184,18 +183,29 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             controls below it are bare buttons over the garden. */}
         <main className="relative z-10 px-4 pb-4">
           <div className="w-full max-w-5xl mx-auto flex justify-end items-end">
-            <div className="w-full max-w-xs flex flex-col items-center gap-3 text-center">
+            <div className="w-full max-w-sm flex flex-col items-center gap-3 text-center">
               <img
                 src={prophetGadWarrior}
                 alt="Prophet Gad"
-                className="w-28 h-28 rounded-lg object-cover object-top border-2 border-accent shadow-2xl"
+                className="w-40 h-40 rounded-lg object-cover object-top border-2 border-accent shadow-2xl"
               />
+              <span
+                className="inline-block px-3 py-0.5 rounded text-white text-sm font-bold tracking-wide"
+                style={{
+                  fontFamily: ARIAL,
+                  background: 'rgba(88, 28, 135, 0.75)',
+                  color: '#F5D87A',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.7)',
+                }}
+              >
+                Prophet Gad
+              </span>
 
               <div className="flex flex-col gap-1 items-center">
-                {GREETING_LINES.map((line) => (
+                {GREETING_LINES.map((line, idx) => (
                   <span
                     key={line}
-                    className="inline-block px-2 py-0.5 rounded text-white text-sm italic leading-snug"
+                    className="inline-flex items-center gap-2 px-2 py-0.5 rounded text-white text-sm italic leading-snug"
                     style={{
                       fontFamily: ARIAL,
                       background: 'rgba(88, 28, 135, 0.55)',
@@ -203,23 +213,25 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                     }}
                   >
                     {line}
+                    {idx === 0 && (
+                      <button
+                        onClick={speakInvitation}
+                        disabled={isLoading}
+                        className="ml-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-accent/60 text-white text-[11px] not-italic disabled:opacity-50 hover:brightness-110 transition-all"
+                        style={{ fontFamily: ARIAL, background: 'rgba(88, 28, 135, 0.85)' }}
+                        aria-label="Hear the greeting"
+                      >
+                        {isLoading ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : (
+                          <Volume2 className="w-3 h-3" />
+                        )}
+                        {isLoading ? '...' : isSpeaking ? 'Stop' : 'Hear'}
+                      </button>
+                    )}
                   </span>
                 ))}
               </div>
-
-              <button
-                onClick={speakInvitation}
-                disabled={isLoading}
-                className="px-3 py-1 rounded-full border border-accent/50 text-white text-xs inline-flex items-center gap-1.5 transition-all disabled:opacity-50 backdrop-blur-sm hover:brightness-110"
-                style={{ fontFamily: ARIAL, background: 'rgba(88, 28, 135, 0.75)' }}
-              >
-                {isLoading ? (
-                  <Loader2 className="w-3 h-3 animate-spin" />
-                ) : (
-                  <Volume2 className="w-3 h-3" />
-                )}
-                {isLoading ? '...' : isSpeaking ? 'Stop' : 'Hear it'}
-              </button>
 
               <button
                 onClick={onEnterApp}
@@ -233,32 +245,34 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                 New or returning? Register to save your counsel
               </button>
 
-              {/* Music controls — bare, no box. Green Play button + MP4 toggle. */}
+              {/* Music controls — green Audio + Video buttons */}
               <div className="flex items-center gap-2 px-1 py-1 w-full justify-center flex-wrap">
                 <button
                   onClick={togglePlay}
-                  className="w-9 h-9 flex-shrink-0 rounded-full border-2 border-accent text-white flex items-center justify-center shadow-md hover:brightness-110 transition-all"
-                  style={{ background: '#16a34a' }}
-                  title={isPlaying ? 'Pause' : 'Play MP3'}
+                  className="px-3 h-9 flex-shrink-0 rounded-full border-2 border-accent text-white text-xs font-semibold inline-flex items-center gap-1.5 shadow-md hover:brightness-110 transition-all"
+                  style={{ background: '#16a34a', fontFamily: ARIAL }}
+                  title={isPlaying ? 'Pause audio' : 'Play audio'}
                   aria-label={isPlaying ? 'Pause hymn' : 'Play hymn'}
                 >
                   {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                  Audio
                 </button>
                 <button
                   onClick={() => alert('Music video coming soon — MP4 not yet uploaded.')}
-                  className="px-3 h-9 flex-shrink-0 rounded-full border-2 border-accent text-white text-xs font-semibold flex items-center justify-center shadow-md hover:brightness-110 transition-all"
+                  className="px-3 h-9 flex-shrink-0 rounded-full border-2 border-accent text-white text-xs font-semibold inline-flex items-center gap-1.5 shadow-md hover:brightness-110 transition-all"
                   style={{ background: '#16a34a', fontFamily: ARIAL }}
                   title="Play music video (MP4)"
                   aria-label="Play music video"
                 >
-                  ▶ Video
+                  <Play className="w-4 h-4" />
+                  Video
                 </button>
                 <p
                   className="text-white font-semibold truncate px-3 py-0.5 rounded"
                   style={{
                     fontFamily: ARIAL,
                     fontSize: '13px',
-                    background: 'rgba(88, 28, 135, 0.55)',
+                    background: '#16a34a',
                     textShadow: '0 1px 3px rgba(0,0,0,0.7)',
                   }}
                 >
