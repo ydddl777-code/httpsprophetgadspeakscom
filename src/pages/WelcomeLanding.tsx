@@ -255,6 +255,13 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             >
               Fervent Counsel by Remnant Seed LLC · © 2026
             </span>
+            <button
+              onClick={onViewBeliefs}
+              className="text-xs italic text-white underline underline-offset-2 hover:text-accent transition-colors"
+              style={{ fontFamily: ARIAL }}
+            >
+              What We Believe
+            </button>
             <BetaBadge size="sm" />
           </span>
         </footer>
