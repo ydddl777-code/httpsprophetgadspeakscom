@@ -130,34 +130,46 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             beneath the tagline. No side-pinned clock. */}
         <header className="relative z-10 px-6 pt-5 pb-3 text-center">
           <h1
-            className="font-bold tracking-wide text-3xl md:text-5xl"
+            className="inline-block font-bold tracking-wide text-3xl md:text-5xl px-4 py-1 rounded-lg"
             style={{
               fontFamily: ARIAL,
               color: '#F5D87A',
+              background: 'rgba(88, 28, 135, 0.55)',
               textShadow: TEXT_SHADOW_STRONG,
             }}
           >
             FERVENT COUNSEL
           </h1>
-          <p
-            className="italic text-sm md:text-base mt-1 text-white"
-            style={{ fontFamily: ARIAL, textShadow: TEXT_SHADOW_STRONG }}
-          >
-            Pastoral Counsel, Fervent Prayer. By God's Prophet.
-          </p>
-          <div className="mt-2 flex items-center justify-center gap-3 flex-wrap">
+          <div className="mt-2">
+            <p
+              className="inline-block italic text-sm md:text-base text-white px-3 py-0.5 rounded"
+              style={{
+                fontFamily: ARIAL,
+                background: 'rgba(88, 28, 135, 0.55)',
+                textShadow: '0 1px 3px rgba(0,0,0,0.7)',
+              }}
+            >
+              Pastoral Counsel, Fervent Prayer. By God's Prophet.
+            </p>
+          </div>
+          <div className="mt-2 flex items-center justify-center gap-2 flex-wrap">
             <span
-              className="text-sm md:text-base font-semibold text-white"
-              style={{ fontFamily: ARIAL, textShadow: TEXT_SHADOW_STRONG }}
+              className="inline-block text-sm md:text-base font-semibold text-white px-3 py-0.5 rounded"
+              style={{
+                fontFamily: ARIAL,
+                background: 'rgba(88, 28, 135, 0.55)',
+                textShadow: '0 1px 3px rgba(0,0,0,0.7)',
+              }}
             >
               {dateString}
             </span>
             <span
-              className="text-base md:text-lg font-bold"
+              className="inline-block text-base md:text-lg font-bold px-3 py-0.5 rounded"
               style={{
                 fontFamily: ARIAL,
                 color: '#F5D87A',
-                textShadow: TEXT_SHADOW_STRONG,
+                background: 'rgba(88, 28, 135, 0.55)',
+                textShadow: '0 1px 3px rgba(0,0,0,0.7)',
               }}
             >
               {timeString}
