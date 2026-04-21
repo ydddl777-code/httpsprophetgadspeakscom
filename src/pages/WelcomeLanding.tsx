@@ -145,7 +145,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
           >
             Pastoral Counsel, Fervent Prayer. By God's Prophet.
           </p>
-          <div className="mt-2 flex flex-col items-center gap-0.5">
+          <div className="mt-2 flex items-center justify-center gap-3 flex-wrap">
             <span
               className="text-sm md:text-base font-semibold text-white"
               style={{ fontFamily: ARIAL, textShadow: TEXT_SHADOW_STRONG }}
