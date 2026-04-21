@@ -233,15 +233,25 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                 New or returning? Register to save your counsel
               </button>
 
-              {/* Music controls — bare, no box. */}
-              <div className="flex items-center gap-2 px-1 py-1 w-full justify-center">
+              {/* Music controls — bare, no box. Green Play button + MP4 toggle. */}
+              <div className="flex items-center gap-2 px-1 py-1 w-full justify-center flex-wrap">
                 <button
                   onClick={togglePlay}
-                  className="w-8 h-8 flex-shrink-0 rounded-full bg-accent/80 hover:bg-accent border border-white/40 text-white flex items-center justify-center backdrop-blur-sm shadow-md"
-                  title={isPlaying ? 'Pause' : 'Play'}
+                  className="w-9 h-9 flex-shrink-0 rounded-full border-2 border-accent text-white flex items-center justify-center shadow-md hover:brightness-110 transition-all"
+                  style={{ background: '#16a34a' }}
+                  title={isPlaying ? 'Pause' : 'Play MP3'}
                   aria-label={isPlaying ? 'Pause hymn' : 'Play hymn'}
                 >
                   {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                </button>
+                <button
+                  onClick={() => alert('Music video coming soon — MP4 not yet uploaded.')}
+                  className="px-3 h-9 flex-shrink-0 rounded-full border-2 border-accent text-white text-xs font-semibold flex items-center justify-center shadow-md hover:brightness-110 transition-all"
+                  style={{ background: '#16a34a', fontFamily: ARIAL }}
+                  title="Play music video (MP4)"
+                  aria-label="Play music video"
+                >
+                  ▶ Video
                 </button>
                 <p
                   className="text-white font-semibold truncate px-3 py-0.5 rounded"
@@ -259,12 +269,12 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
           </div>
         </main>
 
-        {/* Centered Enter button — sits above the footer, page-centered */}
+        {/* Centered Enter button — green for go */}
         <div className="relative z-10 flex justify-center pb-4 px-4">
           <button
             onClick={enterSanctuary}
-            className="px-10 py-3 rounded-full bg-accent hover:bg-accent/90 border-2 border-white/40 text-white font-bold text-base shadow-2xl transition-all"
-            style={{ fontFamily: ARIAL }}
+            className="px-10 py-3 rounded-full border-2 border-white/40 text-white font-bold text-base shadow-2xl transition-all hover:brightness-110"
+            style={{ fontFamily: ARIAL, background: '#16a34a' }}
           >
             Enter
           </button>
