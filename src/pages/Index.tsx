@@ -66,41 +66,82 @@ const Index = () => {
     );
   }
 
-  // Auth form (login/signup)
+  // Auth form (login/signup) — styled to match the landing page:
+  // Jerusalem golden-gate background visible behind a translucent purple
+  // card with gold border and gold accent stripe.
   if (currentView === 'auth') {
+    const ARIAL = 'Arial, "Helvetica Neue", Helvetica, sans-serif';
     return (
-      <div className="min-h-screen relative flex items-center justify-center p-4">
-        {/* Background */}
-        <div 
+      <div
+        className="min-h-screen relative flex items-center justify-center p-4"
+        style={{ fontFamily: ARIAL }}
+      >
+        {/* Jerusalem golden-gate background — LIGHT overlay so painting is visible */}
+        <div
           className="fixed inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${goldenGateBackground})` }}
         />
-        <div className="fixed inset-0 bg-black/70" />
-        
-        {/* Auth Card */}
-        <div 
-          className="relative z-10 w-full max-w-md p-6 rounded-2xl border-2 border-accent/50"
-          style={{ background: 'rgba(88, 28, 135, 0.9)', backdropFilter: 'blur(12px)' }}
+        <div
+          className="fixed inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse at center, rgba(40,20,5,0.2) 0%, rgba(40,20,5,0.45) 100%)',
+          }}
+        />
+
+        {/* Auth Card — translucent purple, gold border, matching landing card */}
+        <div
+          className="relative z-10 w-full max-w-md rounded-2xl backdrop-blur-sm shadow-2xl overflow-hidden"
+          style={{
+            background: 'rgba(88, 28, 135, 0.82)',
+            border: '2px solid rgba(212, 165, 63, 0.9)',
+            boxShadow:
+              '0 10px 30px rgba(0,0,0,0.4), 0 0 40px rgba(212,165,63,0.25), inset 0 0 0 1px rgba(255,240,200,0.15)',
+            fontFamily: ARIAL,
+          }}
         >
-          <h1 className="font-display text-2xl font-bold text-white text-center mb-1 tracking-wide">
-            FERVENT COUNSEL
-          </h1>
-          <p className="text-center text-white/80 text-sm italic mb-6">
-            Pastoral Counsel, Fervent Prayer. By God's Prophet.
-          </p>
-          <AuthForm
-            onSignUp={signUp}
-            onSignIn={signIn}
-            onSuccess={() => {
-              // After auth, check if profile exists
-              if (profile) {
-                setCurrentView('home');
-              } else {
-                setCurrentView('profile');
-              }
-            }}
-            onBack={() => setCurrentView('intro')}
-          />
+          {/* Gold accent stripe at top */}
+          <div className="h-1.5 bg-gradient-to-r from-accent/60 via-accent to-accent/60" />
+
+          <div className="p-6 md:p-8">
+            <h1
+              className="text-3xl md:text-4xl font-black text-center mb-2 tracking-wider"
+              style={{
+                fontFamily: ARIAL,
+                color: '#fdf1c8',
+                textShadow: '0 2px 6px rgba(0,0,0,0.55), 0 0 18px rgba(255,220,150,0.3)',
+                letterSpacing: '0.08em',
+              }}
+            >
+              FERVENT COUNSEL
+            </h1>
+            <p
+              className="text-center text-base italic mb-6"
+              style={{
+                fontFamily: ARIAL,
+                color: '#fef5d7',
+                textShadow: '0 1px 3px rgba(0,0,0,0.5)',
+              }}
+            >
+              Pastoral counsel, fervent prayer.
+            </p>
+            <AuthForm
+              onSignUp={signUp}
+              onSignIn={signIn}
+              onSuccess={() => {
+                // After auth, check if profile exists
+                if (profile) {
+                  setCurrentView('home');
+                } else {
+                  setCurrentView('profile');
+                }
+              }}
+              onBack={() => setCurrentView('intro')}
+            />
+          </div>
+
+          {/* Gold accent stripe at bottom */}
+          <div className="h-1.5 bg-gradient-to-r from-accent/60 via-accent to-accent/60" />
         </div>
       </div>
     );
@@ -158,11 +199,4 @@ const Index = () => {
 
   // Not logged in: WelcomeLanding is the intro page with music/Prophet Gad greeting
   return (
-    <WelcomeLanding 
-      onEnterApp={() => setCurrentView('auth')} 
-      onViewBeliefs={() => setCurrentView('beliefs')}
-    />
-  );
-};
-
-export default Index;
+  
