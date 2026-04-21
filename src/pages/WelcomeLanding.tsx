@@ -259,6 +259,17 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
           </div>
         </main>
 
+        {/* Centered Enter button — sits above the footer, page-centered */}
+        <div className="relative z-10 flex justify-center pb-4 px-4">
+          <button
+            onClick={enterSanctuary}
+            className="px-10 py-3 rounded-full bg-accent hover:bg-accent/90 border-2 border-white/40 text-white font-bold text-base shadow-2xl transition-all"
+            style={{ fontFamily: ARIAL }}
+          >
+            Enter
+          </button>
+        </div>
+
         {/* FOOTER — translucent purple highlight behind the wordmark, with
             the gold BETA chip beside it (replaces the top BETA). */}
         <footer className="relative z-10 py-3 text-center px-4">
