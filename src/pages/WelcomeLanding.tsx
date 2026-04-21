@@ -186,8 +186,8 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             <div className="w-full max-w-sm flex flex-col items-center gap-3 text-center">
               <img
                 src={prophetGadWarrior}
-                alt="Prophet Gad"
-                className="w-40 h-40 rounded-lg object-cover object-top border-2 border-accent shadow-2xl"
+                alt="PGAI avatar"
+                className="w-24 h-24 md:w-28 md:h-28 rounded-lg object-cover object-top border-2 border-accent shadow-2xl"
               />
               <span
                 className="inline-block px-3 py-0.5 rounded text-white text-sm font-bold tracking-wide"
@@ -245,33 +245,34 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                 New or returning? Register to save your counsel
               </button>
 
-              {/* Music controls — green Audio + Video buttons */}
-              <div className="flex items-center gap-2 px-1 py-1 w-full justify-center flex-wrap">
+              {/* Music controls — green Audio + Video + Thunder Road Gospel.
+                  Forced single-row with flex-nowrap + whitespace-nowrap on
+                  every child so they never wrap, regardless of viewport. */}
+              <div className="flex flex-row flex-nowrap items-center gap-1.5 px-1 py-1 w-full justify-center">
                 <button
                   onClick={togglePlay}
-                  className="px-3 h-9 flex-shrink-0 rounded-full border-2 border-accent text-white text-xs font-semibold inline-flex items-center gap-1.5 shadow-md hover:brightness-110 transition-all"
+                  className="px-2.5 h-8 flex-shrink-0 rounded-full border-2 border-accent text-white text-xs font-semibold inline-flex items-center gap-1 shadow-md hover:brightness-110 transition-all whitespace-nowrap"
                   style={{ background: '#16a34a', fontFamily: ARIAL }}
                   title={isPlaying ? 'Pause audio' : 'Play audio'}
                   aria-label={isPlaying ? 'Pause hymn' : 'Play hymn'}
                 >
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                  {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                   Audio
                 </button>
                 <button
                   onClick={() => alert('Music video coming soon — MP4 not yet uploaded.')}
-                  className="px-3 h-9 flex-shrink-0 rounded-full border-2 border-accent text-white text-xs font-semibold inline-flex items-center gap-1.5 shadow-md hover:brightness-110 transition-all"
+                  className="px-2.5 h-8 flex-shrink-0 rounded-full border-2 border-accent text-white text-xs font-semibold inline-flex items-center gap-1 shadow-md hover:brightness-110 transition-all whitespace-nowrap"
                   style={{ background: '#16a34a', fontFamily: ARIAL }}
                   title="Play music video (MP4)"
                   aria-label="Play music video"
                 >
-                  <Play className="w-4 h-4" />
+                  <Play className="w-3.5 h-3.5" />
                   Video
                 </button>
                 <p
-                  className="text-white font-semibold truncate px-3 py-0.5 rounded"
+                  className="text-white font-semibold truncate px-2.5 py-0.5 rounded whitespace-nowrap text-xs"
                   style={{
                     fontFamily: ARIAL,
-                    fontSize: '13px',
                     background: '#16a34a',
                     textShadow: '0 1px 3px rgba(0,0,0,0.7)',
                   }}
