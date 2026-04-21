@@ -100,7 +100,7 @@ export function useElevenLabsTTS(options: UseProphetTTSOptions = {}) {
 
       try {
         const projectUrl = import.meta.env.VITE_SUPABASE_URL;
-        const url = `${projectUrl}/functions/v1/gemini-tts`;
+        const url = `${projectUrl}/functions/v1/elevenlabs-tts`;
 
         const response = await fetch(url, {
           method: 'POST',
@@ -111,23 +111,14 @@ export function useElevenLabsTTS(options: UseProphetTTSOptions = {}) {
           },
           body: JSON.stringify({
             text: text.substring(0, 5000),
-            voice: currentVoiceId,
-            style: currentStyle,
           }),
         });
 
-        if (!response.ok) {
-          throw new Error(`Gemini TTS request failed: ${response.status}`);
+        if (!response.ok || response.headers.get('X-TTS-Provider-Error')) {
+          throw new Error(`TTS request failed: ${response.status}`);
         }
 
-        const payload: { audio?: string; mimeType?: string; error?: string } =
-          await response.json();
-
-        if (payload.error || !payload.audio) {
-          throw new Error(payload.error || 'No audio returned');
-        }
-
-        const audioBlob = base64ToBlob(payload.audio, payload.mimeType || 'audio/wav');
+        const audioBlob = await response.blob();
         const audioUrl = URL.createObjectURL(audioBlob);
         const audio = new Audio(audioUrl);
         audioRef.current = audio;
