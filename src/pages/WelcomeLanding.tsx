@@ -21,10 +21,10 @@ const TEXT_SHADOW_STRONG =
   '0 2px 6px rgba(0,0,0,0.85), 0 0 14px rgba(60,20,80,0.7)';
 
 const GREETING_LINES = [
-  'Welcome, friend.',
-  'Welcome to this Christian counseling application.',
-  "What's the burden on your heart?",
-  'Let’s see what the Lord can do for you today.',
+  'Welcome, Friend.',
+  'Welcome To This Christian Counseling Application.',
+  "What's The Burden On Your Heart?",
+  'Let’s See What The Lord Can Do For You Today.',
 ];
 const GREETING_TEXT = GREETING_LINES.join(' ');
 
