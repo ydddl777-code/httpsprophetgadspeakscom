@@ -21,8 +21,7 @@ const TEXT_SHADOW_STRONG =
   '0 2px 6px rgba(0,0,0,0.85), 0 0 14px rgba(60,20,80,0.7)';
 
 const GREETING_LINES = [
-  'Welcome, Friend.',
-  'Welcome To This Christian Counseling Application.',
+  'Welcome, Friend, To This Christian Counseling Application.',
   "What's The Burden On Your Heart?",
   'Let’s See What The Lord Can Do For You Today.',
 ];
