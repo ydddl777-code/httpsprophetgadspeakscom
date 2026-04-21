@@ -229,6 +229,18 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                 Enter
               </button>
 
+              <button
+                onClick={onEnterApp}
+                className="px-3 py-1 rounded text-white text-xs hover:underline underline-offset-4"
+                style={{
+                  fontFamily: ARIAL,
+                  background: 'rgba(88, 28, 135, 0.55)',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.7)',
+                }}
+              >
+                New or returning? Register to save your counsel
+              </button>
+
               {/* Music controls — bare, no box. */}
               <div className="flex items-center gap-2 px-1 py-1 w-full justify-center">
                 <button
@@ -240,11 +252,12 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                   {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                 </button>
                 <p
-                  className="text-white font-semibold truncate"
+                  className="text-white font-semibold truncate px-3 py-0.5 rounded"
                   style={{
                     fontFamily: ARIAL,
                     fontSize: '13px',
-                    textShadow: TEXT_SHADOW_STRONG,
+                    background: 'rgba(88, 28, 135, 0.55)',
+                    textShadow: '0 1px 3px rgba(0,0,0,0.7)',
                   }}
                 >
                   Thunder Road Gospel
