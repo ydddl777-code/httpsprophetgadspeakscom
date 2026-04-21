@@ -86,7 +86,7 @@ const Index = () => {
             FERVENT COUNSEL
           </h1>
           <p className="text-center text-white/80 text-sm italic mb-6">
-            Pastoral counsel, fervent prayer. By God's prophet.
+            Pastoral Counsel, Fervent Prayer. By God's Prophet.
           </p>
           <AuthForm
             onSignUp={signUp}

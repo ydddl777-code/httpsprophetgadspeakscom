@@ -456,9 +456,20 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
       {/* Header — minimal. The counseling chat IS the landing page, so the
           FERVENT COUNSEL wordmark lives here. Tiny gear icon in the corner for
           returning users who want to sign in to save their counsel. */}
-      <header className="relative z-10 w-full py-3 px-4 border-b border-accent/40 backdrop-blur-sm bg-black/30">
+      <header className="relative z-10 w-full py-4 px-4 border-b border-accent/40 backdrop-blur-sm bg-black/30">
         <div className="max-w-2xl mx-auto flex items-center gap-3">
-          <Avatar className="w-11 h-11 border-2 border-accent ring-2 ring-accent/30 shrink-0">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate('/')}
+            className="text-white/80 hover:text-white hover:bg-white/10 w-9 h-9 shrink-0"
+            title="Back to welcome"
+            aria-label="Back to welcome"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+
+          <Avatar className="w-12 h-12 border-2 border-accent ring-2 ring-accent/30 shrink-0">
             <AvatarImage src={prophetGadAvatar} alt="Prophet Gad" />
             <AvatarFallback className="bg-accent text-accent-foreground font-bold">
               PG
@@ -466,15 +477,14 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
           </Avatar>
 
           <div className="flex-1 min-w-0">
-            <h1 className="font-display text-sm md:text-base font-bold text-gradient-gold tracking-[0.2em] leading-tight">
+            <h1 className="font-display text-base md:text-lg font-bold text-gradient-gold tracking-[0.2em] leading-tight">
               FERVENT COUNSEL
             </h1>
-            <p className="text-[11px] text-white/80 italic leading-tight">
+            <p className="text-sm text-white/85 italic leading-tight">
               Prophet Gad is here — how can I help you today?
             </p>
           </div>
 
-          {/* Saved decrees (only shown if the visitor has a profile) */}
           {profile && (
             <Button
               variant="ghost"
@@ -484,19 +494,18 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               title="View your sealed decrees"
             >
               <ScrollText className="w-4 h-4" />
-              <span className="hidden sm:inline text-xs">Decrees</span>
+              <span className="hidden sm:inline text-sm">Decrees</span>
             </Button>
           )}
 
-          {/* Tiny gear = the ONLY reference to sign-in on the whole page */}
           <Button
             variant="ghost"
             size="icon"
             onClick={() => navigate(profile ? '/settings' : '/sign-in')}
-            className="text-white/60 hover:text-white hover:bg-white/10 w-8 h-8"
+            className="text-white/70 hover:text-white hover:bg-white/10 w-9 h-9"
             title={profile ? 'Settings' : 'Sign in to save your counsel'}
           >
-            <Settings className="w-4 h-4" />
+            <Settings className="w-5 h-5" />
           </Button>
         </div>
       </header>

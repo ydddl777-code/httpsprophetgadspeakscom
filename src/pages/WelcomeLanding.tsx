@@ -21,10 +21,10 @@ const TEXT_SHADOW_STRONG =
   '0 2px 6px rgba(0,0,0,0.85), 0 0 14px rgba(60,20,80,0.7)';
 
 const GREETING_LINES = [
-  'Welcome, friend.',
-  'Welcome to this Christian counseling application.',
-  "What's the burden on your heart?",
-  'Let’s see what the Lord can do for you today.',
+  'Welcome, Friend.',
+  'Welcome To This Christian Counseling Application.',
+  "What's The Burden On Your Heart?",
+  'Let’s See What The Lord Can Do For You Today.',
 ];
 const GREETING_TEXT = GREETING_LINES.join(' ');
 
@@ -145,7 +145,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
           >
             Pastoral Counsel, Fervent Prayer. By God's Prophet.
           </p>
-          <div className="mt-2 flex flex-col items-center gap-0.5">
+          <div className="mt-2 flex items-center justify-center gap-3 flex-wrap">
             <span
               className="text-sm md:text-base font-semibold text-white"
               style={{ fontFamily: ARIAL, textShadow: TEXT_SHADOW_STRONG }}
@@ -198,8 +198,8 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
               <button
                 onClick={speakInvitation}
                 disabled={isLoading}
-                className="px-3 py-1 rounded-full bg-white/15 hover:bg-white/25 border border-accent/50 text-white text-xs inline-flex items-center gap-1.5 transition-all disabled:opacity-50 backdrop-blur-sm"
-                style={{ fontFamily: ARIAL }}
+                className="px-3 py-1 rounded-full border border-accent/50 text-white text-xs inline-flex items-center gap-1.5 transition-all disabled:opacity-50 backdrop-blur-sm hover:brightness-110"
+                style={{ fontFamily: ARIAL, background: 'rgba(88, 28, 135, 0.75)' }}
               >
                 {isLoading ? (
                   <Loader2 className="w-3 h-3 animate-spin" />
@@ -216,23 +216,6 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
               >
                 Enter
               </button>
-
-              <div className="flex flex-col gap-1 text-xs text-white items-center" style={{ fontFamily: ARIAL }}>
-                <button
-                  onClick={onEnterApp}
-                  className="px-2 py-0.5 rounded hover:underline underline-offset-4"
-                  style={{ background: 'rgba(88, 28, 135, 0.55)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
-                >
-                  Returning? Sign in to save your counsel
-                </button>
-                <button
-                  onClick={onViewBeliefs}
-                  className="px-2 py-0.5 rounded hover:underline underline-offset-4"
-                  style={{ background: 'rgba(88, 28, 135, 0.55)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}
-                >
-                  What we believe
-                </button>
-              </div>
 
               {/* Music controls — bare, no box. */}
               <div className="flex items-center gap-2 px-1 py-1 w-full justify-center">
@@ -272,6 +255,13 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
             >
               Fervent Counsel by Remnant Seed LLC · © 2026
             </span>
+            <button
+              onClick={onViewBeliefs}
+              className="text-xs italic text-white underline underline-offset-2 hover:text-accent transition-colors"
+              style={{ fontFamily: ARIAL }}
+            >
+              What We Believe
+            </button>
             <BetaBadge size="sm" />
           </span>
         </footer>
