@@ -516,27 +516,19 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         </div>
       </header>
 
-      {/* Chat Container - Sanctuary Style */}
-      <div className="relative z-10 flex-1 flex flex-col max-w-2xl mx-auto w-full p-4">
+      {/* Chat Container — translucent purple-glass panel, narrower and
+          shifted to the right side so the gate-of-heaven garden behind
+          remains visible. NO big white blob covering the central image. */}
+      <div className="relative z-10 flex-1 flex w-full px-4 pb-4 justify-center md:justify-end">
         <div
-          className="flex-1 rounded-2xl border-2 border-accent/60 shadow-2xl overflow-hidden flex flex-col backdrop-blur-md"
+          className="flex-1 max-w-xl md:max-w-lg rounded-2xl border-2 border-accent/60 shadow-2xl overflow-hidden flex flex-col backdrop-blur-md"
           style={{
             background:
-              'linear-gradient(180deg, rgba(255,250,235,0.92) 0%, rgba(252,244,220,0.92) 100%)',
+              'linear-gradient(180deg, rgba(88,28,135,0.55) 0%, rgba(60,20,110,0.55) 100%)',
             boxShadow:
-              '0 10px 40px rgba(0,0,0,0.4), 0 0 80px rgba(212,165,63,0.15), inset 0 0 60px rgba(212,165,63,0.08)',
+              '0 10px 40px rgba(0,0,0,0.4), 0 0 80px rgba(212,165,63,0.15), inset 0 0 60px rgba(212,165,63,0.10)',
           }}
         >
-          {/* Decorative gold rule with flower */}
-          <div className="flex items-center justify-center gap-3 py-2 px-4 bg-gradient-to-r from-transparent via-accent/20 to-transparent border-b border-accent/40">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent to-accent/60" />
-            <Flower2 className="w-4 h-4 text-accent" />
-            <span className="font-display text-xs tracking-[0.3em] text-accent/90">
-              THE SANCTUARY
-            </span>
-            <Flower2 className="w-4 h-4 text-accent" />
-            <div className="h-px flex-1 bg-gradient-to-l from-transparent to-accent/60" />
-          </div>
 
           {/* Messages Area */}
           <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
