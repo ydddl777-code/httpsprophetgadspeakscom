@@ -341,8 +341,16 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
     }
   };
 
+  // Always stop any current playback before starting a new one — prevents
+  // two staggered audio tracks playing on top of each other.
   const handleSpeak = (text: string) => {
-    speak(text);
+    if (isSpeaking) {
+      stopSpeak();
+      // Small delay so the audio element fully releases before next play
+      window.setTimeout(() => speak(text), 150);
+    } else {
+      speak(text);
+    }
   };
 
   // Seal a prophet response as a Prophetic Decree. Finds the preceding user
