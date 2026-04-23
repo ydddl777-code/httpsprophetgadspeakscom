@@ -735,21 +735,18 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               })}
 
               {isLoading && (
-                <div className="flex justify-start gap-3">
-                  <Avatar className="w-10 h-10 border-2 border-accent shrink-0">
-                    <AvatarImage src={prophetGadAvatar} alt="Prophet Gad" />
-                    <AvatarFallback className="bg-accent text-accent-foreground text-sm font-bold">
-                      PG
-                    </AvatarFallback>
-                  </Avatar>
+                <div className="flex justify-start">
                   <div
-                    className="rounded-2xl rounded-tl-sm px-4 py-3 border border-accent/30 shadow-md"
-                    style={{ backgroundColor: 'rgba(255, 250, 235, 0.95)' }}
+                    className="rounded-2xl rounded-tl-sm px-4 py-3 border-2 border-accent/50 shadow-lg backdrop-blur-md"
+                    style={{
+                      background:
+                        'linear-gradient(180deg, rgba(88,28,135,0.78) 0%, rgba(60,20,110,0.78) 100%)',
+                    }}
                   >
                     <div className="flex gap-1.5 items-center h-5">
-                      <span className="w-2 h-2 bg-accent/60 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                      <span className="w-2 h-2 bg-accent/60 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                      <span className="w-2 h-2 bg-accent/60 rounded-full animate-bounce" />
+                      <span className="w-2 h-2 bg-accent rounded-full animate-bounce [animation-delay:-0.3s]" />
+                      <span className="w-2 h-2 bg-accent rounded-full animate-bounce [animation-delay:-0.15s]" />
+                      <span className="w-2 h-2 bg-accent rounded-full animate-bounce" />
                     </div>
                   </div>
                 </div>
