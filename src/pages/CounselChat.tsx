@@ -24,8 +24,13 @@ import type { UserProfile } from '@/lib/types';
 // City, a more architectural / sacred-chamber feel appropriate for the
 // weight of intercessory prayer. (The garden-of-flowers image lives on
 // the welcome landing where visitors first arrive.)
-import sanctuaryBackground from '@/assets/golden-gate-background.jpg';
-import prophetGadAvatar from '@/assets/prophet-gad-modern.png';
+// Use the same heaven-garden background as the welcome landing so the
+// counseling table sits in the garden of flowers, not a stark gate.
+import sanctuaryBackground from '@/assets/heaven-garden-background.jpg';
+// Warrior portrait — matches the welcome landing card so the user
+// immediately recognises Prophet Gad. Larger and clearer than the
+// modern suit photo.
+import prophetGadAvatar from '@/assets/prophet-gad-warrior-portrait.png';
 import { generateReferenceNo } from '@/lib/decreeUtils';
 
 interface CounselChatProps {
@@ -149,10 +154,12 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
     }
   };
 
-  // Auto-play the opening greeting once so the visitor HEARS Prophet Gad
-  // ask "How can I help you today?" the moment they land. Browsers may
-  // still block this until first user gesture; if so, the Listen button
-  // on the greeting falls back to manual playback.
+  // Auto-play the opening greeting AFTER a 3-second delay so the visitor
+  // can get acclimated to the page — see the microphone, the "Sign in to
+  // save your counsel" button, the counseling table — BEFORE Prophet Gad
+  // greets them warmly. Browsers may still block this until first user
+  // gesture; if so, the Listen button on the greeting falls back to
+  // manual playback.
   useEffect(() => {
     if (greetingSpokenRef.current) return;
     greetingSpokenRef.current = true;
@@ -160,7 +167,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
       if (messages[0]?.role === 'prophet') {
         speak(messages[0].content);
       }
-    }, 500);
+    }, 3000);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
