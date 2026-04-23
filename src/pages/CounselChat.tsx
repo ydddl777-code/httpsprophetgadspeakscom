@@ -454,28 +454,31 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         }}
       />
 
-      {/* Header — minimal. The counseling chat IS the landing page, so the
-          FERVENT COUNSEL wordmark lives here. Tiny gear icon in the corner for
-          returning users who want to sign in to save their counsel. */}
-      <header className="relative z-10 w-full py-4 px-4 border-b border-accent/40 backdrop-blur-sm bg-black/30">
-        <div className="max-w-2xl mx-auto flex items-center gap-3">
+      {/* Header — fully transparent (no backdrop blur, no dark band).
+          Each text element gets its own tight inline highlight so the
+          heaven scene shows through. Back button pushed to extreme left,
+          Sign-In/Decrees pushed to extreme right (justified). */}
+      <header className="relative z-10 w-full py-4 px-4">
+        <div className="w-full flex items-center justify-between gap-3">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => navigate('/')}
-            className="text-white/80 hover:text-white hover:bg-white/10 w-9 h-9 shrink-0"
+            className="text-white hover:text-white hover:bg-black/40 w-9 h-9 shrink-0 bg-black/30 backdrop-blur-[2px]"
             title="Back to welcome"
             aria-label="Back to welcome"
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
 
-          <div className="flex-1 min-w-0">
-            <h1 className="font-display text-base md:text-lg font-bold text-gradient-gold tracking-[0.2em] leading-tight">
+          <div className="flex-1 min-w-0 text-center">
+            <h1 className="inline-block font-display text-base md:text-lg font-bold text-gradient-gold tracking-[0.2em] leading-tight px-3 py-1 rounded bg-black/40 backdrop-blur-[2px]">
               FERVENT COUNSEL
             </h1>
-            <p className="text-sm md:text-base text-white/90 italic leading-snug">
-              I am here to listen to your concerns and pray with you.
+            <p className="mt-1">
+              <span className="inline-block text-sm md:text-base text-white italic leading-snug px-3 py-0.5 rounded bg-black/40 backdrop-blur-[2px]">
+                I am here to listen to your concerns and pray with you.
+              </span>
             </p>
           </div>
 
@@ -484,7 +487,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               variant="ghost"
               size="sm"
               onClick={() => navigate('/decrees')}
-              className="text-white/80 hover:text-white hover:bg-white/10 gap-1.5 px-2"
+              className="text-white hover:text-white hover:bg-black/40 gap-1.5 px-2 bg-black/30 backdrop-blur-[2px]"
               title="View your sealed decrees"
             >
               <ScrollText className="w-4 h-4" />
@@ -493,7 +496,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
           ) : (
             <Button
               onClick={() => navigate('/sign-in')}
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs md:text-sm px-3 py-2 border-2 border-white/30 shadow-lg whitespace-normal text-center leading-tight"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs md:text-sm px-3 py-2 border-2 border-white/30 shadow-lg whitespace-normal text-center leading-tight shrink-0"
               title="Sign in to save your counsel"
             >
               Sign In to Save<br />Your Counsel
