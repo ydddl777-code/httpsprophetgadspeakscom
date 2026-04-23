@@ -731,10 +731,10 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               {isLoading && (
                 <div className="flex justify-start">
                   <div
-                    className="rounded-2xl rounded-tl-sm px-4 py-3 border-2 border-accent/50 shadow-lg backdrop-blur-md"
+                    className="px-3 py-2 rounded-md"
                     style={{
-                      background:
-                        'linear-gradient(180deg, rgba(88,28,135,0.78) 0%, rgba(60,20,110,0.78) 100%)',
+                      background: 'rgba(40,15,70,0.55)',
+                      backdropFilter: 'blur(2px)',
                     }}
                   >
                     <div className="flex gap-1.5 items-center h-5">
