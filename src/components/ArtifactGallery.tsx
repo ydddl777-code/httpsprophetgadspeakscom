@@ -54,12 +54,12 @@ export const ArtifactGallery = () => {
                 className="flex flex-col items-center cursor-pointer transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent rounded-lg p-2"
                 title={`Click to learn about ${artifact.title}`}
               >
-                {/* Simple gold strip border - no ornate frame */}
-                <div className="rounded-full border-2 border-accent overflow-hidden bg-primary/10">
+                {/* Square gold-bordered tile (matches the image shape) */}
+                <div className="rounded-lg border-2 border-accent overflow-hidden bg-primary/10">
                   <img
                     src={artifactImages[artifactKey]}
                     alt={artifact.title}
-                    className="w-20 h-20 md:w-24 md:h-24 object-cover"
+                    className="w-20 h-20 md:w-24 md:h-24 object-cover block"
                   />
                 </div>
                 {/* Artifact name - simple gold strip label */}
