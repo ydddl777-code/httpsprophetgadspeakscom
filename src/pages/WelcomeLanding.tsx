@@ -84,13 +84,12 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
     navigate('/counsel');
   };
 
-  const speakInvitation = () => {
-    if (isSpeaking) {
+  // Stop the spoken greeting when leaving the page
+  useEffect(() => {
+    return () => {
       stop();
-    } else {
-      speak(GREETING_TEXT);
-    }
-  };
+    };
+  }, [stop]);
 
   return (
     <div className="min-h-screen relative overflow-x-hidden" style={{ fontFamily: ARIAL }}>
