@@ -636,21 +636,20 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                       message.role === 'user' ? 'justify-end' : 'justify-start'
                     )}
                   >
-                    {/* Message Bubble — translucent purple-glass with white text
-                        for prophet, translucent gold-tinted for user. NO avatar
-                        pictures cluttering the conversation. */}
+                    {/* No box — just the text floating, with a tight
+                        translucent highlight directly behind the words for
+                        readability against the heaven scene. */}
                     <div
                       className={cn(
-                        'max-w-[88%] rounded-2xl px-4 py-3 shadow-lg backdrop-blur-md border-2',
-                        message.role === 'prophet'
-                          ? 'rounded-tl-sm border-accent/50'
-                          : 'rounded-tr-sm border-accent/40'
+                        'max-w-[88%] px-3 py-2 rounded-md',
+                        message.role === 'prophet' ? '' : ''
                       )}
                       style={{
                         background:
                           message.role === 'prophet'
-                            ? 'linear-gradient(180deg, rgba(88,28,135,0.78) 0%, rgba(60,20,110,0.78) 100%)'
-                            : 'linear-gradient(180deg, rgba(40,15,70,0.65) 0%, rgba(30,10,55,0.65) 100%)',
+                            ? 'rgba(40,15,70,0.55)'
+                            : 'rgba(20,10,40,0.45)',
+                        backdropFilter: 'blur(2px)',
                         color: '#FFFFFF',
                       }}
                     >
@@ -666,12 +665,12 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
 
                       {/* Action row for Prophet counsel messages */}
                       {message.role === 'prophet' && (
-                        <div className="mt-3 pt-2 border-t border-accent/30 flex items-center gap-3 flex-wrap">
+                        <div className="mt-2 pt-2 flex items-center gap-3 flex-wrap">
                           <button
                             onClick={() => handleSpeak(message.content)}
                             disabled={isSpeaking}
                             className={cn(
-                              'flex items-center gap-1.5 text-xs font-semibold text-white/90 hover:text-accent transition-colors',
+                              'flex items-center gap-1.5 text-xs font-semibold text-white hover:text-accent transition-colors',
                               isSpeaking && 'opacity-40 cursor-not-allowed'
                             )}
                           >
@@ -683,7 +682,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                             <button
                               onClick={() => handleAskForPrayer(message.id)}
                               disabled={prayingForId === message.id}
-                              className="flex items-center gap-1.5 text-xs font-semibold text-white/90 hover:text-accent transition-colors"
+                              className="flex items-center gap-1.5 text-xs font-semibold text-white hover:text-accent transition-colors"
                               title="Ask PGAI to pray an intercessory prayer for your situation"
                             >
                               {prayingForId === message.id ? (
@@ -707,7 +706,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                                 'flex items-center gap-1.5 text-xs font-semibold transition-colors',
                                 message.sealed
                                   ? 'text-accent cursor-default'
-                                  : 'text-white/90 hover:text-accent'
+                                  : 'text-white hover:text-accent'
                               )}
                             >
                               {sealingId === message.id ? (
