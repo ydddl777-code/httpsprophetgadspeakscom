@@ -476,8 +476,14 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                 Very faint dark wash behind the words only (no box outline)
                 so the heaven scene shows through. */}
             <h1
-              className="inline-block font-display text-2xl md:text-4xl font-bold text-gradient-gold tracking-[0.18em] leading-tight px-2 py-0.5 rounded"
-              style={{ background: 'rgba(0,0,0,0.18)', textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
+              className="inline-block font-display text-3xl md:text-5xl font-bold tracking-[0.18em] leading-tight px-3 py-1 rounded"
+              style={{
+                color: '#f0c14b',
+                background: 'rgba(0,0,0,0.28)',
+                textShadow:
+                  '0 0 1px #6b3f00, 0 2px 4px rgba(0,0,0,0.85), 0 0 18px rgba(255,210,120,0.45)',
+                WebkitTextStroke: '0.5px #5a3408',
+              }}
             >
               FERVENT COUNSEL
             </h1>
