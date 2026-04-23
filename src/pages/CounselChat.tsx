@@ -53,7 +53,7 @@ interface ChatMessage {
 const buildInitialGreeting = (name: string): string => {
   const who = name && name.toLowerCase() !== 'friend' ? name : '';
   const opener = who ? `Peace be with you, ${who}.` : 'Peace be with you.';
-  return `${opener} I am PGAI. I am here to listen to your concerns, and to pray with you — whatever weighs upon your heart, or even a prayer of thanksgiving. Tell me what you need. You can type it, or tap the microphone and speak to me.`;
+  return `${opener} I am here to listen to your concerns, and to pray with you — whatever weighs upon your heart, or even a prayer of thanksgiving. Tell me what you need. You can type it, or tap the microphone and speak to me.`;
 };
 
 export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
@@ -475,7 +475,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               FERVENT COUNSEL
             </h1>
             <p className="text-sm md:text-base text-white/90 italic leading-snug">
-              PGAI is here to listen to your concerns and pray with you.
+              I am here to listen to your concerns and pray with you.
             </p>
           </div>
 
@@ -651,14 +651,6 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                         color: '#FFFFFF',
                       }}
                     >
-                      {message.role === 'prophet' && (
-                        <p
-                          className="font-display text-[10px] tracking-[0.3em] font-bold mb-1.5"
-                          style={{ color: 'hsl(var(--accent))' }}
-                        >
-                          PGAI
-                        </p>
-                      )}
                       <p
                         className="leading-relaxed whitespace-pre-wrap text-white"
                         style={{
