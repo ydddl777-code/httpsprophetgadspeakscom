@@ -633,34 +633,34 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                       message.role === 'user' ? 'justify-end' : 'justify-start'
                     )}
                   >
-                    {/* Prophet Avatar (left side) */}
-                    {message.role === 'prophet' && (
-                      <Avatar className="w-10 h-10 border-2 border-accent shrink-0 ring-2 ring-accent/20">
-                        <AvatarImage src={prophetGadAvatar} alt="Prophet Gad" />
-                        <AvatarFallback className="bg-accent text-accent-foreground text-sm font-bold">
-                          PG
-                        </AvatarFallback>
-                      </Avatar>
-                    )}
-
-                    {/* Message Bubble */}
+                    {/* Message Bubble — translucent purple-glass with white text
+                        for prophet, translucent gold-tinted for user. NO avatar
+                        pictures cluttering the conversation. */}
                     <div
                       className={cn(
-                        'max-w-[78%] rounded-2xl px-4 py-3 shadow-md',
+                        'max-w-[88%] rounded-2xl px-4 py-3 shadow-lg backdrop-blur-md border-2',
                         message.role === 'prophet'
-                          ? 'rounded-tl-sm border border-accent/30'
-                          : 'rounded-tr-sm border border-primary/20'
+                          ? 'rounded-tl-sm border-accent/50'
+                          : 'rounded-tr-sm border-accent/40'
                       )}
                       style={{
-                        backgroundColor:
+                        background:
                           message.role === 'prophet'
-                            ? 'rgba(255, 250, 235, 0.95)'
-                            : 'rgba(247, 241, 227, 0.95)',
-                        color: '#3D2B1F',
+                            ? 'linear-gradient(180deg, rgba(88,28,135,0.78) 0%, rgba(60,20,110,0.78) 100%)'
+                            : 'linear-gradient(180deg, rgba(40,15,70,0.65) 0%, rgba(30,10,55,0.65) 100%)',
+                        color: '#FFFFFF',
                       }}
                     >
+                      {message.role === 'prophet' && (
+                        <p
+                          className="font-display text-[10px] tracking-[0.3em] font-bold mb-1.5"
+                          style={{ color: 'hsl(var(--accent))' }}
+                        >
+                          PGAI
+                        </p>
+                      )}
                       <p
-                        className="leading-relaxed whitespace-pre-wrap"
+                        className="leading-relaxed whitespace-pre-wrap text-white"
                         style={{
                           fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                           fontSize: message.role === 'prophet' ? '1.05rem' : '1rem',
@@ -671,28 +671,24 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
 
                       {/* Action row for Prophet counsel messages */}
                       {message.role === 'prophet' && (
-                        <div className="mt-3 pt-2 border-t border-accent/20 flex items-center gap-3 flex-wrap">
+                        <div className="mt-3 pt-2 border-t border-accent/30 flex items-center gap-3 flex-wrap">
                           <button
                             onClick={() => handleSpeak(message.content)}
                             disabled={isSpeaking}
                             className={cn(
-                              'flex items-center gap-1.5 text-xs text-accent-foreground/70 hover:text-accent-foreground transition-colors',
+                              'flex items-center gap-1.5 text-xs font-semibold text-white/90 hover:text-accent transition-colors',
                               isSpeaking && 'opacity-40 cursor-not-allowed'
                             )}
-                            style={{ color: '#5C4A3D' }}
                           >
                             <Volume2 className="w-3.5 h-3.5" />
                             <span>Listen</span>
                           </button>
 
-                          {/* Ask PGAI to pray — available on all prophet messages
-                              except the initial greeting (which has no situation yet) */}
                           {message.id !== '1' && (
                             <button
                               onClick={() => handleAskForPrayer(message.id)}
                               disabled={prayingForId === message.id}
-                              className="flex items-center gap-1.5 text-xs font-semibold transition-colors hover:text-accent"
-                              style={{ color: '#7a5514' }}
+                              className="flex items-center gap-1.5 text-xs font-semibold text-white/90 hover:text-accent transition-colors"
                               title="Ask PGAI to pray an intercessory prayer for your situation"
                             >
                               {prayingForId === message.id ? (
@@ -708,7 +704,6 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                             </button>
                           )}
 
-                          {/* Seal as Prophetic Decree */}
                           {message.id !== '1' && (
                             <button
                               onClick={() => handleSealAsDecree(message.id)}
@@ -717,7 +712,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                                 'flex items-center gap-1.5 text-xs font-semibold transition-colors',
                                 message.sealed
                                   ? 'text-accent cursor-default'
-                                  : 'text-[#5C4A3D] hover:text-accent'
+                                  : 'text-white/90 hover:text-accent'
                               )}
                             >
                               {sealingId === message.id ? (
@@ -735,15 +730,6 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                         </div>
                       )}
                     </div>
-
-                    {/* User Avatar placeholder (right side) - keeping symmetry */}
-                    {message.role === 'user' && (
-                      <Avatar className="w-10 h-10 border-2 border-accent/40 shrink-0">
-                        <AvatarFallback className="bg-primary/10 text-primary text-sm font-bold">
-                          {firstName.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                    )}
                   </div>
                 );
               })}
