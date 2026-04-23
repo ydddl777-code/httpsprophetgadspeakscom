@@ -771,10 +771,15 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                     : 'Type, or tap the microphone to speak…'
                 }
                 className={cn(
-                  'flex-1 border-accent/60 bg-white/95 text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-accent italic shadow-lg',
+                  'flex-1 border-accent/50 text-white placeholder:text-white/60 focus-visible:ring-accent italic shadow-md',
                   isRecording && 'border-destructive ring-2 ring-destructive/40'
                 )}
-                style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif', fontSize: '1.05rem' }}
+                style={{
+                  fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
+                  fontSize: '1.05rem',
+                  background: 'rgba(40,15,70,0.55)',
+                  backdropFilter: 'blur(2px)',
+                }}
               />
               {/* Microphone — speak to PGAI instead of typing */}
               {speechSupported && (
