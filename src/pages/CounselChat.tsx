@@ -22,13 +22,9 @@ import type { UserProfile } from '@/lib/types';
 // City, a more architectural / sacred-chamber feel appropriate for the
 // weight of intercessory prayer. (The garden-of-flowers image lives on
 // the welcome landing where visitors first arrive.)
-// Heaven crystal-river background — therapeutic waterfall scene with
-// white doves, lilies and willow trees. Calming for counseling.
-import sanctuaryBackground from '@/assets/heaven-crystal-river.jpg';
-// Warrior portrait — matches the welcome landing card so the user
-// immediately recognises Prophet Gad. Larger and clearer than the
-// modern suit photo.
-import prophetGadAvatar from '@/assets/prophet-gad-warrior-portrait.png';
+// Heaven tranquil-river background — perfectly serene crystal river,
+// white lilies and swans. No rocks, no chaos. Pure paradise.
+import sanctuaryBackground from '@/assets/heaven-tranquil-river.jpg';
 import { generateReferenceNo } from '@/lib/decreeUtils';
 
 interface CounselChatProps {
@@ -57,7 +53,7 @@ interface ChatMessage {
 const buildInitialGreeting = (name: string): string => {
   const who = name && name.toLowerCase() !== 'friend' ? name : '';
   const opener = who ? `Peace be with you, ${who}.` : 'Peace be with you.';
-  return `${opener} How can I help you today? Tell me what brings you here — whatever weighs upon your heart. You can type it, or tap the microphone and speak to me.`;
+  return `${opener} I am PGAI. I am here to listen to your concerns, and to pray with you — whatever weighs upon your heart, or even a prayer of thanksgiving. Tell me what you need. You can type it, or tap the microphone and speak to me.`;
 };
 
 export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
