@@ -472,11 +472,20 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
           </Button>
 
           <div className="flex-1 min-w-0 text-center">
-            <h1 className="inline-block font-display text-base md:text-lg font-bold text-gradient-gold tracking-[0.2em] leading-tight px-3 py-1 rounded bg-black/40 backdrop-blur-[2px]">
+            {/* Larger title — matches the prominence of the welcome page.
+                Very faint dark wash behind the words only (no box outline)
+                so the heaven scene shows through. */}
+            <h1
+              className="inline-block font-display text-2xl md:text-4xl font-bold text-gradient-gold tracking-[0.18em] leading-tight px-2 py-0.5 rounded"
+              style={{ background: 'rgba(0,0,0,0.18)', textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
+            >
               FERVENT COUNSEL
             </h1>
             <p className="mt-1">
-              <span className="inline-block text-sm md:text-base text-white italic leading-snug px-3 py-0.5 rounded bg-black/40 backdrop-blur-[2px]">
+              <span
+                className="inline-block text-sm md:text-base text-white italic leading-snug px-2 py-0.5 rounded"
+                style={{ background: 'rgba(0,0,0,0.18)', textShadow: '0 1px 6px rgba(0,0,0,0.7)' }}
+              >
                 I am here to listen to your concerns and pray with you.
               </span>
             </p>
@@ -647,10 +656,11 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                       style={{
                         background:
                           message.role === 'prophet'
-                            ? 'rgba(40,15,70,0.55)'
-                            : 'rgba(20,10,40,0.45)',
-                        backdropFilter: 'blur(2px)',
+                            ? 'rgba(40,15,70,0.32)'
+                            : 'rgba(20,10,40,0.28)',
+                        backdropFilter: 'blur(1px)',
                         color: '#FFFFFF',
+                        textShadow: '0 1px 6px rgba(0,0,0,0.7)',
                       }}
                     >
                       <p
@@ -733,8 +743,8 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                   <div
                     className="px-3 py-2 rounded-md"
                     style={{
-                      background: 'rgba(40,15,70,0.55)',
-                      backdropFilter: 'blur(2px)',
+                      background: 'rgba(40,15,70,0.32)',
+                      backdropFilter: 'blur(1px)',
                     }}
                   >
                     <div className="flex gap-1.5 items-center h-5">
@@ -762,10 +772,15 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                     : 'Type, or tap the microphone to speak…'
                 }
                 className={cn(
-                  'flex-1 border-accent/60 bg-white/95 text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-accent italic shadow-lg',
+                  'flex-1 border-accent/50 text-white placeholder:text-white/60 focus-visible:ring-accent italic shadow-md',
                   isRecording && 'border-destructive ring-2 ring-destructive/40'
                 )}
-                style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif', fontSize: '1.05rem' }}
+                style={{
+                  fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
+                  fontSize: '1.05rem',
+                  background: 'rgba(40,15,70,0.55)',
+                  backdropFilter: 'blur(2px)',
+                }}
               />
               {/* Microphone — speak to PGAI instead of typing */}
               {speechSupported && (
@@ -809,12 +824,18 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
             </div>
             <p className="mt-2 text-center">
               {isRecording ? (
-                <span className="inline-block text-sm md:text-base italic font-bold text-white px-3 py-1 rounded bg-destructive/80 backdrop-blur-[2px]">
+                <span
+                  className="inline-block text-sm md:text-base italic font-bold text-white px-3 py-1 rounded"
+                  style={{ background: 'rgba(180,30,30,0.55)', textShadow: '0 1px 6px rgba(0,0,0,0.7)' }}
+                >
                   ● Listening — speak clearly, then tap the microphone again to finish.
                 </span>
               ) : (
-                <span className="inline-block text-sm md:text-base italic font-semibold text-white px-3 py-1 rounded bg-black/45 backdrop-blur-[2px]">
-                  Everything you share stays between you and PGAI.
+                <span
+                  className="inline-block text-sm md:text-base italic font-semibold text-white px-3 py-1 rounded"
+                  style={{ background: 'rgba(0,0,0,0.22)', textShadow: '0 1px 6px rgba(0,0,0,0.7)' }}
+                >
+                  Everything you share stays between you and the prophet.
                 </span>
               )}
             </p>
