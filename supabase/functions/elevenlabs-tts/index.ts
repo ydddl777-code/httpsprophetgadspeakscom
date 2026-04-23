@@ -17,7 +17,12 @@ function getCorsHeaders(req: Request) {
   };
 }
 
+// Prophet Gad voice 12 — the user's custom-cloned ElevenLabs voice.
+// This is the DEFAULT voice for the entire app (Prophet Gad / PGAI).
+const PROPHET_GAD_VOICE_ID = '4qujSOEOIeR7wnstHIXO';
+
 const VALID_VOICE_IDS = [
+  PROPHET_GAD_VOICE_ID,
   'JBFqnCBsd6RMkjVDRZzb', 'EXAVITQu4vr4xnSDxMaL', 'onwK4e9ZLuTAKqWW03F9',
   'pFZP5JQG7iQjIQuC4Bku', 'nPczCjzI2devNBz1zQrb', 'CwhRBWXzGAHq8TQ4Fs17',
   'FGY2WhTYpPnrIDTdsKH5', 'IKne3meq5aSn9XLyUdCD', 'N2lVS1w4EtoT3dr4eOWO',
@@ -60,8 +65,8 @@ serve(async (req) => {
       );
     }
 
-    // Validate voiceId
-    const selectedVoiceId = (voiceId && VALID_VOICE_IDS.includes(voiceId)) ? voiceId : "JBFqnCBsd6RMkjVDRZzb";
+    // Validate voiceId — default to the Prophet Gad cloned voice.
+    const selectedVoiceId = (voiceId && VALID_VOICE_IDS.includes(voiceId)) ? voiceId : PROPHET_GAD_VOICE_ID;
 
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${selectedVoiceId}?output_format=mp3_44100_128`,
