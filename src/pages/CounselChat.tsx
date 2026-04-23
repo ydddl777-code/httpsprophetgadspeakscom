@@ -748,14 +748,9 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
             </div>
           </ScrollArea>
 
-          {/* Input Area */}
-          <div
-            className="p-4 border-t border-accent/40"
-            style={{
-              background:
-                'linear-gradient(180deg, rgba(252,244,220,0.95) 0%, rgba(248,238,208,0.95) 100%)',
-            }}
-          >
+          {/* Input Area — no cream box. The input itself is the panel;
+              helper text gets a tight inline highlight. */}
+          <div className="p-4">
             <div className="flex gap-2">
               <Input
                 value={inputValue}
@@ -767,7 +762,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                     : 'Type, or tap the microphone to speak…'
                 }
                 className={cn(
-                  'flex-1 border-accent/50 bg-white/90 text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-accent italic',
+                  'flex-1 border-accent/60 bg-white/95 text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-accent italic shadow-lg',
                   isRecording && 'border-destructive ring-2 ring-destructive/40'
                 )}
                 style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif', fontSize: '1.05rem' }}
@@ -779,10 +774,10 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                   onClick={toggleRecording}
                   disabled={isLoading}
                   className={cn(
-                    'px-3 border shadow-md transition-colors',
+                    'px-3 border-2 shadow-md transition-colors',
                     isRecording
                       ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground border-destructive/70 animate-pulse'
-                      : 'bg-accent/15 hover:bg-accent/25 text-accent-foreground border-accent/40'
+                      : 'bg-accent hover:bg-accent/90 text-accent-foreground border-accent/70'
                   )}
                   title={isRecording ? 'Stop listening' : 'Speak to PGAI'}
                   aria-label={isRecording ? 'Stop listening' : 'Speak to PGAI'}
@@ -812,15 +807,17 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                 )}
               </Button>
             </div>
-            {isRecording ? (
-              <p className="mt-2 text-center text-sm md:text-base italic text-destructive font-bold">
-                ● Listening — speak clearly, then tap the microphone again to finish.
-              </p>
-            ) : (
-              <p className="mt-2 text-center text-sm md:text-base italic font-semibold text-[#3D2B1F]">
-                Everything you share stays between you and PGAI.
-              </p>
-            )}
+            <p className="mt-2 text-center">
+              {isRecording ? (
+                <span className="inline-block text-sm md:text-base italic font-bold text-white px-3 py-1 rounded bg-destructive/80 backdrop-blur-[2px]">
+                  ● Listening — speak clearly, then tap the microphone again to finish.
+                </span>
+              ) : (
+                <span className="inline-block text-sm md:text-base italic font-semibold text-white px-3 py-1 rounded bg-black/45 backdrop-blur-[2px]">
+                  Everything you share stays between you and PGAI.
+                </span>
+              )}
+            </p>
           </div>
         </div>
       </div>
