@@ -656,10 +656,11 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                       style={{
                         background:
                           message.role === 'prophet'
-                            ? 'rgba(40,15,70,0.55)'
-                            : 'rgba(20,10,40,0.45)',
-                        backdropFilter: 'blur(2px)',
+                            ? 'rgba(40,15,70,0.32)'
+                            : 'rgba(20,10,40,0.28)',
+                        backdropFilter: 'blur(1px)',
                         color: '#FFFFFF',
+                        textShadow: '0 1px 6px rgba(0,0,0,0.7)',
                       }}
                     >
                       <p
