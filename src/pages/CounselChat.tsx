@@ -867,7 +867,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               helper text gets a tight inline highlight. */}
           <div className="p-4">
             <div className="flex gap-2">
-              <Input
+              <Textarea
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyPress}
@@ -877,7 +877,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                     : 'Type, or tap the microphone to speak…'
                 }
                 className={cn(
-                  'flex-1 border-accent/50 text-white placeholder:text-white/60 focus-visible:ring-accent italic shadow-md',
+                  'flex-1 min-h-[56px] max-h-40 resize-none border-accent/50 text-white placeholder:text-white/60 focus-visible:ring-accent italic shadow-md',
                   isRecording && 'border-destructive ring-2 ring-destructive/40'
                 )}
                 style={{
