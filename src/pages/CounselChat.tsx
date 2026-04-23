@@ -6,11 +6,9 @@ import {
   Volume2,
   Loader2,
   ScrollText,
-  Flower2,
   HandHeart,
   Mic,
   MicOff,
-  Settings,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,8 +22,13 @@ import type { UserProfile } from '@/lib/types';
 // City, a more architectural / sacred-chamber feel appropriate for the
 // weight of intercessory prayer. (The garden-of-flowers image lives on
 // the welcome landing where visitors first arrive.)
-import sanctuaryBackground from '@/assets/golden-gate-background.jpg';
-import prophetGadAvatar from '@/assets/prophet-gad-modern.png';
+// Use the same heaven-garden background as the welcome landing so the
+// counseling table sits in the garden of flowers, not a stark gate.
+import sanctuaryBackground from '@/assets/heaven-garden-background.jpg';
+// Warrior portrait — matches the welcome landing card so the user
+// immediately recognises Prophet Gad. Larger and clearer than the
+// modern suit photo.
+import prophetGadAvatar from '@/assets/prophet-gad-warrior-portrait.png';
 import { generateReferenceNo } from '@/lib/decreeUtils';
 
 interface CounselChatProps {
@@ -149,10 +152,12 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
     }
   };
 
-  // Auto-play the opening greeting once so the visitor HEARS Prophet Gad
-  // ask "How can I help you today?" the moment they land. Browsers may
-  // still block this until first user gesture; if so, the Listen button
-  // on the greeting falls back to manual playback.
+  // Auto-play the opening greeting AFTER a 3-second delay so the visitor
+  // can get acclimated to the page — see the microphone, the "Sign in to
+  // save your counsel" button, the counseling table — BEFORE Prophet Gad
+  // greets them warmly. Browsers may still block this until first user
+  // gesture; if so, the Listen button on the greeting falls back to
+  // manual playback.
   useEffect(() => {
     if (greetingSpokenRef.current) return;
     greetingSpokenRef.current = true;
@@ -160,7 +165,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
       if (messages[0]?.role === 'prophet') {
         speak(messages[0].content);
       }
-    }, 500);
+    }, 3000);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -469,12 +474,13 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
             <ArrowLeft className="w-5 h-5" />
           </Button>
 
-          <Avatar className="w-12 h-12 border-2 border-accent ring-2 ring-accent/30 shrink-0">
-            <AvatarImage src={prophetGadAvatar} alt="Prophet Gad" />
-            <AvatarFallback className="bg-accent text-accent-foreground font-bold">
-              PG
-            </AvatarFallback>
-          </Avatar>
+          <div className="w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden border-2 border-accent ring-2 ring-accent/30 shrink-0 shadow-2xl">
+            <img
+              src={prophetGadAvatar}
+              alt="Prophet Gad"
+              className="w-full h-full object-cover object-top"
+            />
+          </div>
 
           <div className="flex-1 min-w-0">
             <h1 className="font-display text-base md:text-lg font-bold text-gradient-gold tracking-[0.2em] leading-tight">
@@ -485,7 +491,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
             </p>
           </div>
 
-          {profile && (
+          {profile ? (
             <Button
               variant="ghost"
               size="sm"
@@ -496,41 +502,31 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               <ScrollText className="w-4 h-4" />
               <span className="hidden sm:inline text-sm">Decrees</span>
             </Button>
+          ) : (
+            <Button
+              onClick={() => navigate('/sign-in')}
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs md:text-sm px-3 py-2 border-2 border-white/30 shadow-lg whitespace-normal text-center leading-tight"
+              title="Sign in to save your counsel"
+            >
+              Sign In to Save<br />Your Counsel
+            </Button>
           )}
-
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(profile ? '/settings' : '/sign-in')}
-            className="text-white/70 hover:text-white hover:bg-white/10 w-9 h-9"
-            title={profile ? 'Settings' : 'Sign in to save your counsel'}
-          >
-            <Settings className="w-5 h-5" />
-          </Button>
         </div>
       </header>
 
-      {/* Chat Container - Sanctuary Style */}
-      <div className="relative z-10 flex-1 flex flex-col max-w-2xl mx-auto w-full p-4">
+      {/* Chat Container — translucent purple-glass panel, narrower and
+          shifted to the right side so the gate-of-heaven garden behind
+          remains visible. NO big white blob covering the central image. */}
+      <div className="relative z-10 flex-1 flex w-full px-4 pb-4 justify-center md:justify-end">
         <div
-          className="flex-1 rounded-2xl border-2 border-accent/60 shadow-2xl overflow-hidden flex flex-col backdrop-blur-md"
+          className="flex-1 max-w-xl md:max-w-lg rounded-2xl border-2 border-accent/60 shadow-2xl overflow-hidden flex flex-col backdrop-blur-md"
           style={{
             background:
-              'linear-gradient(180deg, rgba(255,250,235,0.92) 0%, rgba(252,244,220,0.92) 100%)',
+              'linear-gradient(180deg, rgba(88,28,135,0.55) 0%, rgba(60,20,110,0.55) 100%)',
             boxShadow:
-              '0 10px 40px rgba(0,0,0,0.4), 0 0 80px rgba(212,165,63,0.15), inset 0 0 60px rgba(212,165,63,0.08)',
+              '0 10px 40px rgba(0,0,0,0.4), 0 0 80px rgba(212,165,63,0.15), inset 0 0 60px rgba(212,165,63,0.10)',
           }}
         >
-          {/* Decorative gold rule with flower */}
-          <div className="flex items-center justify-center gap-3 py-2 px-4 bg-gradient-to-r from-transparent via-accent/20 to-transparent border-b border-accent/40">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent to-accent/60" />
-            <Flower2 className="w-4 h-4 text-accent" />
-            <span className="font-display text-xs tracking-[0.3em] text-accent/90">
-              THE SANCTUARY
-            </span>
-            <Flower2 className="w-4 h-4 text-accent" />
-            <div className="h-px flex-1 bg-gradient-to-l from-transparent to-accent/60" />
-          </div>
 
           {/* Messages Area */}
           <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
@@ -849,11 +845,11 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               </Button>
             </div>
             {isRecording ? (
-              <p className="mt-2 text-center text-[11px] italic text-destructive font-semibold">
+              <p className="mt-2 text-center text-sm md:text-base italic text-destructive font-bold">
                 ● Listening — speak clearly, then tap the microphone again to finish.
               </p>
             ) : (
-              <p className="mt-2 text-center text-[11px] italic text-[#5C4A3D]/70">
+              <p className="mt-2 text-center text-sm md:text-base italic font-semibold text-[#3D2B1F]">
                 Everything you share stays between you and Prophet Gad.
               </p>
             )}
