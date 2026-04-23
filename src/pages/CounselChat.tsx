@@ -472,11 +472,20 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
           </Button>
 
           <div className="flex-1 min-w-0 text-center">
-            <h1 className="inline-block font-display text-base md:text-lg font-bold text-gradient-gold tracking-[0.2em] leading-tight px-3 py-1 rounded bg-black/40 backdrop-blur-[2px]">
+            {/* Larger title — matches the prominence of the welcome page.
+                Very faint dark wash behind the words only (no box outline)
+                so the heaven scene shows through. */}
+            <h1
+              className="inline-block font-display text-2xl md:text-4xl font-bold text-gradient-gold tracking-[0.18em] leading-tight px-2 py-0.5 rounded"
+              style={{ background: 'rgba(0,0,0,0.18)', textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
+            >
               FERVENT COUNSEL
             </h1>
             <p className="mt-1">
-              <span className="inline-block text-sm md:text-base text-white italic leading-snug px-3 py-0.5 rounded bg-black/40 backdrop-blur-[2px]">
+              <span
+                className="inline-block text-sm md:text-base text-white italic leading-snug px-2 py-0.5 rounded"
+                style={{ background: 'rgba(0,0,0,0.18)', textShadow: '0 1px 6px rgba(0,0,0,0.7)' }}
+              >
                 I am here to listen to your concerns and pray with you.
               </span>
             </p>
