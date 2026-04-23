@@ -470,9 +470,14 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
       setMessages((prev) => [...prev, prayerMsg]);
       setPrayingForId(null);
 
-      // Auto-speak the prayer so the user HEARS PGAI stand in the gap
+      // Auto-speak the prayer so the user HEARS PGAI stand in the gap.
+      // Prefer the voice version (contains ElevenLabs v3 emotional audio
+      // tags like [weeping] / [pleading]) so the prophet actually acts
+      // the lines. The on-screen `prayerMsg.content` is the clean,
+      // tag-stripped version.
       if (isSpeaking) stopSpeak();
-      setTimeout(() => speak(prayerMsg.content), 300);
+      const spokenPrayer = data?.prayerForVoice || prayerMsg.content;
+      setTimeout(() => speak(spokenPrayer), 300);
     } catch (err) {
       console.error('Prayer request error:', err);
       const fallback: ChatMessage = {
