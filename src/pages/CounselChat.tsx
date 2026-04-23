@@ -22,13 +22,9 @@ import type { UserProfile } from '@/lib/types';
 // City, a more architectural / sacred-chamber feel appropriate for the
 // weight of intercessory prayer. (The garden-of-flowers image lives on
 // the welcome landing where visitors first arrive.)
-// Heaven crystal-river background — therapeutic waterfall scene with
-// white doves, lilies and willow trees. Calming for counseling.
-import sanctuaryBackground from '@/assets/heaven-crystal-river.jpg';
-// Warrior portrait — matches the welcome landing card so the user
-// immediately recognises Prophet Gad. Larger and clearer than the
-// modern suit photo.
-import prophetGadAvatar from '@/assets/prophet-gad-warrior-portrait.png';
+// Heaven tranquil-river background — perfectly serene crystal river,
+// white lilies and swans. No rocks, no chaos. Pure paradise.
+import sanctuaryBackground from '@/assets/heaven-tranquil-river.jpg';
 import { generateReferenceNo } from '@/lib/decreeUtils';
 
 interface CounselChatProps {
@@ -57,7 +53,7 @@ interface ChatMessage {
 const buildInitialGreeting = (name: string): string => {
   const who = name && name.toLowerCase() !== 'friend' ? name : '';
   const opener = who ? `Peace be with you, ${who}.` : 'Peace be with you.';
-  return `${opener} How can I help you today? Tell me what brings you here — whatever weighs upon your heart. You can type it, or tap the microphone and speak to me.`;
+  return `${opener} I am PGAI. I am here to listen to your concerns, and to pray with you — whatever weighs upon your heart, or even a prayer of thanksgiving. Tell me what you need. You can type it, or tap the microphone and speak to me.`;
 };
 
 export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
@@ -474,20 +470,12 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
             <ArrowLeft className="w-5 h-5" />
           </Button>
 
-          <div className="w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden border-2 border-accent ring-2 ring-accent/30 shrink-0 shadow-2xl">
-            <img
-              src={prophetGadAvatar}
-              alt="Prophet Gad"
-              className="w-full h-full object-cover object-top"
-            />
-          </div>
-
           <div className="flex-1 min-w-0">
             <h1 className="font-display text-base md:text-lg font-bold text-gradient-gold tracking-[0.2em] leading-tight">
               FERVENT COUNSEL
             </h1>
-            <p className="text-sm text-white/85 italic leading-tight">
-              Prophet Gad is here — how can I help you today?
+            <p className="text-sm md:text-base text-white/90 italic leading-snug">
+              PGAI is here to listen to your concerns and pray with you.
             </p>
           </div>
 
@@ -514,19 +502,11 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         </div>
       </header>
 
-      {/* Chat Container — translucent purple-glass panel, narrower and
-          shifted to the right side so the gate-of-heaven garden behind
-          remains visible. NO big white blob covering the central image. */}
+      {/* Chat Container — NO outer card. Translucent panel only on the
+          input dock. Messages float over the heaven background. Shifted
+          right so the central river/swans remain visible. */}
       <div className="relative z-10 flex-1 flex w-full px-4 pb-4 justify-center md:justify-end">
-        <div
-          className="flex-1 max-w-xl md:max-w-lg rounded-2xl border-2 border-accent/60 shadow-2xl overflow-hidden flex flex-col backdrop-blur-md"
-          style={{
-            background:
-              'linear-gradient(180deg, rgba(88,28,135,0.55) 0%, rgba(60,20,110,0.55) 100%)',
-            boxShadow:
-              '0 10px 40px rgba(0,0,0,0.4), 0 0 80px rgba(212,165,63,0.15), inset 0 0 60px rgba(212,165,63,0.10)',
-          }}
-        >
+        <div className="flex-1 max-w-xl md:max-w-lg flex flex-col">
 
           {/* Messages Area */}
           <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
@@ -653,34 +633,34 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                       message.role === 'user' ? 'justify-end' : 'justify-start'
                     )}
                   >
-                    {/* Prophet Avatar (left side) */}
-                    {message.role === 'prophet' && (
-                      <Avatar className="w-10 h-10 border-2 border-accent shrink-0 ring-2 ring-accent/20">
-                        <AvatarImage src={prophetGadAvatar} alt="Prophet Gad" />
-                        <AvatarFallback className="bg-accent text-accent-foreground text-sm font-bold">
-                          PG
-                        </AvatarFallback>
-                      </Avatar>
-                    )}
-
-                    {/* Message Bubble */}
+                    {/* Message Bubble — translucent purple-glass with white text
+                        for prophet, translucent gold-tinted for user. NO avatar
+                        pictures cluttering the conversation. */}
                     <div
                       className={cn(
-                        'max-w-[78%] rounded-2xl px-4 py-3 shadow-md',
+                        'max-w-[88%] rounded-2xl px-4 py-3 shadow-lg backdrop-blur-md border-2',
                         message.role === 'prophet'
-                          ? 'rounded-tl-sm border border-accent/30'
-                          : 'rounded-tr-sm border border-primary/20'
+                          ? 'rounded-tl-sm border-accent/50'
+                          : 'rounded-tr-sm border-accent/40'
                       )}
                       style={{
-                        backgroundColor:
+                        background:
                           message.role === 'prophet'
-                            ? 'rgba(255, 250, 235, 0.95)'
-                            : 'rgba(247, 241, 227, 0.95)',
-                        color: '#3D2B1F',
+                            ? 'linear-gradient(180deg, rgba(88,28,135,0.78) 0%, rgba(60,20,110,0.78) 100%)'
+                            : 'linear-gradient(180deg, rgba(40,15,70,0.65) 0%, rgba(30,10,55,0.65) 100%)',
+                        color: '#FFFFFF',
                       }}
                     >
+                      {message.role === 'prophet' && (
+                        <p
+                          className="font-display text-[10px] tracking-[0.3em] font-bold mb-1.5"
+                          style={{ color: 'hsl(var(--accent))' }}
+                        >
+                          PGAI
+                        </p>
+                      )}
                       <p
-                        className="leading-relaxed whitespace-pre-wrap"
+                        className="leading-relaxed whitespace-pre-wrap text-white"
                         style={{
                           fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif',
                           fontSize: message.role === 'prophet' ? '1.05rem' : '1rem',
@@ -691,28 +671,24 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
 
                       {/* Action row for Prophet counsel messages */}
                       {message.role === 'prophet' && (
-                        <div className="mt-3 pt-2 border-t border-accent/20 flex items-center gap-3 flex-wrap">
+                        <div className="mt-3 pt-2 border-t border-accent/30 flex items-center gap-3 flex-wrap">
                           <button
                             onClick={() => handleSpeak(message.content)}
                             disabled={isSpeaking}
                             className={cn(
-                              'flex items-center gap-1.5 text-xs text-accent-foreground/70 hover:text-accent-foreground transition-colors',
+                              'flex items-center gap-1.5 text-xs font-semibold text-white/90 hover:text-accent transition-colors',
                               isSpeaking && 'opacity-40 cursor-not-allowed'
                             )}
-                            style={{ color: '#5C4A3D' }}
                           >
                             <Volume2 className="w-3.5 h-3.5" />
                             <span>Listen</span>
                           </button>
 
-                          {/* Ask PGAI to pray — available on all prophet messages
-                              except the initial greeting (which has no situation yet) */}
                           {message.id !== '1' && (
                             <button
                               onClick={() => handleAskForPrayer(message.id)}
                               disabled={prayingForId === message.id}
-                              className="flex items-center gap-1.5 text-xs font-semibold transition-colors hover:text-accent"
-                              style={{ color: '#7a5514' }}
+                              className="flex items-center gap-1.5 text-xs font-semibold text-white/90 hover:text-accent transition-colors"
                               title="Ask PGAI to pray an intercessory prayer for your situation"
                             >
                               {prayingForId === message.id ? (
@@ -728,7 +704,6 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                             </button>
                           )}
 
-                          {/* Seal as Prophetic Decree */}
                           {message.id !== '1' && (
                             <button
                               onClick={() => handleSealAsDecree(message.id)}
@@ -737,7 +712,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                                 'flex items-center gap-1.5 text-xs font-semibold transition-colors',
                                 message.sealed
                                   ? 'text-accent cursor-default'
-                                  : 'text-[#5C4A3D] hover:text-accent'
+                                  : 'text-white/90 hover:text-accent'
                               )}
                             >
                               {sealingId === message.id ? (
@@ -755,35 +730,23 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                         </div>
                       )}
                     </div>
-
-                    {/* User Avatar placeholder (right side) - keeping symmetry */}
-                    {message.role === 'user' && (
-                      <Avatar className="w-10 h-10 border-2 border-accent/40 shrink-0">
-                        <AvatarFallback className="bg-primary/10 text-primary text-sm font-bold">
-                          {firstName.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                    )}
                   </div>
                 );
               })}
 
               {isLoading && (
-                <div className="flex justify-start gap-3">
-                  <Avatar className="w-10 h-10 border-2 border-accent shrink-0">
-                    <AvatarImage src={prophetGadAvatar} alt="Prophet Gad" />
-                    <AvatarFallback className="bg-accent text-accent-foreground text-sm font-bold">
-                      PG
-                    </AvatarFallback>
-                  </Avatar>
+                <div className="flex justify-start">
                   <div
-                    className="rounded-2xl rounded-tl-sm px-4 py-3 border border-accent/30 shadow-md"
-                    style={{ backgroundColor: 'rgba(255, 250, 235, 0.95)' }}
+                    className="rounded-2xl rounded-tl-sm px-4 py-3 border-2 border-accent/50 shadow-lg backdrop-blur-md"
+                    style={{
+                      background:
+                        'linear-gradient(180deg, rgba(88,28,135,0.78) 0%, rgba(60,20,110,0.78) 100%)',
+                    }}
                   >
                     <div className="flex gap-1.5 items-center h-5">
-                      <span className="w-2 h-2 bg-accent/60 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                      <span className="w-2 h-2 bg-accent/60 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                      <span className="w-2 h-2 bg-accent/60 rounded-full animate-bounce" />
+                      <span className="w-2 h-2 bg-accent rounded-full animate-bounce [animation-delay:-0.3s]" />
+                      <span className="w-2 h-2 bg-accent rounded-full animate-bounce [animation-delay:-0.15s]" />
+                      <span className="w-2 h-2 bg-accent rounded-full animate-bounce" />
                     </div>
                   </div>
                 </div>
@@ -815,7 +778,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                 )}
                 style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif', fontSize: '1.05rem' }}
               />
-              {/* Microphone — talk to Prophet Gad instead of typing */}
+              {/* Microphone — speak to PGAI instead of typing */}
               {speechSupported && (
                 <Button
                   type="button"
@@ -827,20 +790,31 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                       ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground border-destructive/70 animate-pulse'
                       : 'bg-accent/15 hover:bg-accent/25 text-accent-foreground border-accent/40'
                   )}
-                  title={isRecording ? 'Stop listening' : 'Speak to Prophet Gad'}
+                  title={isRecording ? 'Stop listening' : 'Speak to PGAI'}
+                  aria-label={isRecording ? 'Stop listening' : 'Speak to PGAI'}
                 >
                   {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                 </Button>
               )}
+              {/* Send — green, matching the welcome page CTA */}
               <Button
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim() || isLoading}
-                className="bg-accent hover:bg-accent/90 text-accent-foreground px-4 border border-accent/60 shadow-md"
+                className="px-4 border-2 shadow-md text-white font-bold"
+                style={{
+                  background: 'linear-gradient(180deg, hsl(140 65% 38%) 0%, hsl(140 70% 28%) 100%)',
+                  borderColor: 'hsl(140 70% 22%)',
+                }}
+                title="Send to PGAI"
+                aria-label="Send to PGAI"
               >
                 {isLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
-                  <Send className="w-5 h-5" />
+                  <>
+                    <Send className="w-5 h-5" />
+                    <span className="hidden sm:inline ml-1">Send</span>
+                  </>
                 )}
               </Button>
             </div>
@@ -850,7 +824,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               </p>
             ) : (
               <p className="mt-2 text-center text-sm md:text-base italic font-semibold text-[#3D2B1F]">
-                Everything you share stays between you and Prophet Gad.
+                Everything you share stays between you and PGAI.
               </p>
             )}
           </div>
