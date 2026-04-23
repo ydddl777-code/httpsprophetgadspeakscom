@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -11,7 +11,7 @@ import {
   MicOff,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
@@ -80,12 +80,110 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
   const [prayingForId, setPrayingForId] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
+  const [micError, setMicError] = useState<string | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const greetingSpokenRef = useRef(false);
-  const shouldKeepRecordingRef = useRef(false);
   const transcriptRef = useRef('');
+  const pendingVoiceSubmitRef = useRef(false);
+  const messagesRef = useRef<ChatMessage[]>(messages);
+  const inputValueRef = useRef(inputValue);
+  const isLoadingRef = useRef(isLoading);
   const { speak, stop: stopSpeak, isSpeaking } = useElevenLabsTTS();
+
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
+
+  useEffect(() => {
+    inputValueRef.current = inputValue;
+  }, [inputValue]);
+
+  useEffect(() => {
+    isLoadingRef.current = isLoading;
+  }, [isLoading]);
+
+  const playProphetMessage = useCallback(
+    (text: string) => {
+      if (!text.trim()) return;
+      if (isSpeaking) stopSpeak();
+      window.setTimeout(() => speak(text), 150);
+    },
+    [isSpeaking, speak, stopSpeak]
+  );
+
+  const submitMessage = useCallback(
+    async (rawMessage: string) => {
+      const trimmedMessage = rawMessage.trim();
+      if (!trimmedMessage || isLoadingRef.current) return;
+
+      transcriptRef.current = '';
+      pendingVoiceSubmitRef.current = false;
+      setMicError(null);
+      setInputValue('');
+
+      if (isSpeaking) stopSpeak();
+
+      const userMessage: ChatMessage = {
+        id: Date.now().toString(),
+        role: 'user',
+        content: trimmedMessage,
+        timestamp: new Date(),
+      };
+
+      const conversationHistory = messagesRef.current.map((msg) => ({
+        role: msg.role === 'prophet' ? 'assistant' : 'user',
+        content: msg.content,
+      }));
+
+      setMessages((prev) => [...prev, userMessage]);
+      setIsLoading(true);
+
+      try {
+        const { data, error } = await supabase.functions.invoke('pgai-counsel', {
+          body: {
+            message: trimmedMessage,
+            conversationHistory,
+          },
+        });
+
+        if (error) throw error;
+
+        const responseText =
+          data?.response ||
+          'I am here with you. Please share what is on your heart.';
+
+        const prophetMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          role: 'prophet',
+          content: responseText,
+          timestamp: new Date(),
+        };
+
+        setMessages((prev) => [...prev, prophetMessage]);
+        playProphetMessage(responseText);
+      } catch (error) {
+        console.error('PGAI error:', error);
+        const fallbackMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          role: 'prophet',
+          content:
+            'The line went quiet before your reply could come through. Please try once more, and know that the Most High hears you.',
+          timestamp: new Date(),
+        };
+
+        setMessages((prev) => [...prev, fallbackMessage]);
+        playProphetMessage(fallbackMessage.content);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isSpeaking, playProphetMessage, stopSpeak]
+  );
+
+  const handleSendMessage = useCallback(async () => {
+    await submitMessage(inputValueRef.current);
+  }, [submitMessage]);
 
   // Initialise the browser's native speech recognition for voice input.
   // Supported in Chrome, Edge, Safari (partial); falls back to text-only
@@ -101,9 +199,14 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
     }
     setSpeechSupported(true);
     const recognition = new SpeechRecognition();
-    recognition.continuous = true;
+    recognition.continuous = false;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
+
+    recognition.onstart = () => {
+      setIsRecording(true);
+      setMicError(null);
+    };
 
     recognition.onresult = (event: any) => {
       let interim = '';
@@ -114,21 +217,41 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
       }
       setInputValue(`${transcriptRef.current}${interim}`.trim());
     };
+
     recognition.onend = () => {
-      if (shouldKeepRecordingRef.current) {
-        try {
-          recognition.start();
-          return;
-        } catch {
-          // Fall through and stop cleanly if the browser refuses restart.
-        }
+      setIsRecording(false);
+
+      const transcript = transcriptRef.current.trim();
+      const shouldSubmit = pendingVoiceSubmitRef.current;
+      pendingVoiceSubmitRef.current = false;
+
+      if (shouldSubmit && transcript && !isLoadingRef.current) {
+        window.setTimeout(() => {
+          submitMessage(transcript);
+        }, 120);
       }
-      setIsRecording(false);
     };
-    recognition.onerror = () => {
-      shouldKeepRecordingRef.current = false;
+
+    recognition.onerror = (event: any) => {
+      pendingVoiceSubmitRef.current = false;
       setIsRecording(false);
+
+      if (event?.error === 'not-allowed' || event?.error === 'service-not-allowed') {
+        setMicError('Microphone blocked. Please allow microphone access in your browser settings.');
+        return;
+      }
+      if (event?.error === 'audio-capture') {
+        setMicError('No working microphone was found.');
+        return;
+      }
+      if (event?.error === 'no-speech') {
+        setMicError('I did not catch any speech. Please try again.');
+        return;
+      }
+
+      setMicError('The microphone stopped unexpectedly. Please try again.');
     };
+
     recognitionRef.current = recognition;
 
     return () => {
@@ -138,32 +261,48 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         // ignore
       }
     };
-  }, []);
+  }, [submitMessage]);
 
-  const toggleRecording = () => {
+  const toggleRecording = useCallback(async () => {
     if (!recognitionRef.current) return;
+
     if (isRecording) {
-      shouldKeepRecordingRef.current = false;
+      pendingVoiceSubmitRef.current = true;
       try {
         recognitionRef.current.stop();
       } catch {
         // ignore
       }
-      setIsRecording(false);
     } else {
       try {
-        // Stop any audio playing so the mic doesn't pick up Prophet Gad
-        if (isSpeaking) stopSpeak();
-        transcriptRef.current = inputValue.trim() ? `${inputValue.trim()} ` : '';
-        shouldKeepRecordingRef.current = true;
-        recognitionRef.current.start();
-        setIsRecording(true);
+        if (navigator.permissions?.query) {
+          const permission = await navigator.permissions.query({
+            name: 'microphone' as PermissionName,
+          });
+          if (permission.state === 'denied') {
+            setMicError('Microphone blocked. Please allow microphone access in your browser settings.');
+            return;
+          }
+        }
       } catch {
-        shouldKeepRecordingRef.current = false;
+        // Some browsers do not support permission preflight for microphones.
+      }
+
+      try {
+        if (isSpeaking) stopSpeak();
+        transcriptRef.current = inputValueRef.current.trim()
+          ? `${inputValueRef.current.trim()} `
+          : '';
+        pendingVoiceSubmitRef.current = true;
+        setMicError(null);
+        recognitionRef.current.start();
+      } catch {
+        pendingVoiceSubmitRef.current = false;
         setIsRecording(false);
+        setMicError('The microphone could not start. Please try again.');
       }
     }
-  };
+  }, [isRecording, isSpeaking, stopSpeak]);
 
   // Auto-play the opening greeting AFTER a 3-second delay so the visitor
   // can get acclimated to the page — see the microphone, the "Sign in to
@@ -194,61 +333,6 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
       }
     }
   }, [messages]);
-
-  const handleSendMessage = async () => {
-    if (!inputValue.trim() || isLoading) return;
-
-    const userMessage: ChatMessage = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: inputValue.trim(),
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setInputValue('');
-    setIsLoading(true);
-
-    try {
-      // Build conversation history for context
-      const conversationHistory = messages.map((msg) => ({
-        role: msg.role === 'prophet' ? 'assistant' : 'user',
-        content: msg.content,
-      }));
-
-      const { data, error } = await supabase.functions.invoke('pgai-counsel', {
-        body: {
-          message: userMessage.content,
-          conversationHistory,
-        },
-      });
-
-      if (error) throw error;
-
-      const prophetMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: 'prophet',
-        content:
-          data.response ||
-          'I am here with you. Please share what is on your heart.',
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, prophetMessage]);
-    } catch (error) {
-      console.error('PGAI error:', error);
-      // Fallback response if AI fails
-      const fallbackMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: 'prophet',
-        content:
-          'The line went quiet before your reply could come through. Please try once more, and know that the Most High hears you.',
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, fallbackMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
