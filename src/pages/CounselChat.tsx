@@ -470,20 +470,12 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
             <ArrowLeft className="w-5 h-5" />
           </Button>
 
-          <div className="w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden border-2 border-accent ring-2 ring-accent/30 shrink-0 shadow-2xl">
-            <img
-              src={prophetGadAvatar}
-              alt="Prophet Gad"
-              className="w-full h-full object-cover object-top"
-            />
-          </div>
-
           <div className="flex-1 min-w-0">
             <h1 className="font-display text-base md:text-lg font-bold text-gradient-gold tracking-[0.2em] leading-tight">
               FERVENT COUNSEL
             </h1>
-            <p className="text-sm text-white/85 italic leading-tight">
-              Prophet Gad is here — how can I help you today?
+            <p className="text-sm md:text-base text-white/90 italic leading-snug">
+              PGAI is here to listen to your concerns and pray with you.
             </p>
           </div>
 
