@@ -778,7 +778,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                 )}
                 style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif', fontSize: '1.05rem' }}
               />
-              {/* Microphone — talk to Prophet Gad instead of typing */}
+              {/* Microphone — speak to PGAI instead of typing */}
               {speechSupported && (
                 <Button
                   type="button"
@@ -790,20 +790,31 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                       ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground border-destructive/70 animate-pulse'
                       : 'bg-accent/15 hover:bg-accent/25 text-accent-foreground border-accent/40'
                   )}
-                  title={isRecording ? 'Stop listening' : 'Speak to Prophet Gad'}
+                  title={isRecording ? 'Stop listening' : 'Speak to PGAI'}
+                  aria-label={isRecording ? 'Stop listening' : 'Speak to PGAI'}
                 >
                   {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                 </Button>
               )}
+              {/* Send — green, matching the welcome page CTA */}
               <Button
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim() || isLoading}
-                className="bg-accent hover:bg-accent/90 text-accent-foreground px-4 border border-accent/60 shadow-md"
+                className="px-4 border-2 shadow-md text-white font-bold"
+                style={{
+                  background: 'linear-gradient(180deg, hsl(140 65% 38%) 0%, hsl(140 70% 28%) 100%)',
+                  borderColor: 'hsl(140 70% 22%)',
+                }}
+                title="Send to PGAI"
+                aria-label="Send to PGAI"
               >
                 {isLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
-                  <Send className="w-5 h-5" />
+                  <>
+                    <Send className="w-5 h-5" />
+                    <span className="hidden sm:inline ml-1">Send</span>
+                  </>
                 )}
               </Button>
             </div>
@@ -813,7 +824,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               </p>
             ) : (
               <p className="mt-2 text-center text-sm md:text-base italic font-semibold text-[#3D2B1F]">
-                Everything you share stays between you and Prophet Gad.
+                Everything you share stays between you and PGAI.
               </p>
             )}
           </div>
