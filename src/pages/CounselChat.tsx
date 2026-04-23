@@ -743,8 +743,8 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                   <div
                     className="px-3 py-2 rounded-md"
                     style={{
-                      background: 'rgba(40,15,70,0.55)',
-                      backdropFilter: 'blur(2px)',
+                      background: 'rgba(40,15,70,0.32)',
+                      backdropFilter: 'blur(1px)',
                     }}
                   >
                     <div className="flex gap-1.5 items-center h-5">
