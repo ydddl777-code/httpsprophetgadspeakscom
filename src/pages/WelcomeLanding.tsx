@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, Pause, Volume2, Loader2 } from 'lucide-react';
+import { Play, Pause } from 'lucide-react';
 import { BetaBadge } from '@/components/BetaBadge';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
 import landingBackground from '@/assets/heaven-garden-background.jpg';
@@ -40,8 +40,8 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
   const navigate = useNavigate();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [autoPlayTried, setAutoPlayTried] = useState(false);
-  const { speak, stop, isSpeaking, isLoading } = useElevenLabsTTS();
+  const [greetingTried, setGreetingTried] = useState(false);
+  const { speak, stop, isSpeaking } = useElevenLabsTTS();
   const now = useNow();
 
   const dateString = now.toLocaleDateString('en-US', {
@@ -56,14 +56,16 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
     hour12: true,
   });
 
+  // Auto-play the spoken greeting ~3 seconds after landing.
+  // Music (Thunder Road Gospel) does NOT auto-play — user must press Audio.
   useEffect(() => {
-    if (autoPlayTried) return;
-    setAutoPlayTried(true);
-    const a = audioRef.current;
-    if (!a) return;
-    a.volume = 0.30;
-    a.play().then(() => setIsPlaying(true)).catch(() => {});
-  }, [autoPlayTried]);
+    if (greetingTried) return;
+    setGreetingTried(true);
+    const t = setTimeout(() => {
+      speak(GREETING_TEXT);
+    }, 3000);
+    return () => clearTimeout(t);
+  }, [greetingTried, speak]);
 
   const togglePlay = () => {
     const a = audioRef.current;
@@ -82,13 +84,12 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
     navigate('/counsel');
   };
 
-  const speakInvitation = () => {
-    if (isSpeaking) {
+  // Stop the spoken greeting when leaving the page
+  useEffect(() => {
+    return () => {
       stop();
-    } else {
-      speak(GREETING_TEXT);
-    }
-  };
+    };
+  }, [stop]);
 
   return (
     <div className="min-h-screen relative overflow-x-hidden" style={{ fontFamily: ARIAL }}>
@@ -200,9 +201,20 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
               >
                 Prophet Gad
               </span>
+              <span
+                className="inline-block px-2 py-0.5 rounded text-white text-[11px] font-bold tracking-wider"
+                style={{
+                  fontFamily: ARIAL,
+                  background: 'rgba(88, 28, 135, 0.6)',
+                  color: '#F5D87A',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.7)',
+                }}
+              >
+                (PGAI)
+              </span>
 
               <div className="flex flex-col gap-1 items-center">
-                {GREETING_LINES.map((line, idx) => (
+                {GREETING_LINES.map((line) => (
                   <span
                     key={line}
                     className="inline-flex items-center gap-2 px-2 py-0.5 rounded text-white text-sm italic leading-snug"
@@ -213,22 +225,6 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                     }}
                   >
                     {line}
-                    {idx === 0 && (
-                      <button
-                        onClick={speakInvitation}
-                        disabled={isLoading}
-                        className="ml-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-accent/60 text-white text-[11px] not-italic disabled:opacity-50 hover:brightness-110 transition-all"
-                        style={{ fontFamily: ARIAL, background: 'rgba(88, 28, 135, 0.85)' }}
-                        aria-label="Hear the greeting"
-                      >
-                        {isLoading ? (
-                          <Loader2 className="w-3 h-3 animate-spin" />
-                        ) : (
-                          <Volume2 className="w-3 h-3" />
-                        )}
-                        {isLoading ? '...' : isSpeaking ? 'Stop' : 'Hear'}
-                      </button>
-                    )}
                   </span>
                 ))}
               </div>
