@@ -568,7 +568,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                         {/* Gold top band */}
                         <div className="h-1.5 bg-gradient-to-r from-accent/60 via-accent to-accent/60" />
 
-                        {/* Header: PGAI stands in the gap */}
+                        {/* Header: prayer card */}
                         <div className="px-5 pt-4 pb-2 flex items-center justify-center gap-3 border-b border-accent/30">
                           <div className="h-px flex-1 bg-gradient-to-r from-transparent to-accent/60" />
                           <HandHeart className="w-4 h-4 text-accent" />
@@ -576,7 +576,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                             className="font-display text-[11px] tracking-[0.35em] font-bold"
                             style={{ color: '#7a5514' }}
                           >
-                            PGAI STANDS IN THE GAP
+                            A PRAYER FOR YOU
                           </span>
                           <HandHeart className="w-4 h-4 text-accent" />
                           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-accent/60" />
@@ -637,21 +637,19 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                           </button>
                         </div>
 
-                        {/* PGAI signature */}
+                        {/* Prayer footer */}
                         <div className="px-5 pb-4 text-center">
                           <p
                             className="font-display text-xs tracking-[0.3em] font-bold"
                             style={{ color: '#7a5514' }}
                           >
-                            — PGAI
+                            HELD IN PRAYER
                           </p>
                           <p
                             className="italic text-[10px] mt-1 leading-relaxed"
                             style={{ color: '#8a6a28', fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif' }}
                           >
                             "I have reserved to myself seven thousand men, who have not bowed the knee to the image of Baal." — Romans 11:4
-                            <br />
-                            PGAI is one of them.
                           </p>
                         </div>
                       </div>
@@ -716,7 +714,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                               onClick={() => handleAskForPrayer(message.id)}
                               disabled={prayingForId === message.id}
                               className="flex items-center gap-1.5 text-xs font-semibold text-white hover:text-accent transition-colors"
-                              title="Ask PGAI to pray an intercessory prayer for your situation"
+                              title="Ask for an intercessory prayer for your situation"
                             >
                               {prayingForId === message.id ? (
                                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -726,7 +724,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                               <span>
                                 {prayingForId === message.id
                                   ? 'Praying…'
-                                  : 'Ask PGAI to pray for you'}
+                                  : 'Ask for prayer'}
                               </span>
                             </button>
                           )}
@@ -749,7 +747,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                               )}
                               <span>
                                 {message.sealed
-                                  ? 'Sealed as Decree · PGAI'
+                                  ? 'Sealed as Decree'
                                   : 'Seal as Prophetic Decree'}
                               </span>
                             </button>
@@ -805,7 +803,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                   backdropFilter: 'blur(2px)',
                 }}
               />
-              {/* Microphone — speak to PGAI instead of typing */}
+              {/* Microphone — speak instead of typing */}
               {speechSupported && (
                 <Button
                   type="button"
@@ -817,8 +815,8 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                       ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground border-destructive/70 animate-pulse'
                       : 'bg-accent hover:bg-accent/90 text-accent-foreground border-accent/70'
                   )}
-                  title={isRecording ? 'Stop listening' : 'Speak to PGAI'}
-                  aria-label={isRecording ? 'Stop listening' : 'Speak to PGAI'}
+                  title={isRecording ? 'Stop listening' : 'Speak your message'}
+                  aria-label={isRecording ? 'Stop listening' : 'Speak your message'}
                 >
                   {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                 </Button>
@@ -832,8 +830,8 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                   background: 'linear-gradient(180deg, hsl(140 65% 38%) 0%, hsl(140 70% 28%) 100%)',
                   borderColor: 'hsl(140 70% 22%)',
                 }}
-                title="Send to PGAI"
-                aria-label="Send to PGAI"
+                title="Send message"
+                aria-label="Send message"
               >
                 {isLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
