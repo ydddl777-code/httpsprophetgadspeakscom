@@ -476,12 +476,13 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
             <ArrowLeft className="w-5 h-5" />
           </Button>
 
-          <Avatar className="w-12 h-12 border-2 border-accent ring-2 ring-accent/30 shrink-0">
-            <AvatarImage src={prophetGadAvatar} alt="Prophet Gad" />
-            <AvatarFallback className="bg-accent text-accent-foreground font-bold">
-              PG
-            </AvatarFallback>
-          </Avatar>
+          <div className="w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden border-2 border-accent ring-2 ring-accent/30 shrink-0 shadow-2xl">
+            <img
+              src={prophetGadAvatar}
+              alt="Prophet Gad"
+              className="w-full h-full object-cover object-top"
+            />
+          </div>
 
           <div className="flex-1 min-w-0">
             <h1 className="font-display text-base md:text-lg font-bold text-gradient-gold tracking-[0.2em] leading-tight">
@@ -492,7 +493,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
             </p>
           </div>
 
-          {profile && (
+          {profile ? (
             <Button
               variant="ghost"
               size="sm"
@@ -503,17 +504,15 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               <ScrollText className="w-4 h-4" />
               <span className="hidden sm:inline text-sm">Decrees</span>
             </Button>
+          ) : (
+            <Button
+              onClick={() => navigate('/sign-in')}
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs md:text-sm px-3 py-2 border-2 border-white/30 shadow-lg whitespace-normal text-center leading-tight"
+              title="Sign in to save your counsel"
+            >
+              Sign In to Save<br />Your Counsel
+            </Button>
           )}
-
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate(profile ? '/settings' : '/sign-in')}
-            className="text-white/70 hover:text-white hover:bg-white/10 w-9 h-9"
-            title={profile ? 'Settings' : 'Sign in to save your counsel'}
-          >
-            <Settings className="w-5 h-5" />
-          </Button>
         </div>
       </header>
 
