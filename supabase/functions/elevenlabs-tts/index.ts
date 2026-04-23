@@ -82,6 +82,14 @@ serve(async (req) => {
     // Validate voiceId — default to the Prophet Gad cloned voice.
     const selectedVoiceId = (voiceId && VALID_VOICE_IDS.includes(voiceId)) ? voiceId : PROPHET_GAD_VOICE_ID;
 
+    // ElevenLabs v3 (alpha) — supports inline emotional audio tags like
+    // [whispers], [sighs], [crying], [pleading], [trembling voice],
+    // [long pause]. Lower stability ("Creative") lets the model actually
+    // act on those tags. v3 falls back gracefully if a tag is unknown.
+    //
+    // We send the text untouched — the prayer engine embeds tags inline
+    // at the right beats so the prophet weeps and pleads on the line that
+    // calls for it, not on the whole prayer.
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${selectedVoiceId}?output_format=mp3_44100_128`,
       {
@@ -92,13 +100,16 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           text,
-          model_id: "eleven_multilingual_v2",
+          model_id: "eleven_v3",
           voice_settings: {
-            stability: 0.75,
-            similarity_boost: 0.78,
-            style: 0.25,
+            // Creative range — lets v3 honour emotional tags. Higher
+            // stability flattens delivery back to neutral.
+            stability: 0.35,
+            similarity_boost: 0.80,
+            // High style so weeping / pleading actually lands.
+            style: 0.65,
             use_speaker_boost: true,
-            speed: 0.82,
+            speed: 0.88,
           },
         }),
       }
