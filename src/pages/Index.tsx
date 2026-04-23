@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { AuthForm } from '@/components/AuthForm';
 import { Onboarding } from './Onboarding';
@@ -30,13 +31,20 @@ const Index = () => {
     deleteChild
   } = useAuth();
   
-  // Determine initial view based on auth state
+  const location = useLocation();
+
+  // Determine initial view based on URL and auth state.
+  // /sign-in always opens the auth form (so the Sign In button on the
+  // counseling page lands the visitor on the beautiful purple-glass
+  // sign-in card, NOT back on the welcome intro).
   const getInitialView = (): ViewState => {
+    if (location.pathname === '/sign-in' && !user) return 'auth';
+    if (location.pathname === '/beliefs') return 'beliefs';
     if (!user) return 'intro';
     if (!profile) return 'profile';
     return 'home';
   };
-  
+
   const [currentView, setCurrentView] = useState<ViewState>(getInitialView);
 
   // Handle auth state changes
