@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, Pause, Volume2, Loader2 } from 'lucide-react';
+import { Play, Pause } from 'lucide-react';
 import { BetaBadge } from '@/components/BetaBadge';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
 import landingBackground from '@/assets/heaven-garden-background.jpg';
