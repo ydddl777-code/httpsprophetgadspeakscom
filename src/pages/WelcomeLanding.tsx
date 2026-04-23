@@ -199,18 +199,7 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                   textShadow: '0 1px 3px rgba(0,0,0,0.7)',
                 }}
               >
-                Prophet Gad
-              </span>
-              <span
-                className="inline-block px-2 py-0.5 rounded text-white text-[11px] font-bold tracking-wider"
-                style={{
-                  fontFamily: ARIAL,
-                  background: 'rgba(88, 28, 135, 0.6)',
-                  color: '#F5D87A',
-                  textShadow: '0 1px 3px rgba(0,0,0,0.7)',
-                }}
-              >
-                (PGAI)
+                Prophet Gad (PGAI)
               </span>
 
               <div className="flex flex-col gap-1 items-center">
