@@ -341,8 +341,16 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
     }
   };
 
+  // Always stop any current playback before starting a new one — prevents
+  // two staggered audio tracks playing on top of each other.
   const handleSpeak = (text: string) => {
-    speak(text);
+    if (isSpeaking) {
+      stopSpeak();
+      // Small delay so the audio element fully releases before next play
+      window.setTimeout(() => speak(text), 150);
+    } else {
+      speak(text);
+    }
   };
 
   // Seal a prophet response as a Prophetic Decree. Finds the preceding user
@@ -604,10 +612,10 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               size="sm"
               onClick={() => navigate('/decrees')}
               className="text-white hover:text-white hover:bg-black/40 gap-1.5 px-2 bg-black/30 backdrop-blur-[2px]"
-              title="View your sealed decrees"
+              title="Open your saved counsel and prayers"
             >
               <ScrollText className="w-4 h-4" />
-              <span className="hidden sm:inline text-sm">Decrees</span>
+              <span className="hidden sm:inline text-sm">My Archive</span>
             </Button>
           ) : (
             <Button
@@ -686,18 +694,27 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                           className="px-5 py-3 border-t border-accent/30 flex items-center justify-center gap-4 flex-wrap"
                           style={{ background: 'rgba(252,244,220,0.6)' }}
                         >
-                          <button
-                            onClick={() => handleSpeak(message.content)}
-                            disabled={isSpeaking}
-                            className={cn(
-                              'flex items-center gap-1.5 text-xs font-semibold transition-colors',
-                              isSpeaking ? 'opacity-40 cursor-not-allowed' : 'hover:text-accent'
-                            )}
-                            style={{ color: '#7a5514' }}
-                          >
-                            <Volume2 className="w-3.5 h-3.5" />
-                            <span>{isSpeaking ? 'Praying aloud…' : 'Hear this prayer again'}</span>
-                          </button>
+                          {isSpeaking ? (
+                            <button
+                              onClick={() => stopSpeak()}
+                              className="flex items-center gap-1.5 text-xs font-semibold transition-colors hover:text-destructive"
+                              style={{ color: '#7a5514' }}
+                              title="Stop voice playback"
+                            >
+                              <span className="inline-block w-3 h-3 bg-destructive rounded-sm" />
+                              <span>Stop voice</span>
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => handleSpeak(message.content)}
+                              className="flex items-center gap-1.5 text-xs font-semibold transition-colors hover:text-accent"
+                              style={{ color: '#7a5514' }}
+                              title="Hear this prayer again"
+                            >
+                              <Volume2 className="w-3.5 h-3.5" />
+                              <span>Hear this prayer again</span>
+                            </button>
+                          )}
 
                           <button
                             onClick={() => handleSavePrayer(message.id)}
@@ -707,6 +724,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                               message.sealed ? 'text-accent cursor-default' : 'hover:text-accent'
                             )}
                             style={{ color: message.sealed ? undefined : '#7a5514' }}
+                            title="Save a PDF of this prayer"
                           >
                             {sealingId === message.id ? (
                               <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -715,8 +733,8 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                             )}
                             <span>
                               {message.sealed
-                                ? 'Saved · Keep this prayer'
-                                : 'Save this prayer'}
+                                ? 'Saved · PDF ready'
+                                : 'Save as PDF'}
                             </span>
                           </button>
                         </div>
@@ -778,20 +796,32 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                         {message.content}
                       </p>
 
-                      {/* Action row for Prophet counsel messages */}
+                      {/* Action row for Prophet counsel messages.
+                          Voice plays automatically on arrival, so we show
+                          "Hear again" instead of "Listen" to keep users
+                          from triggering a second overlapping playback.
+                          A Stop button replaces it while audio is playing. */}
                       {message.role === 'prophet' && (
                         <div className="mt-2 pt-2 flex items-center gap-3 flex-wrap">
-                          <button
-                            onClick={() => handleSpeak(message.content)}
-                            disabled={isSpeaking}
-                            className={cn(
-                              'flex items-center gap-1.5 text-xs font-semibold text-white hover:text-accent transition-colors',
-                              isSpeaking && 'opacity-40 cursor-not-allowed'
-                            )}
-                          >
-                            <Volume2 className="w-3.5 h-3.5" />
-                            <span>Listen</span>
-                          </button>
+                          {isSpeaking ? (
+                            <button
+                              onClick={() => stopSpeak()}
+                              className="flex items-center gap-1.5 text-xs font-semibold text-white hover:text-destructive transition-colors"
+                              title="Stop voice playback"
+                            >
+                              <span className="inline-block w-3 h-3 bg-destructive rounded-sm" />
+                              <span>Stop voice</span>
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => handleSpeak(message.content)}
+                              className="flex items-center gap-1.5 text-xs font-semibold text-white hover:text-accent transition-colors"
+                              title="Hear this counsel again"
+                            >
+                              <Volume2 className="w-3.5 h-3.5" />
+                              <span>Hear again</span>
+                            </button>
+                          )}
 
                           {message.id !== '1' && (
                             <button
@@ -823,6 +853,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                                   ? 'text-accent cursor-default'
                                   : 'text-white hover:text-accent'
                               )}
+                              title="Save a PDF of this counsel"
                             >
                               {sealingId === message.id ? (
                                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -831,8 +862,8 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                               )}
                               <span>
                                 {message.sealed
-                                  ? 'Sealed as Decree'
-                                  : 'Seal as Prophetic Decree'}
+                                  ? 'Saved · PDF ready'
+                                  : 'Save as PDF'}
                               </span>
                             </button>
                           )}

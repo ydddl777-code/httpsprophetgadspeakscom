@@ -174,7 +174,23 @@ serve(async (req) => {
 
     // Build the message. The user message here is the request for prayer,
     // framed for PGAI with the person's situation summarized.
-    const userPrompt = `Please intercede for this person now. Here is their situation in their own words:\n\n"${situation}"\n\nStand in the gap. Pray to the Father for them. Build the prayer in this order: praise who the Father is, give thanks for His Son and sacrifice, give thanks for life and every circumstance, intercede for leaders and nations and those suffering under war or persecution, then bring this user's burden plainly before the Father, then yield to His will. Use several KJV Scriptures naturally in the prayer.`;
+    const userPrompt = `Stand in the gap and pray to the Father now. The user has brought this burden:
+
+"${situation}"
+
+CRITICAL: This prayer is NOT primarily about the user. It is the prophet looking at the WHOLE universe and lifting up praise to the Father — because God IS, because He is just, because He gave His Son, because He sustains all life. Begging for this user's matter is the SECOND-TO-LAST phase, not the first.
+
+Follow the eight-phase structure exactly:
+1. INVOCATION — call on the Father by His names and attributes (4-6 lines).
+2. CONFESSION — acknowledge unworthiness (2-4 lines).
+3. PLEA OF THE BLOOD — claim the Son's sacrifice (2-3 lines).
+4. THANKSGIVING — this is the HEART of the prayer (10-16 lines). Praise Him for WHO HE IS first (just, holy, loving, merciful, faithful, mighty), then for His Son and the blood, then for life and every common mercy (the air, the heart that beats, food, water, shelter, family, work, even the technology that lets us speak to Him), then for every circumstance — pleasant and painful, blessings and tribulation, doors opened and doors closed.
+5. INTERCESSION (8-14 lines) — pray for the President, Congress, judges, all in authority that they act with wisdom; for the nation, for peace and lawful order; for those suffering under war, tyranny, persecution, sickness, grief, poverty; for the breaking of wickedness — that the Father would frustrate evil counsel, expose lies, and bring down oppressors so the innocent may breathe freely.
+6. PETITION — ONLY NOW name the user's burden plainly and ask for intervention (8-14 lines).
+7. SUBMISSION — "Not our will, but Yours be done" (2-4 lines).
+8. CLOSING — "In the name of Your dear Son — and because of His sacrifice — Amen."
+
+Weave 2-4 KJV Scriptures naturally. Do NOT skip thanksgiving or intercession. Do NOT collapse them into one line. Total length 700-1200 words.`;
 
     const messages = [
       { role: "system", content: SYSTEM_PROMPT },
