@@ -1,20 +1,28 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const ALLOWED_ORIGINS = [
-  'https://theprophetgad.com',
-  'https://www.theprophetgad.com',
-  'https://httpsprophetgadspeakscom.lovable.app',
-  'https://id-preview--e8e7cee6-b4f3-4ad6-8680-e6fd0c2465f5.lovable.app',
-  'http://localhost:5173',
-  'http://localhost:8080',
+const ALLOWED_ORIGIN_SUFFIXES = [
+  'theprophetgad.com',
+  'lovable.app',
+  'lovableproject.com',
+  'localhost',
 ];
 
 function getCorsHeaders(req: Request) {
   const origin = req.headers.get('Origin') || '';
+  let allowed = '';
+  try {
+    const host = new URL(origin).hostname;
+    if (ALLOWED_ORIGIN_SUFFIXES.some((s) => host === s || host.endsWith('.' + s) || host.startsWith('localhost'))) {
+      allowed = origin;
+    }
+  } catch {
+    // bad/empty origin — leave allowed = ''
+  }
   return {
-    'Access-Control-Allow-Origin': ALLOWED_ORIGINS.some(o => origin.startsWith(o)) ? origin : '',
+    'Access-Control-Allow-Origin': allowed,
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
+    'Vary': 'Origin',
   };
 }
 
