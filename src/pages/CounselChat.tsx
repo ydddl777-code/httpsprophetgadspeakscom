@@ -847,11 +847,11 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               </Button>
             </div>
             {isRecording ? (
-              <p className="mt-2 text-center text-[11px] italic text-destructive font-semibold">
+              <p className="mt-2 text-center text-sm md:text-base italic text-destructive font-bold">
                 ● Listening — speak clearly, then tap the microphone again to finish.
               </p>
             ) : (
-              <p className="mt-2 text-center text-[11px] italic text-[#5C4A3D]/70">
+              <p className="mt-2 text-center text-sm md:text-base italic font-semibold text-[#3D2B1F]">
                 Everything you share stays between you and Prophet Gad.
               </p>
             )}
