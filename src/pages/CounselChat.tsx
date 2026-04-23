@@ -22,9 +22,9 @@ import type { UserProfile } from '@/lib/types';
 // City, a more architectural / sacred-chamber feel appropriate for the
 // weight of intercessory prayer. (The garden-of-flowers image lives on
 // the welcome landing where visitors first arrive.)
-// Use the same heaven-garden background as the welcome landing so the
-// counseling table sits in the garden of flowers, not a stark gate.
-import sanctuaryBackground from '@/assets/heaven-garden-background.jpg';
+// Heaven crystal-river background — therapeutic waterfall scene with
+// white doves, lilies and willow trees. Calming for counseling.
+import sanctuaryBackground from '@/assets/heaven-crystal-river.jpg';
 // Warrior portrait — matches the welcome landing card so the user
 // immediately recognises Prophet Gad. Larger and clearer than the
 // modern suit photo.
