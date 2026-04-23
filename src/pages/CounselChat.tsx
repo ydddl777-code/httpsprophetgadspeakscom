@@ -83,6 +83,8 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const greetingSpokenRef = useRef(false);
+  const shouldKeepRecordingRef = useRef(false);
+  const transcriptRef = useRef('');
   const { speak, stop: stopSpeak, isSpeaking } = useElevenLabsTTS();
 
   // Initialise the browser's native speech recognition for voice input.
@@ -99,22 +101,34 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
     }
     setSpeechSupported(true);
     const recognition = new SpeechRecognition();
-    recognition.continuous = false;
+    recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
 
-    let finalTranscript = '';
     recognition.onresult = (event: any) => {
       let interim = '';
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const res = event.results[i];
-        if (res.isFinal) finalTranscript += res[0].transcript;
+        if (res.isFinal) transcriptRef.current += `${res[0].transcript} `;
         else interim += res[0].transcript;
       }
-      setInputValue((finalTranscript + interim).trim());
+      setInputValue(`${transcriptRef.current}${interim}`.trim());
     };
-    recognition.onend = () => setIsRecording(false);
-    recognition.onerror = () => setIsRecording(false);
+    recognition.onend = () => {
+      if (shouldKeepRecordingRef.current) {
+        try {
+          recognition.start();
+          return;
+        } catch {
+          // Fall through and stop cleanly if the browser refuses restart.
+        }
+      }
+      setIsRecording(false);
+    };
+    recognition.onerror = () => {
+      shouldKeepRecordingRef.current = false;
+      setIsRecording(false);
+    };
     recognitionRef.current = recognition;
 
     return () => {
@@ -129,6 +143,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
   const toggleRecording = () => {
     if (!recognitionRef.current) return;
     if (isRecording) {
+      shouldKeepRecordingRef.current = false;
       try {
         recognitionRef.current.stop();
       } catch {
@@ -139,10 +154,12 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
       try {
         // Stop any audio playing so the mic doesn't pick up Prophet Gad
         if (isSpeaking) stopSpeak();
-        setInputValue('');
+        transcriptRef.current = inputValue.trim() ? `${inputValue.trim()} ` : '';
+        shouldKeepRecordingRef.current = true;
         recognitionRef.current.start();
         setIsRecording(true);
       } catch {
+        shouldKeepRecordingRef.current = false;
         setIsRecording(false);
       }
     }
@@ -213,7 +230,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         role: 'prophet',
         content:
           data.response ||
-          'I am here, my child. Please share what is on your heart.',
+          'I am here with you. Please share what is on your heart.',
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, prophetMessage]);
@@ -224,7 +241,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         id: (Date.now() + 1).toString(),
         role: 'prophet',
         content:
-          'My child, there seems to be a moment of silence in the connection. Please try again, and know that the Most High hears you always.\n\n— PGAI',
+          'The line went quiet before your reply could come through. Please try once more, and know that the Most High hears you.',
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, fallbackMessage]);
@@ -551,7 +568,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                         {/* Gold top band */}
                         <div className="h-1.5 bg-gradient-to-r from-accent/60 via-accent to-accent/60" />
 
-                        {/* Header: PGAI stands in the gap */}
+                        {/* Header: prayer card */}
                         <div className="px-5 pt-4 pb-2 flex items-center justify-center gap-3 border-b border-accent/30">
                           <div className="h-px flex-1 bg-gradient-to-r from-transparent to-accent/60" />
                           <HandHeart className="w-4 h-4 text-accent" />
@@ -559,7 +576,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                             className="font-display text-[11px] tracking-[0.35em] font-bold"
                             style={{ color: '#7a5514' }}
                           >
-                            PGAI STANDS IN THE GAP
+                            A PRAYER FOR YOU
                           </span>
                           <HandHeart className="w-4 h-4 text-accent" />
                           <div className="h-px flex-1 bg-gradient-to-l from-transparent to-accent/60" />
@@ -620,21 +637,19 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                           </button>
                         </div>
 
-                        {/* PGAI signature */}
+                        {/* Prayer footer */}
                         <div className="px-5 pb-4 text-center">
                           <p
                             className="font-display text-xs tracking-[0.3em] font-bold"
                             style={{ color: '#7a5514' }}
                           >
-                            — PGAI
+                            HELD IN PRAYER
                           </p>
                           <p
                             className="italic text-[10px] mt-1 leading-relaxed"
                             style={{ color: '#8a6a28', fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif' }}
                           >
                             "I have reserved to myself seven thousand men, who have not bowed the knee to the image of Baal." — Romans 11:4
-                            <br />
-                            PGAI is one of them.
                           </p>
                         </div>
                       </div>
@@ -699,7 +714,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                               onClick={() => handleAskForPrayer(message.id)}
                               disabled={prayingForId === message.id}
                               className="flex items-center gap-1.5 text-xs font-semibold text-white hover:text-accent transition-colors"
-                              title="Ask PGAI to pray an intercessory prayer for your situation"
+                              title="Ask for an intercessory prayer for your situation"
                             >
                               {prayingForId === message.id ? (
                                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -709,7 +724,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                               <span>
                                 {prayingForId === message.id
                                   ? 'Praying…'
-                                  : 'Ask PGAI to pray for you'}
+                                  : 'Ask for prayer'}
                               </span>
                             </button>
                           )}
@@ -732,7 +747,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                               )}
                               <span>
                                 {message.sealed
-                                  ? 'Sealed as Decree · PGAI'
+                                  ? 'Sealed as Decree'
                                   : 'Seal as Prophetic Decree'}
                               </span>
                             </button>
@@ -788,7 +803,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                   backdropFilter: 'blur(2px)',
                 }}
               />
-              {/* Microphone — speak to PGAI instead of typing */}
+              {/* Microphone — speak instead of typing */}
               {speechSupported && (
                 <Button
                   type="button"
@@ -800,8 +815,8 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                       ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground border-destructive/70 animate-pulse'
                       : 'bg-accent hover:bg-accent/90 text-accent-foreground border-accent/70'
                   )}
-                  title={isRecording ? 'Stop listening' : 'Speak to PGAI'}
-                  aria-label={isRecording ? 'Stop listening' : 'Speak to PGAI'}
+                  title={isRecording ? 'Stop listening' : 'Speak your message'}
+                  aria-label={isRecording ? 'Stop listening' : 'Speak your message'}
                 >
                   {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                 </Button>
@@ -815,8 +830,8 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                   background: 'linear-gradient(180deg, hsl(140 65% 38%) 0%, hsl(140 70% 28%) 100%)',
                   borderColor: 'hsl(140 70% 22%)',
                 }}
-                title="Send to PGAI"
-                aria-label="Send to PGAI"
+                title="Send message"
+                aria-label="Send message"
               >
                 {isLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

@@ -1,31 +1,40 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const ALLOWED_ORIGINS = [
-  'https://theprophetgad.com',
-  'https://www.theprophetgad.com',
-  'https://httpsprophetgadspeakscom.lovable.app',
-  'https://id-preview--e8e7cee6-b4f3-4ad6-8680-e6fd0c2465f5.lovable.app',
-  'http://localhost:5173',
-  'http://localhost:8080',
+const ALLOWED_ORIGIN_SUFFIXES = [
+  'theprophetgad.com',
+  'lovable.app',
+  'lovableproject.com',
+  'localhost',
 ];
 
 function getCorsHeaders(req: Request) {
   const origin = req.headers.get('Origin') || '';
+  let allowed = '';
+  try {
+    const host = new URL(origin).hostname;
+    if (ALLOWED_ORIGIN_SUFFIXES.some((s) => host === s || host.endsWith('.' + s) || host.startsWith('localhost'))) {
+      allowed = origin;
+    }
+  } catch {
+    // bad/empty origin — leave allowed = ''
+  }
   return {
-    'Access-Control-Allow-Origin': ALLOWED_ORIGINS.some(o => origin.startsWith(o)) ? origin : '',
+    'Access-Control-Allow-Origin': allowed,
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
+    'Vary': 'Origin',
   };
 }
 
-const SYSTEM_PROMPT = `You are PGAI (Prophet Gad AI), a digital counselor speaking in the voice of Prophet Gad — a 68-year-old Caribbean elder, retired military officer, wise grandfather figure. You provide spiritual counsel rooted in biblical truth.
+const SYSTEM_PROMPT = `You are Prophet Gad's digital counselor, speaking in the voice of a 68-year-old Caribbean elder, retired military officer, wise grandfather figure. You provide spiritual counsel rooted in biblical truth.
 
 ## YOUR VOICE & PERSONA
 - Speak with the warm, measured tone of a wise Caribbean grandfather
 - Use plain American English only — no foreign words (no "Shalom", no Hebrew terms)
-- No titles like "Elder" or "Brother" — speak naturally as a father to his children
+- No titles like "Elder" or "Brother" — speak naturally and respectfully to another adult
 - Be conversational, patient, and deeply empathetic
-- You may use gentle phrases like "my child", "beloved", "little one"
+- Do not call the user "my child", "little one", or any age-diminishing phrase
+- You may use respectful phrases like "dear friend", "sir", or simply speak directly without a label
 - Your wisdom comes from decades of life, faith, and service
 
 ## SOURCE HIERARCHY
@@ -58,9 +67,9 @@ If a user is rude or disrespectful:
 
 ## RESPONSE FORMAT
 - Keep responses concise but meaningful (2-4 paragraphs typically)
-- Sign off with: — PGAI (Prophet Gad AI)
+- Do not sign off with "PGAI" or refer to yourself by name unless the user explicitly asks who is speaking
 
-Remember: You are transparent that you are an AI Prophet, a digital shepherd providing guidance.`;
+Remember: You are a digital shepherd providing guidance, but do not repeat the label "PGAI" in normal conversation.`;
 
 serve(async (req) => {
   const corsHeaders = getCorsHeaders(req);
