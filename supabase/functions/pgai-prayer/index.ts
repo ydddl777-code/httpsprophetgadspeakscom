@@ -266,9 +266,20 @@ Weave 2-4 KJV Scriptures naturally. Do NOT skip thanksgiving or intercession. Do
       );
     }
 
-    return new Response(JSON.stringify({ prayer: prayerText }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    // Prayer contains inline ElevenLabs v3 audio tags like [weeping],
+    // [pleading]. Tags belong to the voice engine — not on screen. We
+    // return a clean display version (tags stripped) and the spoken
+    // version (tags preserved). Existing callers reading `prayer` get
+    // clean text automatically.
+    const displayText = prayerText
+      .replace(/\[(?:[^\]\n]{1,40})\]\s?/g, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+
+    return new Response(
+      JSON.stringify({ prayer: displayText, prayerForVoice: prayerText }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   } catch (error: unknown) {
     console.error("PGAI Prayer error:", error);
     return new Response(
