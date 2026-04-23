@@ -201,9 +201,20 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
               >
                 Prophet Gad
               </span>
+              <span
+                className="inline-block px-2 py-0.5 rounded text-white text-[11px] font-bold tracking-wider"
+                style={{
+                  fontFamily: ARIAL,
+                  background: 'rgba(88, 28, 135, 0.6)',
+                  color: '#F5D87A',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.7)',
+                }}
+              >
+                (PGAI)
+              </span>
 
               <div className="flex flex-col gap-1 items-center">
-                {GREETING_LINES.map((line, idx) => (
+                {GREETING_LINES.map((line) => (
                   <span
                     key={line}
                     className="inline-flex items-center gap-2 px-2 py-0.5 rounded text-white text-sm italic leading-snug"
@@ -214,22 +225,6 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
                     }}
                   >
                     {line}
-                    {idx === 0 && (
-                      <button
-                        onClick={speakInvitation}
-                        disabled={isLoading}
-                        className="ml-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-accent/60 text-white text-[11px] not-italic disabled:opacity-50 hover:brightness-110 transition-all"
-                        style={{ fontFamily: ARIAL, background: 'rgba(88, 28, 135, 0.85)' }}
-                        aria-label="Hear the greeting"
-                      >
-                        {isLoading ? (
-                          <Loader2 className="w-3 h-3 animate-spin" />
-                        ) : (
-                          <Volume2 className="w-3 h-3" />
-                        )}
-                        {isLoading ? '...' : isSpeaking ? 'Stop' : 'Hear'}
-                      </button>
-                    )}
                   </span>
                 ))}
               </div>
