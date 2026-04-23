@@ -502,19 +502,11 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         </div>
       </header>
 
-      {/* Chat Container — translucent purple-glass panel, narrower and
-          shifted to the right side so the gate-of-heaven garden behind
-          remains visible. NO big white blob covering the central image. */}
+      {/* Chat Container — NO outer card. Translucent panel only on the
+          input dock. Messages float over the heaven background. Shifted
+          right so the central river/swans remain visible. */}
       <div className="relative z-10 flex-1 flex w-full px-4 pb-4 justify-center md:justify-end">
-        <div
-          className="flex-1 max-w-xl md:max-w-lg rounded-2xl border-2 border-accent/60 shadow-2xl overflow-hidden flex flex-col backdrop-blur-md"
-          style={{
-            background:
-              'linear-gradient(180deg, rgba(88,28,135,0.55) 0%, rgba(60,20,110,0.55) 100%)',
-            boxShadow:
-              '0 10px 40px rgba(0,0,0,0.4), 0 0 80px rgba(212,165,63,0.15), inset 0 0 60px rgba(212,165,63,0.10)',
-          }}
-        >
+        <div className="flex-1 max-w-xl md:max-w-lg flex flex-col">
 
           {/* Messages Area */}
           <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
