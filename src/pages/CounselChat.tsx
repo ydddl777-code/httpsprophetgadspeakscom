@@ -83,6 +83,8 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const greetingSpokenRef = useRef(false);
+  const shouldKeepRecordingRef = useRef(false);
+  const transcriptRef = useRef('');
   const { speak, stop: stopSpeak, isSpeaking } = useElevenLabsTTS();
 
   // Initialise the browser's native speech recognition for voice input.
@@ -99,22 +101,34 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
     }
     setSpeechSupported(true);
     const recognition = new SpeechRecognition();
-    recognition.continuous = false;
+    recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
 
-    let finalTranscript = '';
     recognition.onresult = (event: any) => {
       let interim = '';
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const res = event.results[i];
-        if (res.isFinal) finalTranscript += res[0].transcript;
+        if (res.isFinal) transcriptRef.current += `${res[0].transcript} `;
         else interim += res[0].transcript;
       }
-      setInputValue((finalTranscript + interim).trim());
+      setInputValue(`${transcriptRef.current}${interim}`.trim());
     };
-    recognition.onend = () => setIsRecording(false);
-    recognition.onerror = () => setIsRecording(false);
+    recognition.onend = () => {
+      if (shouldKeepRecordingRef.current) {
+        try {
+          recognition.start();
+          return;
+        } catch {
+          // Fall through and stop cleanly if the browser refuses restart.
+        }
+      }
+      setIsRecording(false);
+    };
+    recognition.onerror = () => {
+      shouldKeepRecordingRef.current = false;
+      setIsRecording(false);
+    };
     recognitionRef.current = recognition;
 
     return () => {
@@ -129,6 +143,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
   const toggleRecording = () => {
     if (!recognitionRef.current) return;
     if (isRecording) {
+      shouldKeepRecordingRef.current = false;
       try {
         recognitionRef.current.stop();
       } catch {
@@ -139,10 +154,12 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
       try {
         // Stop any audio playing so the mic doesn't pick up Prophet Gad
         if (isSpeaking) stopSpeak();
-        setInputValue('');
+        transcriptRef.current = inputValue.trim() ? `${inputValue.trim()} ` : '';
+        shouldKeepRecordingRef.current = true;
         recognitionRef.current.start();
         setIsRecording(true);
       } catch {
+        shouldKeepRecordingRef.current = false;
         setIsRecording(false);
       }
     }
@@ -213,7 +230,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         role: 'prophet',
         content:
           data.response ||
-          'I am here, my child. Please share what is on your heart.',
+          'I am here with you. Please share what is on your heart.',
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, prophetMessage]);
@@ -224,7 +241,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         id: (Date.now() + 1).toString(),
         role: 'prophet',
         content:
-          'My child, there seems to be a moment of silence in the connection. Please try again, and know that the Most High hears you always.\n\n— PGAI',
+          'The line went quiet before your reply could come through. Please try once more, and know that the Most High hears you.',
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, fallbackMessage]);
