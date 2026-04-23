@@ -454,28 +454,31 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
         }}
       />
 
-      {/* Header — minimal. The counseling chat IS the landing page, so the
-          FERVENT COUNSEL wordmark lives here. Tiny gear icon in the corner for
-          returning users who want to sign in to save their counsel. */}
-      <header className="relative z-10 w-full py-4 px-4 border-b border-accent/40 backdrop-blur-sm bg-black/30">
-        <div className="max-w-2xl mx-auto flex items-center gap-3">
+      {/* Header — fully transparent (no backdrop blur, no dark band).
+          Each text element gets its own tight inline highlight so the
+          heaven scene shows through. Back button pushed to extreme left,
+          Sign-In/Decrees pushed to extreme right (justified). */}
+      <header className="relative z-10 w-full py-4 px-4">
+        <div className="w-full flex items-center justify-between gap-3">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => navigate('/')}
-            className="text-white/80 hover:text-white hover:bg-white/10 w-9 h-9 shrink-0"
+            className="text-white hover:text-white hover:bg-black/40 w-9 h-9 shrink-0 bg-black/30 backdrop-blur-[2px]"
             title="Back to welcome"
             aria-label="Back to welcome"
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
 
-          <div className="flex-1 min-w-0">
-            <h1 className="font-display text-base md:text-lg font-bold text-gradient-gold tracking-[0.2em] leading-tight">
+          <div className="flex-1 min-w-0 text-center">
+            <h1 className="inline-block font-display text-base md:text-lg font-bold text-gradient-gold tracking-[0.2em] leading-tight px-3 py-1 rounded bg-black/40 backdrop-blur-[2px]">
               FERVENT COUNSEL
             </h1>
-            <p className="text-sm md:text-base text-white/90 italic leading-snug">
-              I am here to listen to your concerns and pray with you.
+            <p className="mt-1">
+              <span className="inline-block text-sm md:text-base text-white italic leading-snug px-3 py-0.5 rounded bg-black/40 backdrop-blur-[2px]">
+                I am here to listen to your concerns and pray with you.
+              </span>
             </p>
           </div>
 
@@ -484,7 +487,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               variant="ghost"
               size="sm"
               onClick={() => navigate('/decrees')}
-              className="text-white/80 hover:text-white hover:bg-white/10 gap-1.5 px-2"
+              className="text-white hover:text-white hover:bg-black/40 gap-1.5 px-2 bg-black/30 backdrop-blur-[2px]"
               title="View your sealed decrees"
             >
               <ScrollText className="w-4 h-4" />
@@ -493,7 +496,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
           ) : (
             <Button
               onClick={() => navigate('/sign-in')}
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs md:text-sm px-3 py-2 border-2 border-white/30 shadow-lg whitespace-normal text-center leading-tight"
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold text-xs md:text-sm px-3 py-2 border-2 border-white/30 shadow-lg whitespace-normal text-center leading-tight shrink-0"
               title="Sign in to save your counsel"
             >
               Sign In to Save<br />Your Counsel
@@ -633,21 +636,20 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                       message.role === 'user' ? 'justify-end' : 'justify-start'
                     )}
                   >
-                    {/* Message Bubble — translucent purple-glass with white text
-                        for prophet, translucent gold-tinted for user. NO avatar
-                        pictures cluttering the conversation. */}
+                    {/* No box — just the text floating, with a tight
+                        translucent highlight directly behind the words for
+                        readability against the heaven scene. */}
                     <div
                       className={cn(
-                        'max-w-[88%] rounded-2xl px-4 py-3 shadow-lg backdrop-blur-md border-2',
-                        message.role === 'prophet'
-                          ? 'rounded-tl-sm border-accent/50'
-                          : 'rounded-tr-sm border-accent/40'
+                        'max-w-[88%] px-3 py-2 rounded-md',
+                        message.role === 'prophet' ? '' : ''
                       )}
                       style={{
                         background:
                           message.role === 'prophet'
-                            ? 'linear-gradient(180deg, rgba(88,28,135,0.78) 0%, rgba(60,20,110,0.78) 100%)'
-                            : 'linear-gradient(180deg, rgba(40,15,70,0.65) 0%, rgba(30,10,55,0.65) 100%)',
+                            ? 'rgba(40,15,70,0.55)'
+                            : 'rgba(20,10,40,0.45)',
+                        backdropFilter: 'blur(2px)',
                         color: '#FFFFFF',
                       }}
                     >
@@ -663,12 +665,12 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
 
                       {/* Action row for Prophet counsel messages */}
                       {message.role === 'prophet' && (
-                        <div className="mt-3 pt-2 border-t border-accent/30 flex items-center gap-3 flex-wrap">
+                        <div className="mt-2 pt-2 flex items-center gap-3 flex-wrap">
                           <button
                             onClick={() => handleSpeak(message.content)}
                             disabled={isSpeaking}
                             className={cn(
-                              'flex items-center gap-1.5 text-xs font-semibold text-white/90 hover:text-accent transition-colors',
+                              'flex items-center gap-1.5 text-xs font-semibold text-white hover:text-accent transition-colors',
                               isSpeaking && 'opacity-40 cursor-not-allowed'
                             )}
                           >
@@ -680,7 +682,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                             <button
                               onClick={() => handleAskForPrayer(message.id)}
                               disabled={prayingForId === message.id}
-                              className="flex items-center gap-1.5 text-xs font-semibold text-white/90 hover:text-accent transition-colors"
+                              className="flex items-center gap-1.5 text-xs font-semibold text-white hover:text-accent transition-colors"
                               title="Ask PGAI to pray an intercessory prayer for your situation"
                             >
                               {prayingForId === message.id ? (
@@ -704,7 +706,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                                 'flex items-center gap-1.5 text-xs font-semibold transition-colors',
                                 message.sealed
                                   ? 'text-accent cursor-default'
-                                  : 'text-white/90 hover:text-accent'
+                                  : 'text-white hover:text-accent'
                               )}
                             >
                               {sealingId === message.id ? (
@@ -729,10 +731,10 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
               {isLoading && (
                 <div className="flex justify-start">
                   <div
-                    className="rounded-2xl rounded-tl-sm px-4 py-3 border-2 border-accent/50 shadow-lg backdrop-blur-md"
+                    className="px-3 py-2 rounded-md"
                     style={{
-                      background:
-                        'linear-gradient(180deg, rgba(88,28,135,0.78) 0%, rgba(60,20,110,0.78) 100%)',
+                      background: 'rgba(40,15,70,0.55)',
+                      backdropFilter: 'blur(2px)',
                     }}
                   >
                     <div className="flex gap-1.5 items-center h-5">
@@ -746,14 +748,9 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
             </div>
           </ScrollArea>
 
-          {/* Input Area */}
-          <div
-            className="p-4 border-t border-accent/40"
-            style={{
-              background:
-                'linear-gradient(180deg, rgba(252,244,220,0.95) 0%, rgba(248,238,208,0.95) 100%)',
-            }}
-          >
+          {/* Input Area — no cream box. The input itself is the panel;
+              helper text gets a tight inline highlight. */}
+          <div className="p-4">
             <div className="flex gap-2">
               <Input
                 value={inputValue}
@@ -765,7 +762,7 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                     : 'Type, or tap the microphone to speak…'
                 }
                 className={cn(
-                  'flex-1 border-accent/50 bg-white/90 text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-accent italic',
+                  'flex-1 border-accent/60 bg-white/95 text-foreground placeholder:text-muted-foreground/60 focus-visible:ring-accent italic shadow-lg',
                   isRecording && 'border-destructive ring-2 ring-destructive/40'
                 )}
                 style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif', fontSize: '1.05rem' }}
@@ -777,10 +774,10 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                   onClick={toggleRecording}
                   disabled={isLoading}
                   className={cn(
-                    'px-3 border shadow-md transition-colors',
+                    'px-3 border-2 shadow-md transition-colors',
                     isRecording
                       ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground border-destructive/70 animate-pulse'
-                      : 'bg-accent/15 hover:bg-accent/25 text-accent-foreground border-accent/40'
+                      : 'bg-accent hover:bg-accent/90 text-accent-foreground border-accent/70'
                   )}
                   title={isRecording ? 'Stop listening' : 'Speak to PGAI'}
                   aria-label={isRecording ? 'Stop listening' : 'Speak to PGAI'}
@@ -810,15 +807,17 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
                 )}
               </Button>
             </div>
-            {isRecording ? (
-              <p className="mt-2 text-center text-sm md:text-base italic text-destructive font-bold">
-                ● Listening — speak clearly, then tap the microphone again to finish.
-              </p>
-            ) : (
-              <p className="mt-2 text-center text-sm md:text-base italic font-semibold text-[#3D2B1F]">
-                Everything you share stays between you and PGAI.
-              </p>
-            )}
+            <p className="mt-2 text-center">
+              {isRecording ? (
+                <span className="inline-block text-sm md:text-base italic font-bold text-white px-3 py-1 rounded bg-destructive/80 backdrop-blur-[2px]">
+                  ● Listening — speak clearly, then tap the microphone again to finish.
+                </span>
+              ) : (
+                <span className="inline-block text-sm md:text-base italic font-semibold text-white px-3 py-1 rounded bg-black/45 backdrop-blur-[2px]">
+                  Everything you share stays between you and PGAI.
+                </span>
+              )}
+            </p>
           </div>
         </div>
       </div>
