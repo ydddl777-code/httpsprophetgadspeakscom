@@ -179,10 +179,9 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages,
-        max_tokens: 1200,
-        // Slightly lower temperature so the prayer stays grounded in the
-        // specific promises rather than improvising exotic phrasing.
-        temperature: 0.6,
+        max_tokens: 2500,
+        // Higher temperature for poetic variation while structure holds.
+        temperature: 0.75,
       }),
     });
 
