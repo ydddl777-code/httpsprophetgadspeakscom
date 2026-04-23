@@ -824,12 +824,18 @@ export const CounselChat = ({ profile, onLogout }: CounselChatProps) => {
             </div>
             <p className="mt-2 text-center">
               {isRecording ? (
-                <span className="inline-block text-sm md:text-base italic font-bold text-white px-3 py-1 rounded bg-destructive/80 backdrop-blur-[2px]">
+                <span
+                  className="inline-block text-sm md:text-base italic font-bold text-white px-3 py-1 rounded"
+                  style={{ background: 'rgba(180,30,30,0.55)', textShadow: '0 1px 6px rgba(0,0,0,0.7)' }}
+                >
                   ● Listening — speak clearly, then tap the microphone again to finish.
                 </span>
               ) : (
-                <span className="inline-block text-sm md:text-base italic font-semibold text-white px-3 py-1 rounded bg-black/45 backdrop-blur-[2px]">
-                  Everything you share stays between you and PGAI.
+                <span
+                  className="inline-block text-sm md:text-base italic font-semibold text-white px-3 py-1 rounded"
+                  style={{ background: 'rgba(0,0,0,0.22)', textShadow: '0 1px 6px rgba(0,0,0,0.7)' }}
+                >
+                  Everything you share stays between you and the prophet.
                 </span>
               )}
             </p>
