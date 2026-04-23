@@ -40,8 +40,8 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
   const navigate = useNavigate();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [autoPlayTried, setAutoPlayTried] = useState(false);
-  const { speak, stop, isSpeaking, isLoading } = useElevenLabsTTS();
+  const [greetingTried, setGreetingTried] = useState(false);
+  const { speak, stop, isSpeaking } = useElevenLabsTTS();
   const now = useNow();
 
   const dateString = now.toLocaleDateString('en-US', {
@@ -56,14 +56,16 @@ export const WelcomeLanding = ({ onEnterApp, onViewBeliefs }: WelcomeLandingProp
     hour12: true,
   });
 
+  // Auto-play the spoken greeting ~3 seconds after landing.
+  // Music (Thunder Road Gospel) does NOT auto-play — user must press Audio.
   useEffect(() => {
-    if (autoPlayTried) return;
-    setAutoPlayTried(true);
-    const a = audioRef.current;
-    if (!a) return;
-    a.volume = 0.30;
-    a.play().then(() => setIsPlaying(true)).catch(() => {});
-  }, [autoPlayTried]);
+    if (greetingTried) return;
+    setGreetingTried(true);
+    const t = setTimeout(() => {
+      speak(GREETING_TEXT);
+    }, 3000);
+    return () => clearTimeout(t);
+  }, [greetingTried, speak]);
 
   const togglePlay = () => {
     const a = audioRef.current;
